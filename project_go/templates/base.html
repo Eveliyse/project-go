@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block page-title %}</title>
+    </head>
+
+    <body>
+        {% page-header %}
+            <div>Page Header Things</div>
+        {% endblock %}
+        
+        {% page-content %}
+            <div>Page Content Things</div>
+        {% endblock %}
+        
+        {% page-footer %}
+            <div>Page Footer Things</div>
+        {% endblock %}
+    </body>
+</html>
