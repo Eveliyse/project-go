@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Users(models.Model):
+class Member(models.Model):
     user = models.OneToOneField(User)
     dob = models.DateField('Date of Birth')
     
@@ -10,7 +10,7 @@ class Users(models.Model):
         return self.user.username    
     
 class Address(models.Model):
-    resident = models.ForeignKey(Users)
+    resident = models.ForeignKey(Member)
     line_1 = models.CharField(max_length=200)
     line_2 = models.CharField(max_length=200)
     town = models.CharField(max_length=200)
