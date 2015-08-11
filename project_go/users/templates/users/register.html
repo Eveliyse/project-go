@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+{{ form.name_of_field.errors }}
+{% endif %}
+
+<form method="post" action="{% url 'users:register' %}">
+{% csrf_token %}
+<table>
+
+    {{ form.as_table }}
+    
+</table>
+    
+    <table>
+
+    {{ form2.as_table }}
+    
+</table>
+    
+        <table>
+
+    {{ form3.as_table }}
+    
+</table>
+
+    
+
+<input type="submit" value="register" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock %}
