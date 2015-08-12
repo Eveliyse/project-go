@@ -2,18 +2,23 @@
 
 {% block content %}
 {% if user.id == user_id %}
-    <p>Hai {{ user.username }}</p>
+    <p>Hai {{ user.username }} this is your profile page</p>
+    <form method="post" action="{% url 'users:userprofile' %}">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Save Changes" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
 {% else %}
     <table>
         {% for field in form %}
             <div class="fieldWrapper">
-            {{ field.errors }}
             {{ field.label_tag }} {{ field.value }}
             </div>
         {% endfor %}
     </table>
 {% endif %}
 
-
-PROFILE
 {% endblock %}

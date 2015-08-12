@@ -2,7 +2,7 @@ from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from .models import Address, Member
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 import datetime
 
 class MemberAddressForm(forms.ModelForm):
@@ -18,6 +18,17 @@ class MemberDetailsForm(forms.ModelForm):
         model = Member
         exclude = ['user',]
         
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField(max_length=75)
+    
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email", ) 
+            
+
+
 class UserCreateForm(UserCreationForm):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
@@ -36,5 +47,5 @@ class UserCreateForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
     
