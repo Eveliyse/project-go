@@ -1,25 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% if project %}
+        <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
+    {% else %}
+        <form method="post" action="{% url 'projects:create' %}" enctype="multipart/form-data">
+    {% endif %}
 
-wheee create project
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
 
-{% if project %}
-<form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
-{% else %}
-    <form method="post" action="{% url 'projects:create' %}" enctype="multipart/form-data">
-{% endif %}
-
-{% csrf_token %}
-<table>
-{{ form.as_table }}
-</table>
-{% if project %}
+    {% if project %}
         <img src="{{ project.image.url }}" />
-<input type="submit" value="Edit Project" />
-        {% else %}
+        <input type="submit" value="Edit Project" />
+    {% else %}
         <input type="submit" value="Create Project" />
-        {% endif %}
-</form>
-
+    {% endif %}
+        
+            
+        </form>
 {% endblock %}
