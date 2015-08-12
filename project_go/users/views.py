@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.shortcuts import HttpResponseRedirect
@@ -13,6 +13,21 @@ import datetime
 #@login_required
 def index(request):
     return render(request, 'users/index.html')
+
+def profile(request, user_id=None):
+    if user_id:
+        u_id = int(user_id)        
+        user = get_object_or_404(User, id = u_id)
+        user_create_form = UserCreateForm(instance = user)
+        if request.user != user:
+            user_create_form.fields.pop("password1")
+            user_create_form.fields.pop("password2")
+            
+        return render_to_response('users/profile.html', {
+            'form': user_create_form,
+            'user_id' : u_id
+            }, context_instance=RequestContext(request))
+    return redirect('/users')
 
 def login(request):
     if not request.user.is_authenticated():

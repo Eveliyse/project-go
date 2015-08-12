@@ -3,14 +3,14 @@ from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from .models import Project, Status
-from projects.forms import ProjectCreateForm
+from projects.forms import ProjectEditCreateForm
 
 def index(request):
     return render(request, 'projects/manage.html')
 
 def create(request):
     if request.method == "POST":
-        project_create_form = ProjectCreateForm(data=request.POST, files=request.FILES, prefix="project")
+        project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, prefix="project")
         if project_create_form.is_valid():
             p = project_create_form.save(commit=False)
             p.owner = request.user
@@ -18,7 +18,7 @@ def create(request):
             p.save()
             return redirect('/projects/edit/' + p.id)
     else:
-        project_create_form = ProjectCreateForm(prefix="project")
+        project_create_form = ProjectEditCreateForm(prefix="project")
     return render_to_response('projects/editcreate.html', {
         'form': project_create_form,
         }, context_instance=RequestContext(request))
@@ -32,11 +32,11 @@ def edit(request, id=None):
         return redirect('/projects/create')
 
     if request.POST:
-        project_edit_form = ProjectCreateForm(data=request.POST, files=request.FILES, instance=p)
+        project_edit_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, instance=p)
         if project_edit_form.is_valid():
             project_edit_form.save()
     else:
-        project_edit_form = ProjectCreateForm(instance=p)
+        project_edit_form = ProjectEditCreateForm(instance=p)
     return render_to_response('projects/editcreate.html', {
         'form': project_edit_form,
         'project': p}, context_instance=RequestContext(request))

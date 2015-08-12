@@ -5,10 +5,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import datetime
 
-class ProjectCreateForm(forms.ModelForm):
+class ProjectEditCreateForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.FileInput)
     class Meta:
         model = Project
         exclude = ('owner','status')      
+        
+class ProjectRewardForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        exclude = ('project',)    
     
     

@@ -1,10 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Gender(models.Model):
+    gender = models.CharField(max_length=25, unique = True)
+    
+    def __str__(self):
+        return self.gender
 
 class Member(models.Model):
     user = models.OneToOneField(User)
     dob = models.DateField('Date of Birth')
+    gender = models.ForeignKey(Gender, blank = False)
     
     def __str__(self):
         return self.user.username   
