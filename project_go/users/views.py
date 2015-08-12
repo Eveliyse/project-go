@@ -28,9 +28,8 @@ def profile(request, user_id=None):
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, prefix="user", instance = user)
         password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password")
-        if user_edit_form.is_valid():
+        if user_edit_form.is_valid() and password_edit_form.is_valid():
             user_edit_form.save()
-        if password_edit_form.is_valid():
             password_edit_form.save()
     else:
         user_edit_form = UserEditForm(prefix="user", instance = user)        

@@ -17,10 +17,16 @@
 {% else %}
 <p>{{ userobj.username }}</p>
     <table>
-        {% for field in form %}
-            <div class="fieldWrapper">
-            {{ field.label_tag }} {{ field.value }}
-            </div>
+        <tbody>
+            {% for field in form %}
+            <tr>
+                <th>
+                    <label for="id_user-first_name">{{ field.label_tag }}</label>
+                </th>
+                <td>
+                    {{ field.value }}
+                </td>
+            </tr>
         {% endfor %}
     </table>
 {% endif %}
