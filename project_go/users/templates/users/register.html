@@ -9,26 +9,12 @@
 <form method="post" action="{% url 'users:register' %}">
 {% csrf_token %}
 <table>
-
     {{ form.as_table }}
-    
-</table>
-    
-    <table>
-
     {{ form2.as_table }}
-    
-</table>
-    
-        <table>
-
     {{ form3.as_table }}
-    
 </table>
 
-    
-
-<input type="submit" value="register" />
+<input type="submit" value="Register" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 

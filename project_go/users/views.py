@@ -50,12 +50,8 @@ def register(request):
             u.save()                     
             d = Member(user = u, dob = user_details_form['dob'])
             d.save()
-            a = Address(resident = d,
-                        line_1 = user_address_form['line_1'],
-                        line_2 = user_address_form['line_2'],
-                        town = user_address_form['town'],
-                        postcode = user_address_form['postcode'],
-                        country = user_address_form['country'],)
+            a = user_address_form.save(commit = False)
+            a.resident = d
             a.save()       
             return redirect('/users')
     else:
