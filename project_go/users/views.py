@@ -24,21 +24,30 @@ def profile(request, user_id=None):
         return redirect('/users/register')
     
     user = get_object_or_404(User, id = u_id)
+    member = get_object_or_404(Member, user = user)
     
     if request.method == "POST":
-        user_edit_form = UserEditForm(data=request.POST, prefix="user", instance = user)
+        user_edit_form = UserEditForm(data=request.POST, instance = user, prefix="user")
         password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password")
-        if user_edit_form.is_valid() and password_edit_form.is_valid():
+        member_edit_form = MemberDetailsForm(data=request.POST, instance = member, prefix="member")
+        if user_edit_form.is_valid():
             user_edit_form.save()
+        if password_edit_form.is_valid():
             password_edit_form.save()
+        if member_edit_form.is_valid():
+            member_edit_form.save()
+            return redirect('/users/profile')
     else:
-        user_edit_form = UserEditForm(prefix="user", instance = user)        
-
+        user_edit_form = UserEditForm(instance = user, prefix="user")        
+    
     if u_id == request.user.id:
         password_edit_form = SetPasswordForm(user = user, prefix="password")
+        member_edit_form = MemberDetailsForm(instance = member, prefix="member")
+        
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
             'form2': password_edit_form,
+            'form3': member_edit_form,
             'userobj' : user
             }, context_instance=RequestContext(request))
     else:

@@ -7,9 +7,8 @@
         {% csrf_token %}
         <table>
             {{ form.as_table }}
-        </table>
-        <table>
             {{ form2.as_table }}
+            {{ form3.as_table }}
         </table>
         <input type="submit" value="Save Changes" />
         <input type="hidden" name="next" value="{{ next }}" />
@@ -27,7 +26,8 @@
                     {{ field.value }}
                 </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+        </tbody>
     </table>
 {% endif %}
 
