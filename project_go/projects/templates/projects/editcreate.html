@@ -4,8 +4,8 @@
 
 wheee create project
 
-{% if id %}
-<form method="post" action="{% url 'projects:edit' id %}" enctype="multipart/form-data">
+{% if project %}
+<form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
 {% else %}
     <form method="post" action="{% url 'projects:create' %}" enctype="multipart/form-data">
 {% endif %}
@@ -14,7 +14,8 @@ wheee create project
 <table>
 {{ form.as_table }}
 </table>
-{% if id %}
+{% if project %}
+        <img src="{{ project.image.url }}" />
 <input type="submit" value="Edit Project" />
         {% else %}
         <input type="submit" value="Create Project" />

@@ -16,7 +16,7 @@ def create(request):
             p.owner = request.user
             p.status = Status.objects.get(status = "New")
             p.save()
-            return redirect('/projects/edit')
+            return redirect('/projects/edit/' + p.id)
     else:
         project_create_form = ProjectCreateForm(prefix="project")
     return render_to_response('projects/editcreate.html', {
@@ -32,14 +32,14 @@ def edit(request, id=None):
         return redirect('/projects/create')
 
     if request.POST:
-        project_edit_form = ProjectCreateForm(request.POST, instance=p)
+        project_edit_form = ProjectCreateForm(data=request.POST, files=request.FILES, instance=p)
         if project_edit_form.is_valid():
             project_edit_form.save()
     else:
         project_edit_form = ProjectCreateForm(instance=p)
     return render_to_response('projects/editcreate.html', {
         'form': project_edit_form,
-        'id': id}, context_instance=RequestContext(request))
+        'project': p}, context_instance=RequestContext(request))
 
 def details(request):
     return render(request, 'projects/details.html')

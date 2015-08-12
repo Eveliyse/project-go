@@ -18,7 +18,7 @@ class Project(models.Model):
     owner = models.ForeignKey(User, blank = False)
     title = models.CharField(max_length=100, unique = True)
     goal = models.DecimalField(max_digits=12, decimal_places=2)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='project_images/%Y-%m/%d')
     short_desc = models.CharField(max_length=200)
     long_desc = models.TextField()
     status = models.ForeignKey(Status, blank = False)

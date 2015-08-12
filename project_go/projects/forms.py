@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 import datetime
 
 class ProjectCreateForm(forms.ModelForm):
-    
+    image = forms.ImageField(widget=forms.FileInput)
     class Meta:
         model = Project
         exclude = ('owner','status')      

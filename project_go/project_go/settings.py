@@ -105,3 +105,10 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL  = '/users/'
+
+
+PROJECT_ROOT = os.path.dirname(__file__)
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+MEDIA_URL = '/media/'
