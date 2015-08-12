@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from .models import Member, Address, Country
 from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, UserEditForm
+from django.contrib.auth.forms import SetPasswordForm
 import datetime
 
 #@login_required
@@ -22,19 +23,30 @@ def profile(request, user_id=None):
     else:
         return redirect('/users/register')
     
-    user = get_object_or_404(User, id = u_id)    
+    user = get_object_or_404(User, id = u_id)
     
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, prefix="user", instance = user)
+        password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password")
         if user_edit_form.is_valid():
             user_edit_form.save()
+        if password_edit_form.is_valid():
+            password_edit_form.save()
     else:
         user_edit_form = UserEditForm(prefix="user", instance = user)        
-            
-    return render_to_response('users/profile.html', {
-        'form': user_edit_form,
-        'user_id' : u_id
-        }, context_instance=RequestContext(request))
+
+    if u_id == request.user.id:
+        password_edit_form = SetPasswordForm(user = user, prefix="password")
+        return render_to_response('users/profile.html', {
+            'form': user_edit_form,
+            'form2': password_edit_form,
+            'userobj' : user
+            }, context_instance=RequestContext(request))
+    else:
+        return render_to_response('users/profile.html', {
+            'form': user_edit_form,
+            'userobj' : user
+            }, context_instance=RequestContext(request))
 
 def login(request):
     if not request.user.is_authenticated():

@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if user.id == user_id %}
+{% if user.id == userobj.id %}
     <p>Hai {{ user.username }} this is your profile page</p>
     <form method="post" action="{% url 'users:userprofile' %}">
         {% csrf_token %}
         <table>
             {{ form.as_table }}
         </table>
+        <table>
+            {{ form2.as_table }}
+        </table>
         <input type="submit" value="Save Changes" />
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
 {% else %}
+<p>{{ userobj.username }}</p>
     <table>
         {% for field in form %}
             <div class="fieldWrapper">
