@@ -15,14 +15,14 @@ class Category(models.Model):
         return self.category     
 
 class Project(models.Model):
-    owner = models.ForeignKey(User, blank = False)
+    owner = models.ForeignKey(User)
     title = models.CharField(max_length=100, unique = True)
     goal = models.DecimalField(max_digits=12, decimal_places=2)
     image = models.ImageField(upload_to='project_images/%Y-%m/%d')
     short_desc = models.CharField(max_length=200)
     long_desc = models.TextField()
-    status = models.ForeignKey(Status, blank = False)
-    category = models.ForeignKey(Category, blank = False)
+    status = models.ForeignKey(Status)
+    category = models.ForeignKey(Category)
     
     def __str__(self):
         return self.title
@@ -34,17 +34,17 @@ class Project(models.Model):
         return SUM
     
 class Reward(models.Model):
-    project = models.ForeignKey(Project, blank = False)
-    desc = models.CharField(max_length=200, blank = False)
+    project = models.ForeignKey(Project)
+    desc = models.CharField(max_length=200)
     
     def __str__(self):
         return self.desc
     
 class Pledge(models.Model):
-    project = models.ForeignKey(Project, blank = False)
+    project = models.ForeignKey(Project)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     rewards = models.ManyToManyField(Reward)
 
 class UserPledge(models.Model):
-    user = models.ForeignKey(User, blank = False)
-    pledge = models.ForeignKey(Pledge, blank = False)
+    user = models.ForeignKey(User)
+    pledge = models.ForeignKey(Pledge)
