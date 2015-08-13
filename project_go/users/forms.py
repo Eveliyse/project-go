@@ -9,7 +9,7 @@ class MemberAddressForm(forms.ModelForm):
 
     class Meta:
         model = Address
-        exclude = ['resident',]
+        exclude = ['resident', 'active',]
         
 class MemberDetailsForm(forms.ModelForm):
     dob = forms.DateField(widget=SelectDateWidget(years=range(datetime.datetime.now().year-15,datetime.datetime.now().year-100,-1)))

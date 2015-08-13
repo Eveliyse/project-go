@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="current-address">
+    {% if user_address %}
+        <form method="post" action="{% url 'users:editaddress' user_address.id %}">
+    {% else %}
+        <form method="post" action="{% url 'users:addaddress' %}">
+    {% endif %}
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+</table>
+                <input type="submit" value="Save Changes" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+            
+    {% if user_address %}
+<form method="post" action="{% url 'users:deleteaddress' user_address.id %}">
+                {% csrf_token %}
+        <input type="submit" value="Delete Address" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    {% endif %}
+    
+</div>
+{% endblock %}
