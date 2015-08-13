@@ -35,7 +35,7 @@ class Address(models.Model):
                                     ),
                                 ])
     country = models.ForeignKey(Country)
-    active = models.BooleanField()
+    active = models.NullBooleanField(blank = True, null = True)
     
     def __str__(self):
         return self.line_1 + ", " + self.line_2 + ", " + self.town + ", " + self.postcode

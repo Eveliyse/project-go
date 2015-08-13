@@ -32,15 +32,31 @@
 
 <div>
 <p>Your Addresses</p>
+    
+    <div id="current-address">
+        Edit address area
+    </div>
+    
     {% for address in user_addresses %}
-    <p>    
+    <p>
+        {{ address.id }}
         {{ address.line_1 }}
         {{ address.line_2 }}
         {{ address.town }}
         {{ address.postcode }}
-      </p>
+        
+      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    </p>
     {% endfor %}
+    <a class="edit" href="{% url 'users:addaddress' %}">Add</a>
 </div>
 
 {% endif %}
 {% endblock %}
+
+{% block jscript %}
+$('.edit').click(function(event) {
+      event.preventDefault();
+
+      $('#current-address').load(this.href);
+   });
+        {% endblock %}

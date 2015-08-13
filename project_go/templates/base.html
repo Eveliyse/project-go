@@ -2,6 +2,7 @@
     <head>
         <meta charset="utf-8">
         <title>{% block page-title %}{% endblock %}</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     </head>
 
     <body>
@@ -17,4 +18,10 @@
             <div>Page Footer Things</div>
         {% endblock %}
     </body>
+    <script>
+ 
+        {% block jscript %}
+        {% endblock %}
+ 
+    </script>
 </html>
