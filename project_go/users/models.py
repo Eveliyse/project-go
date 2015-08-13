@@ -23,7 +23,7 @@ class Country(models.Model):
         return self.name       
     
 class Address(models.Model):
-    resident = models.ForeignKey(Member)
+    resident = models.ForeignKey(User)
     line_1 = models.CharField(max_length=50)
     line_2 = models.CharField(max_length=50, blank = True, null = True)
     town = models.CharField(max_length=50)

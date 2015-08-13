@@ -1,20 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if user.id == userobj.id %}
-    <p>Hai {{ user.username }} this is your profile page</p>
-    <form method="post" action="{% url 'users:userprofile' %}">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-            {{ form2.as_table }}
-            {{ form3.as_table }}
-        </table>
-        <input type="submit" value="Save Changes" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-{% else %}
-<p>{{ userobj.username }}</p>
+{% if user.id  != userobj.id %}
+    <p>{{ userobj.username }}</p>
     <table>
         <tbody>
             {% for field in form %}
@@ -29,6 +17,30 @@
             {% endfor %}
         </tbody>
     </table>
-{% endif %}
+{% else %}
+    <p>Hai {{ user.username }} this is your profile page</p>
+    <form method="post" action="{% url 'users:userprofile' %}">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            {{ form2.as_table }}
+            {{ form3.as_table }}
+        </table>
+        <input type="submit" value="Save Changes" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
 
+<div>
+<p>Your Addresses</p>
+    {% for address in user_addresses %}
+    <p>    
+        {{ address.line_1 }}
+        {{ address.line_2 }}
+        {{ address.town }}
+        {{ address.postcode }}
+      </p>
+    {% endfor %}
+</div>
+
+{% endif %}
 {% endblock %}

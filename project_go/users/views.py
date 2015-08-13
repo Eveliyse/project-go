@@ -48,15 +48,19 @@ def profile(request, user_id=None):
     else:
         user_edit_form = UserEditForm(instance = user, prefix="user")        
     
-    #if user is viewing own profile then create forms for editing details.
+    #if user is viewing own profile then create forms for editing details and fetch data to display.
     #else the user is viewing not own profile so just process the 1 form
     if u_id == request.user.id:
         password_edit_form = SetPasswordForm(user = user, prefix="password")
-        member_edit_form = MemberDetailsForm(instance = member, prefix="member")   
+        member_edit_form = MemberDetailsForm(instance = member, prefix="member")
+        
+        a = Address.objects.filter(resident = request.user)
+        
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
             'form2': password_edit_form,
             'form3': member_edit_form,
+            'user_addresses' : a,
             'userobj' : user
             }, context_instance=RequestContext(request))
     else:
