@@ -5,10 +5,14 @@ from django.contrib.auth.models import User
 from .models import Project, Status
 from projects.forms import ProjectEditCreateForm
 
+#placeholder for now
 def index(request):
     return render(request, 'projects/manage.html')
 
 def create(request):
+    """ If POST then process form and create project entry
+        Otherwise, create form and display
+    """    
     if request.method == "POST":
         project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, prefix="project")
         if project_create_form.is_valid():

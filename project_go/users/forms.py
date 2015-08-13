@@ -1,8 +1,8 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
-from .models import Address, Member
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from .models import Address, Member
 import datetime
 
 class MemberAddressForm(forms.ModelForm):

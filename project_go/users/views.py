@@ -1,21 +1,21 @@
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.template import RequestContext
-from django.http import HttpResponse
-from django.shortcuts import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Member, Address, Country
 from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, UserEditForm
-from django.contrib.auth.forms import SetPasswordForm
-import datetime
 
-#@login_required
+#placeholder for now
 def index(request):
     return render(request, 'users/index.html')
 
 def profile(request, user_id=None):
+    """ If the user is viewing own profile then let them edit things
+        Otherwise, show basic details of user
+    """    
+    #convert supplied userid to int
     if user_id:
         u_id = int(user_id)
     elif request.user.is_authenticated():
@@ -23,9 +23,12 @@ def profile(request, user_id=None):
     else:
         return redirect('/users/register')
     
+    #Get user and member objects based on supplied userid
     user = get_object_or_404(User, id = u_id)
     member = get_object_or_404(Member, user = user)
     
+    #if POST then process forms, else create a new user_edit_form
+    #TODO check if password fields changed before validating
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, instance = user, prefix="user")
         password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password")
@@ -36,14 +39,20 @@ def profile(request, user_id=None):
             password_edit_form.save()
         if member_edit_form.is_valid():
             member_edit_form.save()
-            return redirect('/users/profile')
+        return render_to_response('users/profile.html', {
+            'form': user_edit_form,
+            'form2': password_edit_form,
+            'form3': member_edit_form,
+            'userobj' : user
+            }, context_instance=RequestContext(request))
     else:
         user_edit_form = UserEditForm(instance = user, prefix="user")        
     
+    #if user is viewing own profile then create forms for editing details.
+    #else the user is viewing not own profile so just process the 1 form
     if u_id == request.user.id:
         password_edit_form = SetPasswordForm(user = user, prefix="password")
-        member_edit_form = MemberDetailsForm(instance = member, prefix="member")
-        
+        member_edit_form = MemberDetailsForm(instance = member, prefix="member")   
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
             'form2': password_edit_form,
@@ -57,6 +66,9 @@ def profile(request, user_id=None):
             }, context_instance=RequestContext(request))
 
 def login(request):
+    """ If the user is already logged in then redirect somewhere else
+        Otherwise, render template and form or process POST data
+    """
     if not request.user.is_authenticated():
         if request.method == 'POST':
             form = AuthenticationForm(data=request.POST)
@@ -72,13 +84,18 @@ def login(request):
             'form': form,
             }, context_instance=RequestContext(request))
     else:
+        #TODO redirect somewhere more sensible
         return HttpResponseRedirect('/users/')    
 
+#@login_required
 def logout(request):
     django_logout(request)
     return HttpResponseRedirect('/users/')
 
 def register(request):
+    """ If POST then process forms and create relevant database entries
+        Otherwise check if the user is already logged in. If not then show registration forms
+    """    
     if request.method == 'POST':
         user_create_form = UserCreateForm(data=request.POST, prefix="user")
         user_details_form = MemberDetailsForm(data=request.POST, prefix="userdetails")
@@ -95,13 +112,14 @@ def register(request):
             a = user_address_form.save(commit = False)
             a.resident = d
             a.save()       
+            #TODO redirect somewhere more sensible
             return redirect('/users')
-    else:
+    elif not request.user.is_authenticated():
         user_create_form = UserCreateForm(prefix="user")
         user_details_form = MemberDetailsForm(prefix="userdetails")
         user_address_form = MemberAddressForm(prefix="address")
-    return render_to_response('users/register.html', {
-        'form': user_create_form,
-        'form2': user_details_form,
-        'form3': user_address_form,
-        }, context_instance=RequestContext(request))
+        return render_to_response('users/register.html', {
+            'form': user_create_form,
+            'form2': user_details_form,
+            'form3': user_address_form,
+            }, context_instance=RequestContext(request))
