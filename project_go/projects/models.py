@@ -24,14 +24,22 @@ class Project(models.Model):
     status = models.ForeignKey(Status)
     category = models.ForeignKey(Category)
     
+    def pledged_amount(self):			
+        up = UserPledge.objects.filter(pledge__project = self)
+        result = up.aggregate(Sum('pledge__amount'))
+        return result
+    
+    def pledgers(self):			
+        up = UserPledge.objects.filter(pledge__project = self)
+        result = up.aggregate(Count('user'))
+        return result    
+    
+    def is_funded(self):		
+        amount = self.pledged_amount()['pledge__amount__sum']
+        return amount >= self.goal
+    
     def __str__(self):
         return self.title
-    
-    def is_funded(self):
-        p = Pledge.objects.filter(project=self.id)
-        up = UserPledge.objects.filter(id__in=p)
-        result = up.aggregate(Sum('amount'))
-        return SUM
     
 class Reward(models.Model):
     project = models.ForeignKey(Project)
@@ -44,6 +52,9 @@ class Pledge(models.Model):
     project = models.ForeignKey(Project)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     rewards = models.ManyToManyField(Reward)
+    
+    def __str__(self):
+        return self.project.title + ", "
 
 class UserPledge(models.Model):
     user = models.ForeignKey(User)
