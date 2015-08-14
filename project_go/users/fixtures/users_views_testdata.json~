@@ -1,0 +1,353 @@
+[
+{
+    "fields": {
+        "gender": "Female"
+    },
+    "model": "users.gender",
+    "pk": 5
+},
+{
+    "fields": {
+        "gender": "Male"
+    },
+    "model": "users.gender",
+    "pk": 6
+},
+{
+    "fields": {
+        "gender": "Other"
+    },
+    "model": "users.gender",
+    "pk": 7
+},
+{
+    "fields": {
+        "gender": "Prefer not to say"
+    },
+    "model": "users.gender",
+    "pk": 8
+},
+{
+    "fields": {
+        "dob": "2003-08-14",
+        "gender": 8,
+        "user": 41
+    },
+    "model": "users.member",
+    "pk": 7
+},
+{
+    "fields": {
+        "dob": "1995-05-19",
+        "gender": 6,
+        "user": 42
+    },
+    "model": "users.member",
+    "pk": 8
+},
+{
+    "fields": {
+        "dob": "2000-12-31",
+        "gender": 5,
+        "user": 43
+    },
+    "model": "users.member",
+    "pk": 9
+},
+{
+    "fields": {
+        "name": "United Kingdom"
+    },
+    "model": "users.country",
+    "pk": 30
+},
+{
+    "fields": {
+        "name": "Algeria"
+    },
+    "model": "users.country",
+    "pk": 31
+},
+{
+    "fields": {
+        "name": "Australia"
+    },
+    "model": "users.country",
+    "pk": 32
+},
+{
+    "fields": {
+        "name": "Austria"
+    },
+    "model": "users.country",
+    "pk": 33
+},
+{
+    "fields": {
+        "name": "Belgium"
+    },
+    "model": "users.country",
+    "pk": 34
+},
+{
+    "fields": {
+        "name": "Brazil"
+    },
+    "model": "users.country",
+    "pk": 35
+},
+{
+    "fields": {
+        "name": "Costa Rica"
+    },
+    "model": "users.country",
+    "pk": 36
+},
+{
+    "fields": {
+        "name": "Denmark"
+    },
+    "model": "users.country",
+    "pk": 37
+},
+{
+    "fields": {
+        "name": "Egypt"
+    },
+    "model": "users.country",
+    "pk": 38
+},
+{
+    "fields": {
+        "name": "Estonia"
+    },
+    "model": "users.country",
+    "pk": 39
+},
+{
+    "fields": {
+        "name": "Finland"
+    },
+    "model": "users.country",
+    "pk": 40
+},
+{
+    "fields": {
+        "name": "France"
+    },
+    "model": "users.country",
+    "pk": 41
+},
+{
+    "fields": {
+        "name": "Germany"
+    },
+    "model": "users.country",
+    "pk": 42
+},
+{
+    "fields": {
+        "name": "Greece"
+    },
+    "model": "users.country",
+    "pk": 43
+},
+{
+    "fields": {
+        "name": "India"
+    },
+    "model": "users.country",
+    "pk": 44
+},
+{
+    "fields": {
+        "name": "Japan"
+    },
+    "model": "users.country",
+    "pk": 45
+},
+{
+    "fields": {
+        "name": "Korea"
+    },
+    "model": "users.country",
+    "pk": 46
+},
+{
+    "fields": {
+        "name": "Mexico"
+    },
+    "model": "users.country",
+    "pk": 47
+},
+{
+    "fields": {
+        "name": "New Zealand"
+    },
+    "model": "users.country",
+    "pk": 48
+},
+{
+    "fields": {
+        "name": "Norway"
+    },
+    "model": "users.country",
+    "pk": 49
+},
+{
+    "fields": {
+        "name": "Poland"
+    },
+    "model": "users.country",
+    "pk": 50
+},
+{
+    "fields": {
+        "name": "Romania"
+    },
+    "model": "users.country",
+    "pk": 51
+},
+{
+    "fields": {
+        "name": "Singapore"
+    },
+    "model": "users.country",
+    "pk": 52
+},
+{
+    "fields": {
+        "name": "Spain"
+    },
+    "model": "users.country",
+    "pk": 53
+},
+{
+    "fields": {
+        "name": "Taiwan"
+    },
+    "model": "users.country",
+    "pk": 54
+},
+{
+    "fields": {
+        "name": "Turkey"
+    },
+    "model": "users.country",
+    "pk": 55
+},
+{
+    "fields": {
+        "name": "United States"
+    },
+    "model": "users.country",
+    "pk": 56
+},
+{
+    "fields": {
+        "name": "Iran"
+    },
+    "model": "users.country",
+    "pk": 57
+},
+{
+    "fields": {
+        "name": "Peru"
+    },
+    "model": "users.country",
+    "pk": 58
+},
+{
+    "fields": {
+        "town": "admin town",
+        "resident": 41,
+        "country": 44,
+        "active": true,
+        "postcode": "as09 9uy",
+        "line_1": "admin house",
+        "line_2": ""
+    },
+    "model": "users.address",
+    "pk": 8
+},
+{
+    "fields": {
+        "town": "bob town",
+        "resident": 42,
+        "country": 54,
+        "active": true,
+        "postcode": "bo6 6ob",
+        "line_1": "bob bungalow",
+        "line_2": "bob gardens"
+    },
+    "model": "users.address",
+    "pk": 9
+},
+{
+    "fields": {
+        "town": "charlotte town",
+        "resident": 43,
+        "country": 40,
+        "active": true,
+        "postcode": "ch4 7ot",
+        "line_1": "charlotte chambers",
+        "line_2": "charlotte meadow"
+    },
+    "model": "users.address",
+    "pk": 10
+}
+{
+    "fields": {
+        "username": "admin",
+        "first_name": "admin1",
+        "last_name": "admin2",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2015-08-14T14:23:46Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$zgGauWX3b4mc$2C/Oxj1nkG/4c3UCiG3ZLSWoeDtsP2I4LHipG5nmVRM=",
+        "email": "admin@admin.com",
+        "date_joined": "2015-08-14T14:23:32Z"
+    },
+    "model": "auth.user",
+    "pk": 41
+},
+{
+    "fields": {
+        "username": "bob",
+        "first_name": "bob1",
+        "last_name": "bob2",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$kIQz4AQFL5i8$MnCv1bstboJ4zzsIgs4Er3VywqaP1bHEv0LP8SYuQY4=",
+        "email": "bob@bob.com",
+        "date_joined": "2015-08-14T14:24:36Z"
+    },
+    "model": "auth.user",
+    "pk": 42
+},
+{
+    "fields": {
+        "username": "charlotte",
+        "first_name": "charlotte1",
+        "last_name": "charlotte2",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": null,
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$Yd9iwkyD9HXq$HLdb14gqXH6FT3tIFvMH5q4olKl683NDTLwc8NIKi9A=",
+        "email": "charlotte@charlotte.com",
+        "date_joined": "2015-08-14T14:25:20Z"
+    },
+    "model": "auth.user",
+    "pk": 43
+}
+]

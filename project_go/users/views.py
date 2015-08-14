@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, render_to_response, redirect
+from django.shortcuts import get_object_or_404, get_list_or_404, render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
@@ -55,7 +55,7 @@ def profile(request, user_id=None):
         password_edit_form = SetPasswordForm(user = user, prefix="password")
         member_edit_form = MemberDetailsForm(instance = member, prefix="member")
         
-        a = Address.objects.filter(resident = request.user, active = True)
+        a = get_list_or_404(Address, resident = request.user, active = True)
         
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
@@ -103,12 +103,13 @@ def editaddaddress(request, address_id=None):
     
 @login_required
 def deleteaddress(request, address_id=None):
-    address = get_object_or_404(Address, id = address_id, active = True)
+    if address_id:
+        address = get_object_or_404(Address, id = address_id, active = True)
 
-    if request.method == "POST":
-        if address.resident == request.user:
-            address.active = False
-            address.save()
+        if request.method == "POST":
+            if address.resident == request.user:
+                address.active = False
+                address.save()
     return redirect('/users/profile/')
 
 def login(request):
@@ -122,7 +123,7 @@ def login(request):
                 user = authenticate(username=request.POST['username'], password=request.POST['password'])
                 if user is not None:
                     if user.is_active:
-                        django_login(request, user)
+                        django_login(request, form.get_user())
                         return redirect('/users')
         else:
             form = AuthenticationForm()
@@ -131,7 +132,7 @@ def login(request):
             }, context_instance=RequestContext(request))
     else:
         #TODO redirect somewhere more sensible
-        return redirect('/users/')    
+        return HttpResponseRedirect(reverse('users')) 
 
 @login_required
 def logout(request):
