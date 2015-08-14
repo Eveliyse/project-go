@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, SetP
 from django.contrib.auth.models import User
 from .models import Member, Address, Country
 from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, UserEditForm
+from django.core.urlresolvers import reverse
 
 #placeholder for now
 def index(request):
@@ -22,7 +23,7 @@ def profile(request, user_id=None):
     elif request.user.is_authenticated():
         u_id = int(request.user.id)
     else:
-        return redirect('/users/register')
+        return redirect(reverse('users:register'))
     
     #Get user and member objects based on supplied userid
     user = get_object_or_404(User, id = u_id)
@@ -110,7 +111,7 @@ def deleteaddress(request, address_id=None):
             if address.resident == request.user:
                 address.active = False
                 address.save()
-    return redirect('/users/profile/')
+    return redirect(reverse('users:userprofile'))
 
 def login(request):
     """ If the user is already logged in then redirect somewhere else
@@ -124,7 +125,7 @@ def login(request):
                 if user is not None:
                     if user.is_active:
                         django_login(request, form.get_user())
-                        return redirect('/users')
+                        return redirect(reverse('users:index')) 
         else:
             form = AuthenticationForm()
         return render_to_response('users/login.html', {
@@ -132,12 +133,12 @@ def login(request):
             }, context_instance=RequestContext(request))
     else:
         #TODO redirect somewhere more sensible
-        return HttpResponseRedirect(reverse('users')) 
+        return redirect(reverse('users:index')) 
 
 @login_required
 def logout(request):
     django_logout(request)
-    return redirect('/users/')
+    return redirect(reverse('users:index'))
 
 def register(request):
     """ If POST then process forms and create relevant database entries
@@ -160,7 +161,7 @@ def register(request):
             a.active = True
             a.save()       
             #TODO redirect somewhere more sensible
-            return redirect('/users')
+            return redirect(reverse('users:index'))
         else:
             return  HttpResponse("Boooom")        
     elif not request.user.is_authenticated():
@@ -172,4 +173,4 @@ def register(request):
             'form2': user_details_form,
             'form3': user_address_form,
             }, context_instance=RequestContext(request))
-    return redirect('/users')
+    return redirect(reverse('users:index'))
