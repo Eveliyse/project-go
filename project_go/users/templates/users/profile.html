@@ -34,10 +34,7 @@
 <p>Your Addresses</p>
     
     <div id="current-address">
-        Edit address area
-    </div>
-    
-    {% for address in user_addresses %}
+         {% for address in user_addresses %}
     <p>
         {{ address.id }}
         {{ address.line_1 }}
@@ -47,6 +44,8 @@
         
       <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    </p>
     {% endfor %}
+    </div>
+    
     <a class="edit" href="{% url 'users:addaddress' %}">Add</a>
 </div>
 
@@ -59,4 +58,5 @@ $('.edit').click(function(event) {
 
       $('#current-address').load(this.href);
    });
-        {% endblock %}
+
+{% endblock %}
