@@ -28,6 +28,8 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
         self.login()
         res = self.client.get(reverse('users:userprofile'))
         self.assertEqual(res.status_code, 200)
+        self.assertIsNotNone(res.context['form'])
+        self.assertIsNotNone(res.context['userobj'])
         
     def test_profile_userid(self):
         res = self.client.get(reverse('users:userprofile' , kwargs={'user_id':901299012}))
@@ -35,7 +37,12 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
     
         self.login()
         res = self.client.get(reverse('users:userprofile' , kwargs={'user_id':self.user.id}))
-        self.assertEqual(res.status_code, 200)               
+        self.assertEqual(res.status_code, 200)       
+        self.assertIsNotNone(res.context['form'])
+        self.assertIsNotNone(res.context['form2'])
+        self.assertIsNotNone(res.context['form3'])
+        self.assertIsNotNone(res.context['user_addresses'])
+        self.assertIsNotNone(res.context['userobj'])
         
 class UsersEditAddAdressViewTestCase(BaseUsersTestCase):        
     addresses = Address.objects.all()
@@ -48,6 +55,8 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         self.login()
         res = self.client.get(reverse('users:editaddress', kwargs={'address_id':self.addresses[1].id}))
         self.assertEqual(res.status_code, 200)  
+        self.assertIsNotNone(res.context['form'])
+        self.assertIsNotNone(res.context['user_address'])
         
     def test_addaddress(self):
         res = self.client.get(reverse('users:addaddress'))
@@ -56,7 +65,8 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         
         self.login()
         res = self.client.get(reverse('users:addaddress'))
-        self.assertEqual(res.status_code, 200)        
+        self.assertEqual(res.status_code, 200)       
+        self.assertIsNotNone(res.context['form'])
         
 class UsersDeleteAdressViewTestCase(BaseUsersTestCase):        
     addresses = Address.objects.all()
@@ -79,4 +89,4 @@ class UsersDeleteAdressViewTestCase(BaseUsersTestCase):
         self.login()
         res = self.client.get(reverse('users:deleteaddress', kwargs={'address_id':self.addresses[1].id}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:userprofile'))  
+        self.assertRedirects(res, reverse('users:userprofile'))
