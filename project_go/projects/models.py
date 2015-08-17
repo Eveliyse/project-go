@@ -38,6 +38,15 @@ class Project(models.Model):
         amount = self.pledged_amount()['pledge__amount__sum']
         return amount >= self.goal
     
+    def open_project(self):
+        up = UserPledge.objects.filter(pledge__project = self)
+        if up is not None:
+            newStatus = Status.objects.get(status = "New")
+            if self.status is newStatus:
+                openStatus = Status.objects.get(status = "Open")
+                self.status = openStatus
+                self.save()
+    
     def __str__(self):
         return self.title
     
@@ -51,7 +60,7 @@ class Reward(models.Model):
 class Pledge(models.Model):
     project = models.ForeignKey(Project)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    rewards = models.ManyToManyField(Reward)
+    rewards = models.ManyToManyField(Reward, blank= True)
     
     def __str__(self):
         return self.project.title + ", "

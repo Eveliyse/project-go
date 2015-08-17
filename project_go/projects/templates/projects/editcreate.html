@@ -17,8 +17,26 @@
         <input type="submit" value="Edit Project" />
     {% else %}
         <input type="submit" value="Create Project" />
-    {% endif %}
-        
-            
+    {% endif %}        
         </form>
+            
+            
+    {% if project %}
+        <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form2.as_table }}
+        </table>
+        <input type="submit" value="Add Pledge" />
+        </form>
+            
+        <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form3.as_table }}
+        </table>
+        <input type="submit" value="Add Reward" />
+        </form>
+    {% endif %}
+            
 {% endblock %}
