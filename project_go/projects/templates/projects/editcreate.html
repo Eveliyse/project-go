@@ -14,9 +14,9 @@
 
     {% if project %}
         <img src="{{ project.image.url }}" />
-        <input type="submit" value="Edit Project" />
+        <input type="submit" name="project" value="Edit Project" />
     {% else %}
-        <input type="submit" value="Create Project" />
+        <input type="submit" name="project" value="Create Project" />
     {% endif %}        
         </form>
             
@@ -27,16 +27,24 @@
         <table>
             {{ form2.as_table }}
         </table>
-        <input type="submit" value="Add Pledge" />
+        <input type="submit" name="pledge" value="Add Pledge" />
         </form>
+            
+            {{ pledges }}
+            
+            
+            
             
         <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
             {{ form3.as_table }}
         </table>
-        <input type="submit" value="Add Reward" />
+        <input type="submit" name="reward" value="Add Reward" />
         </form>
+            
+            
+            {{ rewards }}
     {% endif %}
             
 {% endblock %}

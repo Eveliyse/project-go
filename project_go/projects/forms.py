@@ -26,8 +26,17 @@ class RewardEditAddForm(forms.ModelForm):
         exclude = ('project',)
         
 class PledgeEditAddForm(forms.ModelForm):
+
+    def __init__(self, current_project, *args, **kwargs):
+        super(PledgeEditAddForm, self).__init__(*args, **kwargs)
+        self.fields['rewards'].queryset = Reward.objects.filter(project__id=current_project)
+    
     class Meta:
         model = Pledge
         exclude = ('project',)
+        
+        widgets = {
+            'rewards': forms.CheckboxSelectMultiple()        
+            }
     
     

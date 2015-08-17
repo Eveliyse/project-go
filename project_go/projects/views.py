@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, render_to_response, redi
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
-from .models import Project, Status
+from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 
 #placeholder for now
@@ -35,29 +35,37 @@ def edit(request, project_id=None):
         return redirect('/projects/create')
     
     if request.POST:
-        project_edit_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, instance=p, prefix="project")
-        if project_edit_form.is_valid():
-            project_edit_form.save()
-        reward_edit_form = RewardEditAddForm(data=request.POST, initial={}, prefix="reward")
-        if reward_edit_form.has_changed():
-            if reward_edit_form.is_valid():
-                r = reward_edit_form.save(commit = False)
-                r.project = Project.objects.get(id = project_id)
-                r.save()
-        pledge_edit_form = PledgeEditAddForm(data=request.POST, initial={}, prefix="pledge")
-        if pledge_edit_form.has_changed():
-            if pledge_edit_form.is_valid():
-                p = pledge_edit_form.save(commit = False)
-                p.project = Project.objects.get(id = project_id)
-                p.save()
-    else:
-        project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
-        pledge_edit_form = PledgeEditAddForm(initial={}, prefix="pledge")
-        reward_edit_form = RewardEditAddForm(initial={}, prefix="reward")
+        if 'project' in request.POST:
+            project_edit_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, instance=p, prefix="project")
+            if project_edit_form.is_valid():
+                project_edit_form.save()
+                
+        if 'reward' in request.POST:
+            reward_edit_form = RewardEditAddForm(data=request.POST, initial={}, prefix="reward")
+            if reward_edit_form.has_changed():
+                if reward_edit_form.is_valid():
+                    r = reward_edit_form.save(commit = False)
+                    r.project = Project.objects.get(id = project_id)
+                    r.save()
+        
+        if 'pledge' in request.POST:
+            pledge_edit_form = PledgeEditAddForm(data=request.POST, initial={}, prefix="pledge", current_project = project_id)
+            if pledge_edit_form.has_changed():
+                if pledge_edit_form.is_valid():
+                    p = pledge_edit_form.save(commit = False)
+                    p.project = Project.objects.get(id = project_id)
+                    p.save()
+                    pledge_edit_form.save_m2m()
+                    
+    project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
+    pledge_edit_form = PledgeEditAddForm(initial={}, prefix="pledge", current_project = project_id)
+    reward_edit_form = RewardEditAddForm(initial={}, prefix="reward")
     return render_to_response('projects/editcreate.html', {
         'form': project_edit_form,
         'form2': pledge_edit_form,
         'form3': reward_edit_form,
+        'pledges' : Pledge.objects.filter(project__id = project_id),
+        'rewards' : Reward.objects.filter(project__id = project_id),
         'project': p}, context_instance=RequestContext(request))
 
 def details(request):

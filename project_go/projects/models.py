@@ -63,7 +63,10 @@ class Pledge(models.Model):
     rewards = models.ManyToManyField(Reward, blank= True)
     
     def __str__(self):
-        return self.project.title + ", "
+        rstr = " "
+        for reward in self.rewards.all():
+            rstr = rstr + reward.desc + ", "
+        return self.project.title + " " + str(self.amount) + " " + rstr
 
 class UserPledge(models.Model):
     user = models.ForeignKey(User)
