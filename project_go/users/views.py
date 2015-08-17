@@ -80,7 +80,7 @@ def editaddaddress(request, address_id=None):
             if request.method == "POST":
                 user_address_form = MemberAddressForm(data=request.POST, instance=address)
                 if user_address_form.is_valid():
-                    user_address_form.save()   
+                    user_address_form.save()
         user_address_form = MemberAddressForm(instance=address)
         return render_to_response('users/edit-address.html', {
             'form': user_address_form,
