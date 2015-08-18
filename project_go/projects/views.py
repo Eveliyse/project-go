@@ -43,32 +43,10 @@ def edit(request, project_id=None):
             if project_edit_form.is_valid():
                 project_edit_form.save()
                 
-        #if 'reward' in request.POST:
-        #    reward_edit_form = RewardEditAddForm(data=request.POST, initial={}, prefix="reward")
-        #    if reward_edit_form.has_changed():
-        #        if reward_edit_form.is_valid():
-        #            r = reward_edit_form.save(commit = False)
-        #            r.project = Project.objects.get(id = project_id)
-        #            r.save()
-       # 
-       # if 'pledge' in request.POST:
-       #     pledge_edit_form = PledgeEditAddForm(data=request.POST, initial={}, prefix="pledge", current_project = project_id)
-       #     if pledge_edit_form.has_changed():
-       #         if pledge_edit_form.is_valid():
-       #             p = pledge_edit_form.save(commit = False)
-       #             p.project = Project.objects.get(id = project_id)
-       #             p.save()
-       #             pledge_edit_form.save_m2m()
-                    
     project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
-    #pledge_edit_form = PledgeEditAddForm(initial={}, prefix="pledge", current_project = project_id)
-    #reward_edit_form = RewardEditAddForm(initial={}, prefix="reward")
     return render_to_response('projects/editcreate.html', {
         'form': project_edit_form,
-        #'form2': pledge_edit_form,
-        #'form3': reward_edit_form,
         'pledges' : Pledge.objects.filter(project__id = project_id),
-        'rewards' : Reward.objects.filter(project__id = project_id),
         'project': p}, context_instance=RequestContext(request))
 
 @login_required
@@ -78,10 +56,7 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
         if project.owner != request.user:
             return HttpResponseForbidden()
     else:
-        return redirect('/projects/create')
-    
-    pledges = Pledge.objects.filter(project__id = project_id)
-    rewards = Reward.objects.filter(project__id = project_id)    
+        return redirect('/projects/create') 
     
     if request.POST:
         if mode == "pledge" and P_R_id is not None:
@@ -128,8 +103,8 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
             'form3': reward_edit_form,
             'mode': mode,
             'instance':p_instance,
-            'pledges' : pledges,
-            'rewards' : rewards,
+            'pledges' : Pledge.objects.filter(project__id = project_id),
+            'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     elif mode == "reward" and P_R_id is not None:
         r_instance = Reward.objects.get(id = P_R_id)
@@ -140,8 +115,8 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
             'form3': reward_edit_form,
             'mode': mode,
             'instance':r_instance,
-            'pledges' : pledges,
-            'rewards' : rewards,
+            'pledges' : Pledge.objects.filter(project__id = project_id),
+            'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     else:
         pledge_edit_form = PledgeEditAddForm(initial={}, current_project = project_id)
@@ -149,8 +124,8 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
     return render_to_response('projects/pledgerewards.html', {
         'form2': pledge_edit_form,
         'form3': reward_edit_form,
-        'pledges' : pledges,
-        'rewards' : rewards,
+        'pledges' : Pledge.objects.filter(project__id = project_id),
+        'rewards' : Reward.objects.filter(project__id = project_id) ,
         'project': project}, context_instance=RequestContext(request))
 
 @login_required

@@ -22,7 +22,10 @@
             
             
     <div id="pledge-rewards">
-        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit pledges</a>
+        {% for pledge in pledges %}
+            <p>{{ pledge }}</p>
+        {% endfor %}
+        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit and delete pledges</a>
     </div>
     </div>
             
