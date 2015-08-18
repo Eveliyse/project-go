@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
+from django.contrib.auth.decorators import login_required
 
 #placeholder for now
 def index(request):
