@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+            
+    {% if project %}
+    <div id="pledge-rewards">
+        <div id="pledge-form">
+            <form id="pledges" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+                {% csrf_token %}
+                <table>
+                {{ form2.as_table }}
+            </table>
+            <input type="submit" name="pledge" value="Add Pledge" />
+            </form>
+            
+            {% for pledge in pledges %}
+                <p>
+                    {{ pledge }}
+                    <a class="edit" href="{% url 'projects:pledgerewards' pledge.id %}">Edit</a>
+                    <a href="{% url 'projects:pledgerewards' pledge.id %}">Delete</a>
+                </p>
+            {% endfor %}
+        </div>    
+        <div id="reward-form">
+            <form id="rewards" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+                {% csrf_token %}
+                <table>
+                    {{ form3.as_table }}
+                </table>
+                <input type="submit" name="reward" value="Add Reward" />
+            </form>
+            
+            {% for reward in rewards %}
+            <p>
+                {{reward}}
+                <a class="edit" href="{% url 'projects:pledgerewards' reward.id %}">Edit</a>
+                <a href="{% url 'projects:pledgerewards' reward.id %}">Delete</a>
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+            
+{% endblock %}
+{% block jscript %}
+    
+    $('.edit').click(function(event) {
+      event.preventDefault();
+
+      $('#pledge-rewards').load(this.href);
+   });
+
+    var frm2 = $("#pledges");
+    frm2.submit(function () {
+        $.ajax({
+            type: frm2.attr('method'),
+            url: frm2.attr('action'),
+            data: frm2.serialize(),
+            success: function (data) {
+                $("#pledge-rewards").empty().append(data);
+            },
+            error: function(data) {
+                $("#pledge-rewards").html("Something went wrong!");
+            }
+        });
+        return false;
+    });
+    
+    var frm = $("#rewards");
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                $("#pledge-rewards").empty().append(data);
+            },
+            error: function(data) {
+                $("#pledge-rewards").html("Something went wrong!");
+            }
+        });
+        return false;
+    });
+    
+{% endblock %}

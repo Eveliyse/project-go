@@ -53,10 +53,8 @@
 {% endblock %}
 
 {% block jscript %}
-$('.edit').click(function(event) {
-      event.preventDefault();
-
-      $('#current-address').load(this.href);
+    $('.edit').click(function(event) {
+        event.preventDefault();
+        $('#current-address').load(this.href);
    });
-
 {% endblock %}

@@ -21,30 +21,16 @@
         </form>
             
             
-    {% if project %}
-        <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table>
-            {{ form2.as_table }}
-        </table>
-        <input type="submit" name="pledge" value="Add Pledge" />
-        </form>
+    <div id="pledge-rewards">
+        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit pledges</a>
+    </div>
+    </div>
             
-            {{ pledges }}
+{% endblock %}
             
-            
-            
-            
-        <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <table>
-            {{ form3.as_table }}
-        </table>
-        <input type="submit" name="reward" value="Add Reward" />
-        </form>
-            
-            
-            {{ rewards }}
-    {% endif %}
-            
+{% block jscript %}
+    $('.edit').click(function(event) {
+        event.preventDefault();
+        $("#pledge-rewards").load(this.href);
+    });
 {% endblock %}
