@@ -3,37 +3,49 @@
 {% block content %}
             
     {% if project %}
+{{ mode }}
     <div id="pledge-rewards">
         <div id="pledge-form">
-            <form id="pledges" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+            {% if mode == "pledge" %}
+                <form id="pledges" method="post" action="{% url 'projects:pledge' project.id instance.id%}">
+            {% else %}
+                <form id="pledges" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+            {% endif %}
                 {% csrf_token %}
                 <table>
                 {{ form2.as_table }}
             </table>
-            <input type="submit" name="pledge" value="Add Pledge" />
+            <input type="submit" name="pledge" value="Save Pledge" />
             </form>
             
             {% for pledge in pledges %}
                 <p>
+                    {{ pledge.id }}
                     {{ pledge }}
-                    <a class="edit" href="{% url 'projects:pledgerewards' pledge.id %}">Edit</a>
+                    <a class="edit" href="{% url 'projects:pledge' project.id pledge.id %}">Edit</a>
                     <a href="{% url 'projects:pledgerewards' pledge.id %}">Delete</a>
                 </p>
             {% endfor %}
         </div>    
         <div id="reward-form">
-            <form id="rewards" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+            
+            {% if mode == "reward" %}
+                <form id="rewards" method="post" action="{% url 'projects:reward' project.id instance.id%}">
+            {% else %}
+                <form id="rewards" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+            {% endif %}
                 {% csrf_token %}
                 <table>
                     {{ form3.as_table }}
                 </table>
-                <input type="submit" name="reward" value="Add Reward" />
+                <input type="submit" name="reward" value="Save Reward" />
             </form>
             
             {% for reward in rewards %}
             <p>
+                {{reward.id}}
                 {{reward}}
-                <a class="edit" href="{% url 'projects:pledgerewards' reward.id %}">Edit</a>
+                <a class="edit" href="{% url 'projects:reward' project.id reward.id %}">Edit</a>
                 <a href="{% url 'projects:pledgerewards' reward.id %}">Delete</a>
                 </p>
             {% endfor %}
