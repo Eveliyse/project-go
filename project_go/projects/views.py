@@ -9,6 +9,7 @@ from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditA
 def index(request):
     return render(request, 'projects/manage.html')
 
+@login_required
 def create(request):
     """ If POST then process form and create project entry
         Otherwise, create form and display
@@ -26,6 +27,7 @@ def create(request):
         'form': project_create_form,
         }, context_instance=RequestContext(request))
 
+@login_required
 def edit(request, project_id=None):
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
@@ -68,6 +70,7 @@ def edit(request, project_id=None):
         'rewards' : Reward.objects.filter(project__id = project_id),
         'project': p}, context_instance=RequestContext(request))
 
+@login_required
 def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
@@ -148,6 +151,10 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
         'pledges' : pledges,
         'rewards' : rewards,
         'project': project}, context_instance=RequestContext(request))
+
+@login_required
+def delete(request):
+    return render(request, 'projects/details.html')
 
 def details(request):
     return render(request, 'projects/details.html')
