@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 class BaseUsersTestCase(TestCase):
     
-    fixtures = ['users_views_testdata.json']
+    fixtures = ['users_views_testdata.json', 'auth_views_testdata.json']
         
     def login(self, uname='admin', password='admin'):
         res = self.client.post(reverse('users:login'), {'username': uname, 'password': password})
