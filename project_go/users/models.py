@@ -11,7 +11,7 @@ class Gender(models.Model):
 class Member(models.Model):
     user = models.OneToOneField(User)
     dob = models.DateField('Date of Birth')
-    gender = models.ForeignKey(Gender, blank = True, null = True)
+    gender = models.ForeignKey(Gender, blank = True)
     
     def __str__(self):
         return self.user.username   
@@ -25,7 +25,7 @@ class Country(models.Model):
 class Address(models.Model):
     resident = models.ForeignKey(User)
     line_1 = models.CharField(max_length=50)
-    line_2 = models.CharField(max_length=50, blank = True, null = True)
+    line_2 = models.CharField(max_length=50, blank = True)
     town = models.CharField(max_length=50)
     postcode = models.CharField(max_length=10,
                                 validators=[ RegexValidator(
@@ -35,7 +35,7 @@ class Address(models.Model):
                                     ),
                                 ])
     country = models.ForeignKey(Country)
-    active = models.NullBooleanField(blank = True, null = True)
+    active = models.BooleanField(blank = True)
     
     def __str__(self):
         return self.line_1 + ", " + self.line_2 + ", " + self.town + ", " + self.postcode

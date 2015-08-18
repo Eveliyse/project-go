@@ -42,7 +42,7 @@
         {{ address.town }}
         {{ address.postcode }}
         
-      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    </p>
+      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    <a href="{% url 'users:deleteaddress' address.id %}">Delete</a></p>
     {% endfor %}
     </div>
     

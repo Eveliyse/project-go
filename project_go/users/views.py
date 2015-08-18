@@ -15,9 +15,9 @@ def index(request):
 
 def profile(request, user_id=None):
     """ If the user is viewing own profile then let them edit things
-        Otherwise, show basic details of user
+        Otherwise, show basic details of 'other' user
     """    
-    #if available use a supplied id or current user's id.
+    #if available, use a supplied id or current user's id.
     #Otherwise redirect user to register page
     if user_id:
         u_id = int(user_id)
@@ -31,10 +31,12 @@ def profile(request, user_id=None):
     member = get_object_or_404(Member, user = user)
     
     #if POST then process forms, else create a new user_edit_form
+    #TODO check if password fields actually have a value
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, instance = user, prefix="user")
         password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password", initial={})
         member_edit_form = MemberDetailsForm(data=request.POST, instance = member, prefix="member")
+        
         if user_edit_form.is_valid():
             user_edit_form.save()
         if password_edit_form.has_changed():
@@ -42,16 +44,9 @@ def profile(request, user_id=None):
                 password_edit_form.save()
         if member_edit_form.is_valid():
             member_edit_form.save()
-            a = get_list_or_404(Address, resident = request.user, active = True)
-        return render_to_response('users/profile.html', {
-            'form': user_edit_form,
-            'form2': password_edit_form,
-            'form3': member_edit_form,
-            'user_addresses' : a,
-            'userobj' : user
-            }, context_instance=RequestContext(request))
-    else:
-        user_edit_form = UserEditForm(instance = user, prefix="user")        
+    
+    #create form for display
+    user_edit_form = UserEditForm(instance = user, prefix="user")        
     
     #if user is viewing own profile then create forms for editing details and fetch data to display.
     #else the user is viewing not own profile so just process the 1 form
@@ -122,8 +117,8 @@ def deleteaddress(request, address_id=None):
     if address_id:
         address = get_object_or_404(Address, id = address_id, active = True)
 
-        if request.method == "POST":
-            if address.resident == request.user:
+        #if request.method == "POST":
+        if address.resident == request.user:
                 address.active = False
                 address.save()
     return redirect(reverse('users:userprofile'))

@@ -15,15 +15,7 @@
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
             
-    {% if user_address %}
-<form method="post" action="{% url 'users:deleteaddress' user_address.id %}">
-                {% csrf_token %}
-        <input type="submit" value="Delete Address" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-    {% endif %}
-            
-             {% for address in user_addresses %}
+    {% for address in user_addresses %}
     <p>
         {{ address.id }}
         {{ address.line_1 }}
@@ -31,7 +23,7 @@
         {{ address.town }}
         {{ address.postcode }}
         
-      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    </p>
+      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a> <a href="{% url 'users:deleteaddress' address.id %}">Delete</a>    </p>
     {% endfor %}
     
             
