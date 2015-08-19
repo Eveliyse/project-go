@@ -5,24 +5,37 @@ from django.contrib.auth.models import User
 from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView
+from django.conf import settings
+
+class LoginRequiredMixin(object):
+    """Add this to a class-based view to reject all non-authenticated users"""
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+        if request.is_ajax():
+            return HttpResponseUnauthorized('You must be logged in to perform this operation.')
+        return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
 @login_required
 def Index(request):
+    return render(request, 'projects/index.html')
+
+@login_required
+def Manage(request):
     return render(request, 'projects/manage.html')
 
 #@login_required
-class CreateProjectView(CreateView):
+class CreateProjectView(LoginRequiredMixin, CreateView):
     """ If POST then process form and create project entry
         Otherwise, create form and display
     """    
     form_class = ProjectEditCreateForm     
     model = Project
     template_name = 'projects/editcreate.html'
-    
-    def get_success_url(self):
-        return reverse('projects:edit', kwargs={'project_id':self.object.id})
     
     def post(self, request, *args, **kwargs):
         project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES)
