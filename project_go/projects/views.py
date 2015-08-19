@@ -6,28 +6,35 @@ from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.views.generic import CreateView
 
 @login_required
 def Index(request):
     return render(request, 'projects/manage.html')
 
-@login_required
-def Create(request):
+#@login_required
+class CreateProjectView(CreateView):
     """ If POST then process form and create project entry
         Otherwise, create form and display
     """    
-    if request.method == "POST":
-        project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES, prefix="project")
+    form_class = ProjectEditCreateForm     
+    model = Project
+    template_name = 'projects/editcreate.html'
+    
+    def get_success_url(self):
+        return reverse('projects:edit', kwargs={'project_id':self.object.id})
+    
+    def post(self, request, *args, **kwargs):
+        project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES)
         if project_create_form.is_valid():
             p = project_create_form.save(commit = False)
             p.owner = request.user
             p.save()
             return redirect(reverse('projects:edit', kwargs={'project_id':p.id}))
-    else:
-        project_create_form = ProjectEditCreateForm(prefix="project")
-    return render_to_response('projects/editcreate.html', {
-        'form': project_create_form,
-        }, context_instance=RequestContext(request))
+        return render_to_response('projects/editcreate.html', {
+            'form': project_create_form,
+            }, context_instance=RequestContext(request))
+        
 
 @login_required
 def Edit(request, project_id=None):
