@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 @login_required
 def index(request):
@@ -21,7 +22,7 @@ def create(request):
             p = project_create_form.save(commit = False)
             p.owner = request.user
             p.save()
-            return redirect('/projects/edit/' + str(p.id))
+            return redirect(reverse('projects:edit', kwargs={'project_id':p.id}))
     else:
         project_create_form = ProjectEditCreateForm(prefix="project")
     return render_to_response('projects/editcreate.html', {
@@ -35,7 +36,7 @@ def edit(request, project_id=None):
         if p.owner != request.user:
             return HttpResponseForbidden()
     else:
-        return redirect('/projects/create')
+        return redirect(reverse('projects:create'))
     
     if request.POST:
         if 'project' in request.POST:
@@ -56,7 +57,7 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
         if project.owner != request.user:
             return HttpResponseForbidden()
     else:
-        return redirect('/projects/create') 
+        return redirect(reverse('projects:create')) 
     
     if request.POST:
         if mode == "pledge" and P_R_id is not None:
@@ -129,8 +130,17 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
         'project': project}, context_instance=RequestContext(request))
 
 @login_required
-def delete(request):
-    return render(request, 'projects/details.html')
-
+def delete(request, project_id, mode, P_R_id):
+    if mode == "pledge":
+        obj = get_object_or_404(Pledge, pk=P_R_id)
+        obj.delete()
+        return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id}))    
+    elif mode == "reward":
+        obj = get_object_or_404(Reward, pk=P_R_id)
+        obj.delete()
+        return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id}))    
+    return redirect(reverse('projects:manage'))
+    
+    
 def details(request):
     return render(request, 'projects/details.html')
