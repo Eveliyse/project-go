@@ -74,11 +74,13 @@ def EditAddAddress(request, address_id=None):
     #user_address_form = MemberAddressForm()
     if address_id:
         address = get_object_or_404(Address, id = address_id, active = True)
-        if address.resident == request.user:
-            if request.method == "POST":
-                user_address_form = MemberAddressForm(data=request.POST, instance=address)
-                if user_address_form.is_valid():
-                    user_address_form.save()
+        if address.resident != request.user:
+            return redirect(reverse('users:userprofile'))
+        
+        if request.method == "POST":
+            user_address_form = MemberAddressForm(data=request.POST, instance=address)
+            if user_address_form.is_valid():
+                user_address_form.save()
         user_address_form = MemberAddressForm(instance=address)
         a = get_list_or_404(Address, resident = request.user, active = True)
         return render_to_response('users/edit-address.html', {
@@ -110,14 +112,12 @@ def EditAddAddress(request, address_id=None):
         'form': user_address_form,
         'user_addresses' : a,
         }, context_instance=RequestContext(request))    
-#    return redirect(reverser('users:userprofile'))
     
 @login_required
 def DeleteAddress(request, address_id=None):
     if address_id:
         address = get_object_or_404(Address, id = address_id, active = True)
 
-        #if request.method == "POST":
         if address.resident == request.user:
                 address.active = False
                 address.save()

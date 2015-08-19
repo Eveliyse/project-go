@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^profile/add-address/$', views.EditAddAddress, name='addaddress'),
     url(r'^profile/edit-address/$', views.EditAddAddress, name='editaddress'),
     url(r'^profile/edit-address/(?P<address_id>\d+)/$', views.EditAddAddress, name='editaddress'),
-    url(r'^profile/delete-address/$', views.DeleteAddress, name='deleteaddress'),
     url(r'^profile/delete-address/(?P<address_id>\d+)/$', views.DeleteAddress, name='deleteaddress'),
     url(r'^login/$', views.Login, name = 'login'),
     url(r'^logout/$', views.Logout, name = 'logout'),
