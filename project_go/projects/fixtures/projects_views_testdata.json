@@ -85,13 +85,14 @@
 },
 {
     "fields": {
-        "status": 4,
+        "status": 5,
         "category": 6,
         "long_desc": "<b>A Longer Description</b>\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in eleifend felis. Pellentesque imperdiet purus justo, nec faucibus ipsum placerat quis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In ac pellentesque leo. Curabitur at hendrerit ipsum. Vestibulum non urna purus. Nullam sed urna euismod, sollicitudin urna in, dignissim risus.\r\n\r\nNullam at orci quis lacus facilisis molestie nec eget sem. Quisque eget turpis vel nisi interdum finibus et non ante. Proin volutpat mattis posuere. Nunc dictum ornare erat, id commodo nunc iaculis vel. Maecenas pulvinar ornare dignissim. In id mollis urna, at rutrum sem. Mauris libero augue, lobortis vel augue a, hendrerit porttitor leo. Proin justo elit, finibus non hendrerit vitae, ultrices ut diam. Nam leo enim, posuere a dignissim eu, eleifend at lacus. Suspendisse volutpat nisi eu accumsan fermentum. Nam libero nibh, molestie quis tellus ut, scelerisque posuere lectus. Nam imperdiet, nulla ac venenatis vulputate, tortor est aliquet nunc, quis sagittis mi quam in urna. Vestibulum eu purus risus. ",
-        "goal": "10000.00",
+        "goal": "45.00",
         "title": "TestTitle",
         "image": "project_images/2015-08/17/DMSNA032lg_10tiaxT.jpg",
         "short_desc": "A short Description Test Wheeeee",
+        "created_date": "2015-08-19T15:05:56.360Z",
         "owner": 41
     },
     "model": "projects.project",
@@ -99,13 +100,14 @@
 },
 {
     "fields": {
-        "status": 4,
+        "status": 5,
         "category": 10,
         "long_desc": "The longest of descriptions klkks slskdoe slsksd soskjsd alaksa slaks aoskd djfgdf godoei sdgosdo fs d sd  sd sd sodii ",
         "goal": "9090.00",
         "title": "Hallo",
         "image": "project_images/2015-08/17/DMSNA031lg.jpg",
         "short_desc": "Short Description lalalalalallalala",
+        "created_date": "2015-08-19T15:05:56.360Z",
         "owner": 42
     },
     "model": "projects.project",
@@ -113,17 +115,33 @@
 },
 {
     "fields": {
-        "status": 4,
+        "status": 5,
         "category": 4,
         "long_desc": "ALL THE HEARTS!\r\nzdfg; hd sdfgosrjhsd fgd fg\r\ndtgdf dfg dfgdf gsdf gsd \r\nhsff  dfg dsf gsdf gsdf gs\r\nghsdfh sdf df gdf gdsdfhsdfsd\r\nfh sdfdf gsdf sdfg sdf g\r\ndfhsdffhhsdf sdf sdfsdfdf \r\nhsds dg dsdf sdf gsdfg df g\r\nfhdfhf gsd fgsdf gsdfg df \r\ndfhsdfhsdfhsdfhsdfhsdfhs",
         "goal": "800001066.00",
         "title": "Hello project",
         "image": "project_images/2015-08/19/small-fundraising-heart.png",
         "short_desc": "Let's make lots of money to make lots of hearts!",
+        "created_date": "2015-08-19T15:05:56.360Z",
         "owner": 43
     },
     "model": "projects.project",
     "pk": 4
+},
+{
+    "fields": {
+        "status": 5,
+        "category": 8,
+        "long_desc": "srtysrtysrty",
+        "goal": "345345.00",
+        "title": "srtysrtysrty",
+        "image": "project_images/2015-08/19/small-fundraising-heart_MqkcLoP.png",
+        "short_desc": "srtysrty",
+        "created_date": "2015-08-19T15:05:56.360Z",
+        "owner": 41
+    },
+    "model": "projects.project",
+    "pk": 7
 },
 {
     "fields": {
@@ -310,5 +328,13 @@
     },
     "model": "projects.pledge",
     "pk": 38
+},
+{
+    "fields": {
+        "user": 41,
+        "pledge": 11
+    },
+    "model": "projects.userpledge",
+    "pk": 2
 }
 ]

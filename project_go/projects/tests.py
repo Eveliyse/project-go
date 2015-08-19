@@ -32,8 +32,7 @@ class ProjectsIndexViewTestCase(BaseProjectsTestCase):
     def test_index(self):
         #not logged in
         res=self.client.get(reverse('projects:index'))
-        self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:login') + "?next=%s" % reverse('projects:index'))  
+        self.assertEqual(res.status_code, 200)
         
         #logged in
         self.login()
