@@ -55,9 +55,9 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user:
-            return HttpResponseForbidden()
+            return redirect(reverse('projects:manage')) 
     else:
-        return redirect(reverse('projects:create')) 
+        return redirect(reverse('projects:manage')) 
     
     if request.POST:
         if mode == "pledge" and P_R_id is not None:
@@ -96,7 +96,9 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
                     pledge_edit_form.save_m2m()
        
     if mode == "pledge" and P_R_id is not None:
-        p_instance = Pledge.objects.get(id = P_R_id)
+        p_instance = get_object_or_404(Pledge, id = P_R_id)
+        if p_instance.project.owner != request.user:
+            return redirect(reverse('projects:manage')) 
         pledge_edit_form = PledgeEditAddForm(current_project=project_id, instance=p_instance)
         reward_edit_form = RewardEditAddForm()
         return render_to_response('projects/pledgerewards.html', {
@@ -108,7 +110,9 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     elif mode == "reward" and P_R_id is not None:
-        r_instance = Reward.objects.get(id = P_R_id)
+        r_instance = get_object_or_404(Reward, id = P_R_id)
+        if r_instance.project.owner != request.user:
+            return redirect(reverse('projects:manage'))         
         pledge_edit_form = PledgeEditAddForm(initial={}, current_project=project_id)
         reward_edit_form = RewardEditAddForm(initial={}, instance=r_instance)
         return render_to_response('projects/pledgerewards.html', {
@@ -133,14 +137,15 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
 def DeletePledgeRewards(request, project_id, mode, P_R_id):
     if mode == "pledge":
         obj = get_object_or_404(Pledge, pk=P_R_id)
-        obj.delete()
-        return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id}))    
     elif mode == "reward":
         obj = get_object_or_404(Reward, pk=P_R_id)
-        obj.delete()
-        return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id}))    
-    return redirect(reverse('projects:manage'))
     
+    if obj.project.owner != request.user:
+        return redirect(reverse('projects:manage'))     
     
+    obj.delete()
+    return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id})) 
+
+
 def Details(request):
     return render(request, 'projects/details.html')
