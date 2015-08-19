@@ -15,18 +15,20 @@
     {% if project %}
         <img src="{{ project.image.url }}" />
         <input type="submit" name="project" value="Edit Project" />
+            
+                <div id="pledge-rewards">
+        {% for pledge in pledges %}
+            <p>{{ pledge }}</p>
+        {% endfor %}
+        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit and delete pledges</a>
+    </div>
     {% else %}
         <input type="submit" name="project" value="Create Project" />
     {% endif %}        
         </form>
             
             
-    <div id="pledge-rewards">
-        {% for pledge in pledges %}
-            <p>{{ pledge }}</p>
-        {% endfor %}
-        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit and delete pledges</a>
-    </div>
+
     </div>
             
 {% endblock %}

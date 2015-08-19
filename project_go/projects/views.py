@@ -6,7 +6,7 @@ from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
 
-#placeholder for now
+@login_required
 def index(request):
     return render(request, 'projects/manage.html')
 
