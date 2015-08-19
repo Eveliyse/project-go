@@ -75,7 +75,27 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         res = self.client.get(reverse('projects:pledgerewards', kwargs={'project_id':987654321}))
         self.assertEqual(res.status_code, 404)        
 
+class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
+    projects = Project.objects.all()     
+    pledges = Pledge.objects.all()
+    rewards = Reward.objects.all()
+    
+    def test_pledgerewardsdelete_id(self):
+        self.login()
+        res = self.client.get(reverse('projects:deletepledge', kwargs={'project_id':self.pledges[1].project.id, 'P_R_id':self.pledges[1].id}))
+        self.assertEqual(res.status_code, 302)  
+        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.pledges[1].project.id}))
+        
+        res = self.client.get(reverse('projects:deletepledge', kwargs={'project_id':self.pledges[1].project.id, 'P_R_id':9876543210}))
+        self.assertEqual(res.status_code, 404)          
+        
+        res = self.client.get(reverse('projects:deletereward', kwargs={'project_id':self.rewards[1].project.id, 'P_R_id':self.rewards[1].id}))
+        self.assertEqual(res.status_code, 302)
+        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.rewards[1].project.id}))
 
+        res = self.client.get(reverse('projects:deletereward', kwargs={'project_id':self.rewards[1].project.id, 'P_R_id':9876543210}))
+        self.assertEqual(res.status_code, 404)
+        
 class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
     def test_details(self):
         res = self.client.get(reverse('projects:details'))
