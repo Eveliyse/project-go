@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Count, Sum, Avg
+from decimal import *
 
 class Status(models.Model):
     status = models.CharField(max_length=100)
@@ -23,19 +24,29 @@ class Project(models.Model):
     long_desc = models.TextField()
     status = models.ForeignKey(Status)
     category = models.ForeignKey(Category)
+    created_date = models.DateTimeField(auto_now_add=True)
     
-    def pledged_amount(self):			
-        up = UserPledge.objects.filter(pledge__project = self)
-        result = up.aggregate(Sum('pledge__amount'))
+    def pledged_amount(self):
+        pledges = Pledge.objects.filter(project = self)
+        user_pledges = UserPledge.objects.filter(pledge__in = pledges)
+        sum_amount = user_pledges.aggregate(amount=Sum('pledge__amount'))
+        result = sum_amount['amount']
+        if result is None:
+            return format(0.00, '.2f')
         return result
+
+    def pledged_percent(self):
+        if self.pledged_amount() is None or self.pledged_amount() == 0:
+            return 0
+        return format(Decimal(self.pledged_amount()) / Decimal(self.goal) * 100, '.2f')
     
     def pledgers(self):			
         up = UserPledge.objects.filter(pledge__project = self)
         result = up.aggregate(Count('user'))
-        return result    
+        return result['user__count']
     
     def is_funded(self):		
-        amount = self.pledged_amount()['pledge__amount__sum']
+        amount = self.pledged_amount()
         return amount >= self.goal
     
     def open_project(self):
