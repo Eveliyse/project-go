@@ -1,13 +1,13 @@
-from django.shortcuts import get_object_or_404, get_list_or_404, render, render_to_response, redirect
+from django.shortcuts import get_object_or_404,get_list_or_404, render, render_to_response, redirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponse
-from django.contrib.auth import login as django_login, authenticate, logout as django_logout
+from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Member, Address, Country
 from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, UserEditForm
-from django.core.urlresolvers import reverse
 
 #placeholder for now
 def Index(request):
@@ -17,7 +17,7 @@ def Profile(request, user_id=None):
     """ If the user is viewing own profile then let them edit things
         Otherwise, show basic details of 'other' user
     """    
-    #if available, use a supplied id or current user's id.
+    #if available, use a supplied id or grab current user's id.
     #Otherwise redirect user to register page
     if user_id:
         u_id = int(user_id)
@@ -33,9 +33,9 @@ def Profile(request, user_id=None):
     #if POST then process forms, else create a new user_edit_form
     #TODO check if password fields actually have a value
     if request.method == "POST":
-        user_edit_form = UserEditForm(data=request.POST, instance = user, prefix="user")
-        password_edit_form = SetPasswordForm(data=request.POST, user = user, prefix="password", initial={})
-        member_edit_form = MemberDetailsForm(data=request.POST, instance = member, prefix="member")
+        user_edit_form = UserEditForm(data=request.POST, instance = user)
+        password_edit_form = SetPasswordForm(data=request.POST, user = user, initial={})
+        member_edit_form = MemberDetailsForm(data=request.POST, instance = member)
         
         if user_edit_form.is_valid():
             user_edit_form.save()
@@ -46,13 +46,13 @@ def Profile(request, user_id=None):
             member_edit_form.save()
     
     #create form for display
-    user_edit_form = UserEditForm(instance = user, prefix="user")        
+    user_edit_form = UserEditForm(instance = user)        
     
     #if user is viewing own profile then create forms for editing details and fetch data to display.
     #else the user is viewing not own profile so just process the 1 form
     if u_id == request.user.id:
-        password_edit_form = SetPasswordForm(user = user, prefix="password", initial={})
-        member_edit_form = MemberDetailsForm(instance = member, prefix="member")
+        password_edit_form = SetPasswordForm(user = user, initial={})
+        member_edit_form = MemberDetailsForm(instance = member)
         
         a = get_list_or_404(Address, resident = request.user, active = True)
         
@@ -134,7 +134,7 @@ def Login(request):
                 user = authenticate(username=request.POST['username'], password=request.POST['password'])
                 if user is not None:
                     if user.is_active:
-                        django_login(request, form.get_user())
+                        auth_login(request, form.get_user())
                         return redirect(reverse('users:index')) 
         else:
             form = AuthenticationForm()
@@ -147,7 +147,7 @@ def Login(request):
 
 @login_required
 def Logout(request):
-    django_logout(request)
+    auth_logout(request)
     return redirect(reverse('users:index'))
 
 def Register(request):
@@ -155,29 +155,30 @@ def Register(request):
         Otherwise check if the user is already logged in. If not then show registration forms
     """    
     if request.method == 'POST':
-        user_create_form = UserCreateForm(data=request.POST, prefix="user")
-        user_details_form = MemberDetailsForm(data=request.POST, prefix="userdetails")
-        user_address_form = MemberAddressForm(data=request.POST, prefix="address")
+        user_create_form = UserCreateForm(data=request.POST)
+        user_details_form = MemberDetailsForm(data=request.POST)
+        user_address_form = MemberAddressForm(data=request.POST)
         if user_create_form.is_valid() and user_details_form.is_valid() and user_address_form.is_valid():
             user = user_create_form.save()            
-            u = User.objects.get(username=user.username)
-            u.is_staff = False
-            u.save()                     
-            d = user_details_form.save(commit = False)
-            d.user = user
-            d.save()
-            a = user_address_form.save(commit = False)
-            a.resident = user
-            a.active = True
-            a.save()       
-            #TODO redirect somewhere more sensible
-            return redirect(reverse('users:index'))
+            user.is_staff = False
+            user.save()          
+            
+            details = user_details_form.save(commit = False)
+            details.user = user
+            details.save()
+            
+            address = user_address_form.save(commit = False)
+            address.resident = user
+            address.active = True
+            address.save()       
+            #TODO redirect somewhere more sensible? login?
+            return redirect(reverse('users:login'))
         else:
             return  HttpResponse("Boooom")        
     elif not request.user.is_authenticated():
-        user_create_form = UserCreateForm(prefix="user")
-        user_details_form = MemberDetailsForm(prefix="userdetails")
-        user_address_form = MemberAddressForm(prefix="address")
+        user_create_form = UserCreateForm()
+        user_details_form = MemberDetailsForm()
+        user_address_form = MemberAddressForm()
         return render_to_response('users/register.html', {
             'form': user_create_form,
             'form2': user_details_form,
