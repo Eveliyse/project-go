@@ -8,11 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 @login_required
-def index(request):
+def Index(request):
     return render(request, 'projects/manage.html')
 
 @login_required
-def create(request):
+def Create(request):
     """ If POST then process form and create project entry
         Otherwise, create form and display
     """    
@@ -30,11 +30,11 @@ def create(request):
         }, context_instance=RequestContext(request))
 
 @login_required
-def edit(request, project_id=None):
+def Edit(request, project_id=None):
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
         if p.owner != request.user:
-            return HttpResponseForbidden()
+            return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:create'))
     
@@ -51,7 +51,7 @@ def edit(request, project_id=None):
         'project': p}, context_instance=RequestContext(request))
 
 @login_required
-def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
+def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user:
@@ -130,7 +130,7 @@ def pledgerewards(request, project_id=None, mode=None, P_R_id=None):
         'project': project}, context_instance=RequestContext(request))
 
 @login_required
-def delete(request, project_id, mode, P_R_id):
+def DeletePledgeRewards(request, project_id, mode, P_R_id):
     if mode == "pledge":
         obj = get_object_or_404(Pledge, pk=P_R_id)
         obj.delete()
@@ -142,5 +142,5 @@ def delete(request, project_id, mode, P_R_id):
     return redirect(reverse('projects:manage'))
     
     
-def details(request):
+def Details(request):
     return render(request, 'projects/details.html')

@@ -10,10 +10,10 @@ from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, Us
 from django.core.urlresolvers import reverse
 
 #placeholder for now
-def index(request):
+def Index(request):
     return render(request, 'users/index.html')
 
-def profile(request, user_id=None):
+def Profile(request, user_id=None):
     """ If the user is viewing own profile then let them edit things
         Otherwise, show basic details of 'other' user
     """    
@@ -70,7 +70,7 @@ def profile(request, user_id=None):
             }, context_instance=RequestContext(request))
 
 @login_required
-def editaddaddress(request, address_id=None):
+def EditAddAddress(request, address_id=None):
     #user_address_form = MemberAddressForm()
     if address_id:
         address = get_object_or_404(Address, id = address_id, active = True)
@@ -113,7 +113,7 @@ def editaddaddress(request, address_id=None):
 #    return redirect(reverser('users:userprofile'))
     
 @login_required
-def deleteaddress(request, address_id=None):
+def DeleteAddress(request, address_id=None):
     if address_id:
         address = get_object_or_404(Address, id = address_id, active = True)
 
@@ -123,7 +123,7 @@ def deleteaddress(request, address_id=None):
                 address.save()
     return redirect(reverse('users:userprofile'))
 
-def login(request):
+def Login(request):
     """ If the user is already logged in then redirect somewhere else
         Otherwise, render template and form or process POST data
     """
@@ -146,11 +146,11 @@ def login(request):
         return redirect(reverse('users:index')) 
 
 @login_required
-def logout(request):
+def Logout(request):
     django_logout(request)
     return redirect(reverse('users:index'))
 
-def register(request):
+def Register(request):
     """ If POST then process forms and create relevant database entries
         Otherwise check if the user is already logged in. If not then show registration forms
     """    
