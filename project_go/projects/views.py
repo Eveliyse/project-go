@@ -20,9 +20,15 @@ class LoginRequiredMixin(object):
             return HttpResponseUnauthorized('You must be logged in to perform this operation.')
         return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
-@login_required
+
 def Index(request):
-    return render(request, 'projects/index.html')
+    open_status=Status.objects.get(status="Open")
+    newest_5=Project.objects.filter(status=open_status).order_by('created_date')[:5]
+    
+#    return render(request, 'projects/index.html')
+    return render_to_response('projects/index.html', {
+    'newest_5': newest_5,
+    }, context_instance=RequestContext(request))
 
 @login_required
 def Manage(request):
