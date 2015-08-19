@@ -191,7 +191,7 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.login()    
         
         #delete reward for own project
-        res=self.client.get(reverse('projects:deletereward', kwargs={'project_id':self.user_rewards[0].project.id,
+        res=self.client.get(reverse('projects:deletereward',kwargs={'project_id':self.user_rewards[0].project.id,
                                                                        'P_R_id':self.user_rewards[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.user_rewards[0].project.id}))
