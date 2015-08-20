@@ -24,32 +24,37 @@ class LoginRequiredMixin(object):
         return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
 
-def Index(request):
+class IndexView(TemplateView):
+    template_name = 'projects/index.html'
     
-    open_status=Status.objects.get(status="Open")
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(IndexView, self).get_context_data(**kwargs)
+
+        open_status=Status.objects.get(status="Open")
     
-    newest_1=Project.objects.filter(status=open_status).order_by('created_date')[:5]
-    newest_2=newest_1.annotate(
-                                    current_pledged=Coalesce(
-                                        Sum('project_pledges__pledged_users__pledge__amount'),0.00))
-    newest_5=newest_2.annotate(
-                                    current_percent=Coalesce(
-                                        (F('current_pledged')*100.00)/F('goal'),0))
+        newest_1=Project.objects.filter(status=open_status).order_by('created_date')[:5]
+        newest_2=newest_1.annotate(
+            current_pledged=Coalesce(
+                Sum('project_pledges__pledged_users__pledge__amount'),0.00))
+        newest_5=newest_2.annotate(
+            current_percent=Coalesce(
+                (F('current_pledged')*100.00)/F('goal'),0))
     
     
-    open_projects=Project.objects.filter(status=open_status)
-    sum_pledged_5=open_projects.annotate(
-                                    current_pledged=Coalesce(
-                                        Sum('project_pledges__pledged_users__pledge__amount'),0.00))
-    percent_pledged_5=sum_pledged_5.annotate(
-                                    current_percent=Coalesce(
-                                        (F('current_pledged')*100.00)/F('goal'),0)) \
-                                        .order_by('-current_percent')[:5]
-    
-    return render_to_response('projects/index.html', {
-    'newest_5': newest_5,
-    'most_pledged_5': percent_pledged_5,
-    }, context_instance=RequestContext(request))
+        open_projects=Project.objects.filter(status=open_status)
+        sum_pledged_5=open_projects.annotate(
+            current_pledged=Coalesce(
+                Sum('project_pledges__pledged_users__pledge__amount'),0.00))
+        percent_pledged_5=sum_pledged_5.annotate(
+            current_percent=Coalesce(
+                (F('current_pledged')*100.00)/F('goal'),0)) \
+            .order_by('-current_percent')[:5]        
+        
+        context['newest_5'] = newest_5
+        context['most_pledged_5'] = percent_pledged_5
+        
+        return context    
 
 class ManageProjectsView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/manage.html'
@@ -57,7 +62,7 @@ class ManageProjectsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ManageProjectsView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
+
         context['user_projects'] = Project.objects.filter(owner=self.request.user).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0))
         return context
 
@@ -185,9 +190,8 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
         'rewards' : Reward.objects.filter(project__id = project_id) ,
         'project': project}, context_instance=RequestContext(request))
 
-#login_required
+
 class DeletePledgeRewardsView(LoginRequiredMixin, RedirectView):
-    
     def get_redirect_url(self, *args, **kwargs):
         project_id = kwargs['project_id']
         mode = kwargs['mode']
