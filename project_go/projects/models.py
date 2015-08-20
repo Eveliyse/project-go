@@ -69,7 +69,7 @@ class Reward(models.Model):
         return self.desc
     
 class Pledge(models.Model):
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='project_pledges')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     rewards = models.ManyToManyField(Reward, blank= True)
     
@@ -80,5 +80,5 @@ class Pledge(models.Model):
         return self.project.title + " " + str(self.amount) + " " + rstr
 
 class UserPledge(models.Model):
-    user = models.ForeignKey(User)
-    pledge = models.ForeignKey(Pledge)
+    user = models.ForeignKey(User, related_name='user_pledges')
+    pledge = models.ForeignKey(Pledge, related_name='pledged_users')

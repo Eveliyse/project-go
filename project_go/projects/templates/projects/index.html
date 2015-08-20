@@ -2,6 +2,12 @@
 
 {% block content %}
 
-{{ newest_5 }}
+{% for thing in newest_5 %}
+<p>{{ thing.title }} {{ thing.sum }}</p>
+{% endfor %}
+
+{% for thing in most_pledged_5 %}
+<p>{{ thing.title }} {{ thing.sum }}</p>
+{% endfor %}
 
 {% endblock %}
