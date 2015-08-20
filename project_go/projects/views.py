@@ -44,7 +44,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
     """    
     form_class = ProjectEditCreateForm     
     model = Project
-    template_name = 'projects/editcreate.html'
+    template_name = 'projects/edit_create.html'
     
     def post(self, request, *args, **kwargs):
         project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES)
@@ -53,7 +53,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
             p.owner = request.user
             p.save()
             return redirect(reverse('projects:edit', kwargs={'project_id':p.id}))
-        return render_to_response('projects/editcreate.html', {
+        return render_to_response('projects/edit_create.html', {
             'form': project_create_form,
             }, context_instance=RequestContext(request))
         
@@ -74,14 +74,13 @@ def Edit(request, project_id=None):
                 project_edit_form.save()
                 
     project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
-    return render_to_response('projects/editcreate.html', {
+    return render_to_response('projects/edit_create.html', {
         'form': project_edit_form,
         'pledges' : Pledge.objects.filter(project__id = project_id),
         'project': p}, context_instance=RequestContext(request))
 
 @login_required
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
-
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user:
@@ -108,7 +107,6 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
                     r.project = Project.objects.get(id = project_id)
                     r.save()       
         else:
-            #if 'reward' in request.POST:
             reward_edit_form = RewardEditAddForm(data=request.POST)
             if reward_edit_form.has_changed():
                 if reward_edit_form.is_valid():
@@ -116,7 +114,6 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
                     r.project = Project.objects.get(id = project_id)
                     r.save()
 
-            #if 'pledge' in request.POST:
             pledge_edit_form = PledgeEditAddForm(data=request.POST, current_project = project_id)
             if pledge_edit_form.has_changed():
                 if pledge_edit_form.is_valid():
