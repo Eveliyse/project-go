@@ -7,7 +7,7 @@ from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditA
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, RedirectView
 from django.conf import settings
 from django.db.models import Count, Sum, Avg, F
 from django.db.models.functions import Coalesce
@@ -185,18 +185,24 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
         'rewards' : Reward.objects.filter(project__id = project_id) ,
         'project': project}, context_instance=RequestContext(request))
 
-@login_required
-def DeletePledgeRewards(request, project_id, mode, P_R_id):
-    if mode == "pledge":
-        obj = get_object_or_404(Pledge, pk=P_R_id)
-    elif mode == "reward":
-        obj = get_object_or_404(Reward, pk=P_R_id)
+#login_required
+class DeletePledgeRewardsView(LoginRequiredMixin, RedirectView):
     
-    if obj.project.owner != request.user:
-        return redirect(reverse('projects:manage'))     
+    def get_redirect_url(self, *args, **kwargs):
+        project_id = kwargs['project_id']
+        mode = kwargs['mode']
+        P_R_id = kwargs['P_R_id']
+        
+        if mode == "pledge":
+            obj = get_object_or_404(Pledge, pk=P_R_id)
+        elif mode == "reward":
+            obj = get_object_or_404(Reward, pk=P_R_id)
+            
+        if obj.project.owner != self.request.user:
+            return reverse('projects:manage')   
     
-    obj.delete()
-    return redirect(reverse('projects:pledgerewards', kwargs={'project_id':project_id})) 
+        obj.delete()
+        return reverse('projects:pledgerewards', kwargs={'project_id':project_id})
 
 
 def Details(request):
