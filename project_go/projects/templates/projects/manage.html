@@ -4,4 +4,8 @@
 
 Wheee manage projects
 
+{% for thing in user_projects %}
+<p>{{ thing.title }}</p>
+{% endfor %}
+
 {% endblock %}

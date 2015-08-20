@@ -49,14 +49,17 @@ class Project(models.Model):
         amount = self.pledged_amount()
         return amount >= self.goal
     
-    def open_project(self):
-        up = UserPledge.objects.filter(pledge__project = self)
-        if up is not None:
-            newStatus = Status.objects.get(status = "New")
-            if self.status is newStatus:
-                openStatus = Status.objects.get(status = "Open")
-                self.status = openStatus
-                self.save()
+    def update_status(self):
+        new_status = Status.objects.get(status = "New")
+        open_status = Status.objects.get(status = "Open")
+        closed_status = Status.objects.get(status = "Closed")
+        
+        if self.status is newStatus:
+            self.status = open_status
+            self.save()
+        elif self.status is openStatus:
+            self.status = closed_status
+            self.save()        
     
     def __str__(self):
         return self.title + " by " + self.owner.username

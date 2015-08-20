@@ -9,8 +9,9 @@ from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, TemplateView
 from django.conf import settings
-from django.db.models import Count, Sum, Avg
+from django.db.models import Count, Sum, Avg, F
 from django.db.models.functions import Coalesce
+from decimal import *
 
 class LoginRequiredMixin(object):
     """Add this to a class-based view to reject all non-authenticated users"""
@@ -26,17 +27,39 @@ class LoginRequiredMixin(object):
 def Index(request):
     
     open_status=Status.objects.get(status="Open")
-    newest_5=Project.objects.filter(status=open_status).order_by('created_date')[:5]
     
-    most_pledged_5=Project.objects.filter(status=open_status).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0)).order_by('-sum')[:5]
-
+    newest_1=Project.objects.filter(status=open_status).order_by('created_date')[:5]
+    newest_2=newest_1.annotate(
+                                    current_pledged=Coalesce(
+                                        Sum('project_pledges__pledged_users__pledge__amount'),0.00))
+    newest_5=newest_2.annotate(
+                                    current_percent=Coalesce(
+                                        (F('current_pledged')*100.00)/F('goal'),0))
+    
+    
+    open_projects=Project.objects.filter(status=open_status)
+    sum_pledged_5=open_projects.annotate(
+                                    current_pledged=Coalesce(
+                                        Sum('project_pledges__pledged_users__pledge__amount'),0.00))
+    percent_pledged_5=sum_pledged_5.annotate(
+                                    current_percent=Coalesce(
+                                        (F('current_pledged')*100.00)/F('goal'),0)) \
+                                        .order_by('-current_percent')[:5]
+    
     return render_to_response('projects/index.html', {
     'newest_5': newest_5,
-    'most_pledged_5': most_pledged_5,
+    'most_pledged_5': percent_pledged_5,
     }, context_instance=RequestContext(request))
 
 class ManageProjectsView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/manage.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ManageProjectsView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['user_projects'] = Project.objects.filter(owner=self.request.user).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0))
+        return context
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
     """ If POST then process form and create project entry
@@ -60,6 +83,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
 
 @login_required
 def Edit(request, project_id=None):
+    #TODO edit only if NEW
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
         if p.owner != request.user:
@@ -81,6 +105,7 @@ def Edit(request, project_id=None):
 
 @login_required
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
+    #TODO edit only if NEW
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user:

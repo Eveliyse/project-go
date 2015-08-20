@@ -3,11 +3,11 @@
 {% block content %}
 
 {% for thing in newest_5 %}
-<p>{{ thing.title }} {{ thing.sum }}</p>
+<p>{{ thing.title }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</p>
 {% endfor %}
 
 {% for thing in most_pledged_5 %}
-<p>{{ thing.title }} {{ thing.sum }}</p>
+<p>{{ thing.title }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</p>
 {% endfor %}
 
 {% endblock %}
