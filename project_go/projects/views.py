@@ -35,11 +35,9 @@ def Index(request):
     'most_pledged_5': most_pledged_5,
     }, context_instance=RequestContext(request))
 
-#@login_required
-class ManageProjectsView(TemplateView):
+class ManageProjectsView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/manage.html'
 
-#@login_required
 class CreateProjectView(LoginRequiredMixin, CreateView):
     """ If POST then process form and create project entry
         Otherwise, create form and display
