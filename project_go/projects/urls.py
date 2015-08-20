@@ -1,10 +1,10 @@
 from django.conf.urls import url
 from . import views
-from projects.views import CreateProjectView
+from projects.views import CreateProjectView, ManageProjectsView
 
 urlpatterns = [
     url(r'^$', views.Index, name='index'),
-    url(r'^manage/$', views.Manage, name='manage'),
+    url(r'^manage/$', ManageProjectsView.as_view(), name='manage'),
     url(r'^create/$', CreateProjectView.as_view(), name='create'),
     url(r'^edit/(?P<project_id>\d+)/$', views.Edit, name='edit'),
     url(r'^pledgerewards/(?P<project_id>\d+)/$', views.EditAddPledgeRewards, name='pledgerewards'),

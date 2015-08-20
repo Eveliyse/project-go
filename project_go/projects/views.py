@@ -7,7 +7,7 @@ from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditA
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 from django.conf import settings
 from django.db.models import Count, Sum, Avg
 from django.db.models.functions import Coalesce
@@ -24,20 +24,20 @@ class LoginRequiredMixin(object):
 
 
 def Index(request):
+    
     open_status=Status.objects.get(status="Open")
     newest_5=Project.objects.filter(status=open_status).order_by('created_date')[:5]
     
-    most_pledged_5=Project.objects.filter(status=open_status).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0))[:5]
+    most_pledged_5=Project.objects.filter(status=open_status).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0)).order_by('-sum')[:5]
 
-#    return render(request, 'projects/index.html')
     return render_to_response('projects/index.html', {
     'newest_5': newest_5,
     'most_pledged_5': most_pledged_5,
     }, context_instance=RequestContext(request))
 
-@login_required
-def Manage(request):
-    return render(request, 'projects/manage.html')
+#@login_required
+class ManageProjectsView(TemplateView):
+    template_name = 'projects/manage.html'
 
 #@login_required
 class CreateProjectView(LoginRequiredMixin, CreateView):
@@ -83,6 +83,7 @@ def Edit(request, project_id=None):
 
 @login_required
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
+
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user:
