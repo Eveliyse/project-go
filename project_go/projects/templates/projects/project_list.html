@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ cat_name }}
+{{ search_term }}
+    {% for pledge in project_list %}
+        <p>{{ pledge.title }}
+{{ pledge.goal }}
+{{ pledge.pledged_percent }}%
+{{ pledge.short_desc }}
+<img src="{{ pledge.image.url }}"></p>
+    {% endfor %}
+
+{% endblock %}

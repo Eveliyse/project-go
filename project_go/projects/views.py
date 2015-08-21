@@ -2,14 +2,14 @@ from django.shortcuts import get_object_or_404, render, render_to_response, redi
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
-from .models import Project, Status, Pledge, Reward
+from .models import Project, Status, Pledge, Reward, Category
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import CreateView, TemplateView, RedirectView, DetailView
+from django.views.generic import CreateView, TemplateView, RedirectView, DetailView, ListView
 from django.conf import settings
-from django.db.models import Count, Sum, Avg, F
+from django.db.models import Count, Sum, Avg, F, Q
 from django.db.models.functions import Coalesce
 from decimal import *
 
@@ -222,7 +222,7 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
     pattern_name = 'manage'
     permanent = False
     
-    def get(self, *args, **kwargs):
+    def get(self,request, *args, **kwargs):
         project_id = kwargs['project_id']
         project = get_object_or_404(Project, pk=project_id)
         
@@ -241,7 +241,7 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
             elif project.status == closed_status:
                 project.status = new_status
                 project.save()       
-        return super(UpdateStatusView,self).get(*args, **kwargs)
+        return super(UpdateStatusView,self).get(request, *args, **kwargs)
                 
     def get_redirect_url(self, *args, **kwargs):
         return reverse('projects:manage')
@@ -259,4 +259,36 @@ class ProjectDetailsView(DetailView):
         context['pledgerewards'] = pledgerewards_count
         context['pledgers'] = pledgers
         return context    
+
+class ProjectListView(ListView):
+    model = Project   
+    context_object_name = 'project_list'
+
+    def get(self, request, *args, **kwargs):
+        if 'search_term' in request.GET:
+            search_term = self.request.GET['search_term']
+            if search_term is not None and len(search_term) > 0:
+                search_term_list = search_term.split()
+                search_results =  Project.objects.filter(reduce(lambda x, y: x | y, [Q(title__contains=word) for word in search_term_list]))
+                if search_results:
+                    self.queryset = search_results
+                else:
+                    self.queryset = Project.objects.none()
+        #elif 'category_id' in self.kwargs:
+        return super(ProjectListView,self).get(request, *args, **kwargs)
+        
+    def get_queryset(self):
+        if 'category_id' in self.kwargs and self.kwargs['category_id'] is not None:
+            return Project.objects.filter(category_id = self.kwargs['category_id'])
+        return super(ProjectListView,self).get_queryset()
     
+    def get_context_data(self, **kwargs):
+        context = super(ProjectListView, self).get_context_data(**kwargs)
+        
+        if 'category_id' in kwargs and kwargs['category_id'] is not None:
+            context['cat_name'] = Category.objects.get(id = kwargs['category_id']).category
+        elif 'search_term' in self.request.GET:
+            search_term = self.request.GET['search_term']
+            if search_term is not None and len(search_term) > 0:        
+                context['search_term'] = search_term
+        return context
