@@ -14,7 +14,7 @@ is funded={{ project.is_funded }}
 {{ project.long_desc|safe }}
 
         {% for pledge in pledgerewards %}
-            <p>{{ pledge }} {{ pledge.count }}</p>
+            <p><a href="{% url 'projects:add_pledge' project.id pledge.id %}">{{ pledge.id }} {{ pledge }}</a> {{ pledge.count }}</p>
         {% endfor %}
 
         {% for pledger in pledgers %}

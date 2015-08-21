@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, render_to_response, redi
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
-from .models import Project, Status, Pledge, Reward, Category
+from .models import Project, Status, Pledge, Reward, Category, UserPledge
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
@@ -221,7 +221,6 @@ class DeletePledgeRewardsView(LoginRequiredMixin, RedirectView):
 
 
 class UpdateStatusView(LoginRequiredMixin, RedirectView):
-    pattern_name = 'manage'
     permanent = False
     
     def get(self,request, *args, **kwargs):
@@ -277,7 +276,6 @@ class ProjectListView(ListView):
                     self.queryset = search_results
                 else:
                     self.queryset = Project.objects.none()
-        #elif 'category_id' in self.kwargs:
         return super(ProjectListView,self).get(request, *args, **kwargs)
         
     def get_queryset(self):
@@ -297,30 +295,22 @@ class ProjectListView(ListView):
                 context['search_term'] = search_term
         return context
     
-class ProjectPledgeView(LoginRequiredMixin, RedirectView):
-    pattern_name = 'manage'
+class ProjectAddPledgeView(LoginRequiredMixin, RedirectView):
+    pattern_name = 'details'
     permanent = False
     
-    def get(self,request, *args, **kwargs):
-        project_id = kwargs['project_id']
-        project = get_object_or_404(Project, pk=project_id)
+    def get(self, request, *args, **kwargs):
+        pledge_id = kwargs['pledge_id']
+        pledge_obj = get_object_or_404(Pledge, pk=pledge_id)
         
-        if project.owner == self.request.user:  
-            new_status = get_object_or_404(Status, status = "New")
-            open_status = get_object_or_404(Status, status = "Open")
-            closed_status = get_object_or_404(Status, status = "Closed")
+        open_status = get_object_or_404(Status, status = "Open")
         
-            if project.status.id == new_status.id:
-                project.status = open_status
-                project.save()
-            elif project.status == open_status:
-                project.status = closed_status
-                project.save()  
-            #sanity check?
-            elif project.status == closed_status:
-                project.status = new_status
-                project.save()       
-        return super(UpdateStatusView,self).get(request, *args, **kwargs)
+        if pledge_obj.project.status == open_status:
+            match_user_pledges = UserPledge.objects.filter(user = request.user, pledge__project_id=kwargs['project_id'])
+            if not match_user_pledges:
+                userpledge = UserPledge(user = request.user, pledge = pledge_obj)
+                userpledge.save()
+        return super(ProjectAddPledgeView,self).get(request, *args, **kwargs)
                 
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('projects:manage')
+        return reverse('projects:details', kwargs={'project_id':kwargs['project_id']})

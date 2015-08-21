@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-from projects.views import CreateProjectView, ManageProjectsView, DeletePledgeRewardsView, IndexView, UpdateStatusView, ProjectDetailsView, ProjectListView
+from projects.views import CreateProjectView, ManageProjectsView, DeletePledgeRewardsView, IndexView, UpdateStatusView, ProjectDetailsView, ProjectListView, ProjectAddPledgeView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^pledgerewards/(?P<project_id>\d+)/p(?P<P_R_id>\d+)/delete/$', DeletePledgeRewardsView.as_view(), kwargs=dict(mode="pledge"), name='deletepledge'),
     url(r'^pledgerewards/(?P<project_id>\d+)/r(?P<P_R_id>\d+)/delete/$', DeletePledgeRewardsView.as_view(), kwargs=dict(mode="reward"), name='deletereward'),
     url(r'^details/(?P<project_id>\d+)/$', ProjectDetailsView.as_view(), name='details'),
+    url(r'^details/(?P<project_id>\d+)/add_pledge/(?P<pledge_id>\d+)/$', ProjectAddPledgeView.as_view(), name='add_pledge'),
     url(r'^category/(?P<category_id>\d+)/$', ProjectListView.as_view(), name='category'),
     url(r'^search/$', ProjectListView.as_view(), name='search'),
 ]

@@ -73,3 +73,6 @@ class Pledge(models.Model):
 class UserPledge(models.Model):
     user = models.ForeignKey(User, related_name='user_pledges')
     pledge = models.ForeignKey(Pledge, related_name='pledged_users')
+    
+    def __str__(self):
+        return self.user.username + ", " + str(self.pledge)
