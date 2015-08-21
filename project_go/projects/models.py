@@ -47,19 +47,7 @@ class Project(models.Model):
     
     def is_funded(self):		
         amount = self.pledged_amount()
-        return amount >= self.goal
-    
-    def update_status(self):
-        new_status = Status.objects.get(status = "New")
-        open_status = Status.objects.get(status = "Open")
-        closed_status = Status.objects.get(status = "Closed")
-        
-        if self.status is newStatus:
-            self.status = open_status
-            self.save()
-        elif self.status is openStatus:
-            self.status = closed_status
-            self.save()        
+        return amount >= self.goal      
     
     def __str__(self):
         return self.title + " by " + self.owner.username

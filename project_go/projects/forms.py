@@ -7,18 +7,10 @@ import datetime
 
 class ProjectEditCreateForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.FileInput)
-    owner = models.ForeignKey(User)
     
     class Meta:
         model = Project
-        exclude = ('owner','status')
-    
-    def save(self, commit = True):
-        p = super(ProjectEditCreateForm, self).save(commit = False)
-        p.status = Status.objects.get(status = "New")
-        if commit:
-            p.save()
-        return p       
+        exclude = ('owner','status') 
         
 class RewardEditAddForm(forms.ModelForm):
     class Meta:

@@ -6,7 +6,7 @@ from .models import Project, Status, Pledge, Reward
 from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditAddForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, RedirectView
 from django.conf import settings
 from django.db.models import Count, Sum, Avg, F
@@ -62,8 +62,16 @@ class ManageProjectsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ManageProjectsView, self).get_context_data(**kwargs)
-
-        context['user_projects'] = Project.objects.filter(owner=self.request.user).annotate(sum=Coalesce(Sum('project_pledges__pledged_users__pledge__amount'),0))
+        
+        newest_1=Project.objects.filter(owner=self.request.user).order_by('created_date')[:5]
+        newest_2=newest_1.annotate(
+                            current_pledged=Coalesce(
+                                Sum('project_pledges__pledged_users__pledge__amount'),0.00))
+        newest_5=newest_2.annotate(
+                            current_percent=Coalesce(
+                                (F('current_pledged')*100.00)/F('goal'),0))        
+        
+        context['user_projects'] = newest_5
         return context
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
@@ -79,6 +87,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
         if project_create_form.is_valid():
             p = project_create_form.save(commit = False)
             p.owner = request.user
+            p.status = Status.objects.get(status = "New")
             p.save()
             return redirect(reverse('projects:edit', kwargs={'project_id':p.id}))
         return render_to_response('projects/edit_create.html', {
@@ -208,6 +217,34 @@ class DeletePledgeRewardsView(LoginRequiredMixin, RedirectView):
         obj.delete()
         return reverse('projects:pledgerewards', kwargs={'project_id':project_id})
 
+
+class UpdateStatusView(LoginRequiredMixin, RedirectView):
+    pattern_name = 'manage'
+    permanent = False
+    
+    def get(self, *args, **kwargs):
+        project_id = kwargs['project_id']
+        project = get_object_or_404(Project, pk=project_id)
+        
+        if project.owner == self.request.user:  
+            new_status = get_object_or_404(Status, status = "New")
+            open_status = get_object_or_404(Status, status = "Open")
+            closed_status = get_object_or_404(Status, status = "Closed")
+        
+            if project.status.id == new_status.id:
+                project.status = open_status
+                project.save()
+            elif project.status == open_status:
+                project.status = closed_status
+                project.save()  
+            #sanity check?
+            elif project.status == closed_status:
+                project.status = new_status
+                project.save()       
+        return super(UpdateStatusView,self).get(*args, **kwargs)
+                
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('projects:manage')
 
 def Details(request):
     return render(request, 'projects/details.html')

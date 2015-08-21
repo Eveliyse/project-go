@@ -5,7 +5,7 @@
 Wheee manage projects
 
 {% for thing in user_projects %}
-<p>{{ thing.title }}</p>
+<p><a href="{% url 'projects:edit' thing.id %}">{{ thing.title }} {{ thing.owner }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</a> <a href="{% url 'projects:update_status' thing.id %}">{{ thing.status }}</a></p>
 {% endfor %}
 
 {% endblock %}
