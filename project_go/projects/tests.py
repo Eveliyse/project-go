@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Project, Reward, Pledge
+from .models import Project, Reward, Pledge, Category, Status
 from django.core.urlresolvers import reverse
 
 class BaseProjectsTestCase(TestCase):
@@ -229,4 +229,25 @@ class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
     
         #details for nonexistent project
         res=self.client.get(reverse('projects:details', kwargs={'project_id':9876543210}))
-        self.assertEqual(res.status_code,404)            
+        self.assertEqual(res.status_code,404)   
+        
+class ProjectsListViewTestCase(BaseProjectsTestCase):
+    all_categories = Category.objects.all()
+    
+    def test_details(self):
+        #categories
+        res=self.client.get(reverse('projects:category', kwargs={'category_id':self.all_categories[0].id}))
+        self.assertEqual(res.status_code, 200)
+        
+        res=self.client.get(reverse('projects:category', kwargs={'category_id':9876543210}))
+        self.assertEqual(res.status_code,404)    
+        
+        #search
+        res=self.client.get(reverse('projects:search'))
+        self.assertEqual(res.status_code, 200)
+
+        res=self.client.get("%s?search_term=%s" % (reverse('projects:search'), self.all_projects[0].title))
+        self.assertEqual(res.status_code, 200)        
+    
+        res=self.client.get("%s?search_term=kjghskerhbgserugnserknguybserkgu" % reverse('projects:search'))
+        self.assertEqual(res.status_code,200)   

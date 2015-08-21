@@ -282,6 +282,7 @@ class ProjectListView(ListView):
         
     def get_queryset(self):
         if 'category_id' in self.kwargs and self.kwargs['category_id'] is not None:
+            get_object_or_404(Category, id = self.kwargs['category_id'])
             return Project.objects.filter(category_id = self.kwargs['category_id'])
         return super(ProjectListView,self).get_queryset()
     
