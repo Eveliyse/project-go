@@ -209,10 +209,24 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
 class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
     def test_details(self):
         #not logged in
-        res=self.client.get(reverse('projects:details'))
+        res=self.client.get(reverse('projects:details', kwargs={'project_id':self.all_projects[0].id}))
         self.assertEqual(res.status_code, 200)
-    
+        
+        res=self.client.get(reverse('projects:details', kwargs={'project_id':9876543210}))
+        self.assertEqual(res.status_code,404)        
+        
         #logged in
         self.login()
-        res=self.client.get(reverse('projects:details'))
-        self.assertEqual(res.status_code, 200)   
+        
+        #details for own project
+        res=self.client.get(reverse('projects:details', kwargs={'project_id':self.user_projects[0].id}))
+        self.assertEqual(res.status_code, 200)
+        
+        #details for not own project
+        self.login()
+        res=self.client.get(reverse('projects:details', kwargs={'project_id':self.not_user_projects[0].id}))
+        self.assertEqual(res.status_code, 200)        
+    
+        #details for nonexistent project
+        res=self.client.get(reverse('projects:details', kwargs={'project_id':9876543210}))
+        self.assertEqual(res.status_code,404)            

@@ -201,6 +201,8 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
 
 
 class DeletePledgeRewardsView(LoginRequiredMixin, RedirectView):
+    permanent = False
+    
     def get_redirect_url(self, *args, **kwargs):
         project_id = kwargs['project_id']
         mode = kwargs['mode']
@@ -248,13 +250,14 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
 
 class ProjectDetailsView(DetailView):
     model = Project
+    pk_url_kwarg = 'project_id'
     
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailsView, self).get_context_data(**kwargs)
-        pledgerewards = Pledge.objects.filter(project_id = self.kwargs['pk'])
+        pledgerewards = Pledge.objects.filter(project_id = self.kwargs['project_id'])
         pledgerewards_count = pledgerewards.annotate(count=Count('pledged_users__pledge_id'))
         
-        pledgers = User.objects.filter(user_pledges__pledge__project_id = self.kwargs['pk'])
+        pledgers = User.objects.filter(user_pledges__pledge__project_id = self.kwargs['project_id'])
         
         context['pledgerewards'] = pledgerewards_count
         context['pledgers'] = pledgers
@@ -292,3 +295,31 @@ class ProjectListView(ListView):
             if search_term is not None and len(search_term) > 0:        
                 context['search_term'] = search_term
         return context
+    
+class ProjectPledgeView(LoginRequiredMixin, RedirectView):
+    pattern_name = 'manage'
+    permanent = False
+    
+    def get(self,request, *args, **kwargs):
+        project_id = kwargs['project_id']
+        project = get_object_or_404(Project, pk=project_id)
+        
+        if project.owner == self.request.user:  
+            new_status = get_object_or_404(Status, status = "New")
+            open_status = get_object_or_404(Status, status = "Open")
+            closed_status = get_object_or_404(Status, status = "Closed")
+        
+            if project.status.id == new_status.id:
+                project.status = open_status
+                project.save()
+            elif project.status == open_status:
+                project.status = closed_status
+                project.save()  
+            #sanity check?
+            elif project.status == closed_status:
+                project.status = new_status
+                project.save()       
+        return super(UpdateStatusView,self).get(request, *args, **kwargs)
+                
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('projects:manage')

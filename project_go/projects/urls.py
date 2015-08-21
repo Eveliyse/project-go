@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^pledgerewards/(?P<project_id>\d+)/r(?P<P_R_id>\d+)/$', views.EditAddPledgeRewards, kwargs=dict(mode="reward"), name='reward'),
     url(r'^pledgerewards/(?P<project_id>\d+)/p(?P<P_R_id>\d+)/delete/$', DeletePledgeRewardsView.as_view(), kwargs=dict(mode="pledge"), name='deletepledge'),
     url(r'^pledgerewards/(?P<project_id>\d+)/r(?P<P_R_id>\d+)/delete/$', DeletePledgeRewardsView.as_view(), kwargs=dict(mode="reward"), name='deletereward'),
-    url(r'^details/(?P<pk>\d+)/$', ProjectDetailsView.as_view(), name='details'),
+    url(r'^details/(?P<project_id>\d+)/$', ProjectDetailsView.as_view(), name='details'),
     url(r'^category/(?P<category_id>\d+)/$', ProjectListView.as_view(), name='category'),
     url(r'^search/$', ProjectListView.as_view(), name='search'),
 ]
