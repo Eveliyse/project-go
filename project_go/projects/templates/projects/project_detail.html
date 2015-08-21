@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ project.title }}
+{{ project.owner }}
+{{ project.goal }}
+{{ project.pledged_amount }}
+{{ project.pledged_percent }}%
+{{ project.pledgers }}pledgers
+is funded={{ project.is_funded }}
+{{ project.status }}
+<img src="{{ project.image.url }}">
+{{ project.long_desc|safe }}
+
+        {% for pledge in pledgerewards %}
+            <p>{{ pledge }} {{ pledge.count }}</p>
+        {% endfor %}
+
+        {% for pledger in pledgers %}
+            <p>{{ pledger }}</p>
+        {% endfor %}
+
+{% endblock %}

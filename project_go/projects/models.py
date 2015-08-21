@@ -38,7 +38,7 @@ class Project(models.Model):
     def pledged_percent(self):
         if self.pledged_amount() is None or self.pledged_amount() == 0:
             return 0
-        return format(Decimal(self.pledged_amount()) / Decimal(self.goal) * 100, '.2f')
+        return format(Decimal(self.pledged_amount()) / Decimal(self.goal) * 100, '.0f')
     
     def pledgers(self):			
         up = UserPledge.objects.filter(pledge__project = self)

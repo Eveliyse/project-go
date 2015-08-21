@@ -7,7 +7,7 @@ from projects.forms import ProjectEditCreateForm, RewardEditAddForm, PledgeEditA
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import CreateView, TemplateView, RedirectView
+from django.views.generic import CreateView, TemplateView, RedirectView, DetailView
 from django.conf import settings
 from django.db.models import Count, Sum, Avg, F
 from django.db.models.functions import Coalesce
@@ -246,5 +246,17 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('projects:manage')
 
-def Details(request):
-    return render(request, 'projects/details.html')
+class ProjectDetailsView(DetailView):
+    model = Project
+    
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailsView, self).get_context_data(**kwargs)
+        pledgerewards = Pledge.objects.filter(project_id = self.kwargs['pk'])
+        pledgerewards_count = pledgerewards.annotate(count=Count('pledged_users__pledge_id'))
+        
+        pledgers = User.objects.filter(user_pledges__pledge__project_id = self.kwargs['pk'])
+        
+        context['pledgerewards'] = pledgerewards_count
+        context['pledgers'] = pledgers
+        return context    
+    
