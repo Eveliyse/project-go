@@ -128,7 +128,7 @@ def DeleteAddress(request, address_id=None):
         if address.resident == request.user:
                 address.active = False
                 address.save()
-    return redirect(reverse('users:userprofile'))
+    return redirect(reverse('users:addaddress'))
 
 def Login(request):
     """ If the user is already logged in then redirect somewhere else
