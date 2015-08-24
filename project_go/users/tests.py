@@ -33,28 +33,28 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
     def test_profile(self):
         #view own profile
         #not logged in
-        res=self.client.get(reverse('users:userprofile'))
+        res=self.client.get(reverse('users:profile'))
         self.assertEqual(res.status_code, 302)        
         self.assertRedirects(res, reverse('users:register'))  
         
         #logged in
         self.login()
-        res=self.client.get(reverse('users:userprofile'))
+        res=self.client.get(reverse('users:profile'))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['userobj'])
         
     def test_profile_userid(self):
         #not logged in
-        res=self.client.get(reverse('users:userprofile' , kwargs={'user_id':self.all_users[0].id}))
+        res=self.client.get(reverse('users:profile' , kwargs={'user_id':self.all_users[0].id}))
         self.assertEqual(res.status_code, 200)           
         
-        res=self.client.get(reverse('users:userprofile' , kwargs={'user_id':901299012}))
+        res=self.client.get(reverse('users:profile' , kwargs={'user_id':901299012}))
         self.assertEqual(res.status_code, 404)                       
         
         #logged in
         self.login()
-        res=self.client.get(reverse('users:userprofile' , kwargs={'user_id':self.user.id}))
+        res=self.client.get(reverse('users:profile' , kwargs={'user_id':self.user.id}))
         self.assertEqual(res.status_code, 200)       
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['form2'])
@@ -62,7 +62,7 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
         self.assertIsNotNone(res.context['user_addresses'])
         self.assertIsNotNone(res.context['userobj'])
         
-        res=self.client.get(reverse('users:userprofile' , kwargs={'user_id':901299012}))
+        res=self.client.get(reverse('users:profile' , kwargs={'user_id':901299012}))
         self.assertEqual(res.status_code, 404)               
         
 class UsersEditAddAdressViewTestCase(BaseUsersTestCase):        
@@ -71,7 +71,7 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         self.login()
         
         #add address
-        res=self.client.get(reverse('users:addaddress'))
+        res=self.client.get(reverse('users:add_address'))
         self.assertEqual(res.status_code, 200)       
         self.assertIsNotNone(res.context['form'])
         
@@ -80,18 +80,18 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         self.login()        
         
         #edit own address
-        res=self.client.get(reverse('users:editaddress', kwargs={'address_id':self.user_addresses[0].id}))
+        res=self.client.get(reverse('users:edit_address', kwargs={'address_id':self.user_addresses[0].id}))
         self.assertEqual(res.status_code, 200)  
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['user_address'])
         
         #edit not own address
-        res=self.client.get(reverse('users:editaddress', kwargs={'address_id':self.not_user_addresses[0].id}))
+        res=self.client.get(reverse('users:edit_address', kwargs={'address_id':self.not_user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)  
-        self.assertRedirects(res, reverse('users:userprofile')) 
+        self.assertRedirects(res, reverse('users:profile')) 
         
         #edit nonexistent address
-        res=self.client.get(reverse('users:editaddress', kwargs={'address_id':9876543210}))
+        res=self.client.get(reverse('users:edit_address', kwargs={'address_id':9876543210}))
         self.assertEqual(res.status_code, 404)      
         
 class UsersDeleteAdressViewTestCase(BaseUsersTestCase):            
@@ -100,15 +100,15 @@ class UsersDeleteAdressViewTestCase(BaseUsersTestCase):
         self.login()   
         
         #delete own address
-        res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':self.user_addresses[0].id}))
+        res=self.client.get(reverse('users:delete_address', kwargs={'address_id':self.user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:addaddress'))
+        self.assertRedirects(res, reverse('users:add_address'))
         
         #delete not own address
-        res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':self.not_user_addresses[0].id}))
+        res=self.client.get(reverse('users:delete_address', kwargs={'address_id':self.not_user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:addaddress'))        
+        self.assertRedirects(res, reverse('users:add_address'))        
         
         #delete nonexistent address
-        res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':9876543210}))
+        res=self.client.get(reverse('users:delete_address', kwargs={'address_id':9876543210}))
         self.assertEqual(res.status_code, 404)
