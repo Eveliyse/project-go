@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{{ pledged }}
+<p>{{ pledge }}</p>
 
 {{ project.title }}
 {{ project.owner }}
@@ -14,11 +14,11 @@ is funded={{ project.is_funded }}
 {{ project.status }}
 <img src="{{ project.image.url }}">
 {{ project.long_desc|safe }}
-
+<p>PLEDGEREWARDS</p>
         {% for pledge in pledgerewards %}
             <p><a href="{% url 'projects:add_pledge' project.id pledge.id %}">{{ pledge.id }} {{ pledge }}</a> {{ pledge.count }}</p>
         {% endfor %}
-
+<p>PLEDGERS</p>
         {% for pledger in pledgers %}
             <p>{{ pledger }}</p>
         {% endfor %}

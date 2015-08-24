@@ -252,9 +252,11 @@ class ProjectDetailsView(DetailView):
     pk_url_kwarg = 'project_id'
     
     def get(self, request, *args, **kwargs):
-        self.pledged = None
         self.pledge_added = None
-        match_user_pledges = UserPledge.objects.filter(user = request.user, pledge__project_id=kwargs['project_id'])
+        self.pledged = None
+        
+        
+        match_user_pledges = UserPledge.objects.filter(user_id = request.user.id, pledge__project_id=kwargs['project_id'])
         if match_user_pledges:
             self.pledged = True
   
@@ -269,7 +271,7 @@ class ProjectDetailsView(DetailView):
                     userpledge = UserPledge(user = request.user, pledge = pledge_obj)
                     userpledge.save()
                 else:
-                    userpledge = UserPledge.objects.get(user = request.user)
+                    userpledge = UserPledge.objects.get(user = request.user, pledge__project_id=kwargs['project_id'])
                     userpledge.pledge = pledge_obj
                     userpledge.save()
                 self.pledge_added = True
@@ -297,7 +299,8 @@ class ProjectDetailsView(DetailView):
             context['pledge_added'] = 'NOOO FAIL BOOO'       
             
         if self.pledged is True:
-            context['pledged'] = 'PLEDGED'
+            up = UserPledge.objects.get(user_id = self.request.user.id, pledge__project_id=self.kwargs['project_id'])
+            context['pledge'] = Pledge.objects.get(id = up.pledge.id)
         
         return context    
 
