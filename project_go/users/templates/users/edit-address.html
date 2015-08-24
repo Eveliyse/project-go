@@ -28,29 +28,3 @@
     
 </div>
 {% endblock %}
-    
-{% block jscript %}
-    
-    $('.edit').click(function(event) {
-      event.preventDefault();
-
-      $('#current-address').load(this.href);
-   });
-    
-    var frm = $('#edit-address');
-    frm.submit(function () {
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function (data) {
-                $("#current-address").html(data);
-            },
-            error: function(data) {
-                $("#current-address").html("Something went wrong!");
-            }
-        });
-        return false;
-    });
-    
-{% endblock %}

@@ -60,8 +60,27 @@
 {% endblock %}
 
 {% block jscript %}
-    $('.edit').click(function(event) {
-        event.preventDefault();
-        $('#current-address').load(this.href);
+
+    $(document).on('click', '.edit', function(event) {
+      event.preventDefault();
+
+      $('#current-address').load(this.href + ' #current-address > *');
    });
+
+    $(document).on('submit', '#edit-address', function () {
+        var frm = $(this);
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                $("#current-address").html($(data).filter("#current-address").children());
+            },
+            error: function(data) {
+                $("#current-address").html("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
 {% endblock %}
