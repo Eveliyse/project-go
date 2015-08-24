@@ -20,7 +20,7 @@
 {{ projects }}
 {% else %}
     <p>Hai {{ user.username }} this is your profile page</p>
-    <form method="post" action="{% url 'users:userprofile' %}">
+    <form method="post" action="{% url 'users:profile' %}">
         {% csrf_token %}
         <table>
             {{ form.as_table }}
@@ -43,9 +43,9 @@
         {{ address.town }}
         {{ address.postcode }}
         
-      <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>    <a class="edit" href="{% url 'users:deleteaddress' address.id %}">Delete</a></p>
+      <a class="edit" href="{% url 'users:edit_address' address.id %}">Edit</a>    <a class="edit" href="{% url 'users:delete_address' address.id %}">Delete</a></p>
     {% endfor %}
-        <a class="edit" href="{% url 'users:addaddress' %}">Add</a>
+        <a class="edit" href="{% url 'users:add_address' %}">Add</a>
     </div>
 </div>
 

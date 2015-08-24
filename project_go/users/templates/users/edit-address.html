@@ -3,9 +3,9 @@
 {% block content %}
 <div id="current-address">
     {% if user_address %}
-        <form id="edit-address" method="post" action="{% url 'users:editaddress' user_address.id %}">
+        <form id="edit-address" method="post" action="{% url 'users:edit_address' user_address.id %}">
     {% else %}
-        <form id="edit-address" method="post" action="{% url 'users:addaddress' %}">
+        <form id="edit-address" method="post" action="{% url 'users:add_address' %}">
     {% endif %}
             {% csrf_token %}
             <table>
@@ -22,9 +22,9 @@
         {{ address.town }}
         {{ address.postcode }}
         
-        <a class="edit" href="{% url 'users:editaddress' address.id %}">Edit</a>
-        <a class="edit" href="{% url 'users:deleteaddress' address.id %}">Delete</a>    </p>
+        <a class="edit" href="{% url 'users:edit_address' address.id %}">Edit</a>
+        <a class="edit" href="{% url 'users:delete_address' address.id %}">Delete</a>    </p>
     {% endfor %}
-    <a class="edit" href="{% url 'users:addaddress' %}">Add</a>
+    <a class="edit" href="{% url 'users:add_address' %}">Add</a>
 </div>
 {% endblock %}

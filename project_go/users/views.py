@@ -88,7 +88,7 @@ def EditAddAddress(request, address_id=None):
         #check address exists and belongs to current logged in user
         address = get_object_or_404(Address, id = address_id, active = True)
         if address.resident != request.user:
-            return redirect(reverse('users:userprofile'))
+            return redirect(reverse('users:profile'))
         
         #if post then user is trying to edit an existing address
         if request.method == "POST":
@@ -105,7 +105,7 @@ def EditAddAddress(request, address_id=None):
                 saved_address.resident = request.user
                 saved_address.active = True
                 saved_address.save()
-                return redirect(reverse('users:editaddress', kwargs={'address_id':saved_address.id}))    
+                return redirect(reverse('users:edit_address', kwargs={'address_id':saved_address.id}))    
             
     #get list of user addresses. Do this at the end and not at the start incase we have added or edited addresses
     a = get_list_or_404(Address, resident = request.user, active = True)
@@ -128,7 +128,7 @@ def DeleteAddress(request, address_id=None):
         if address.resident == request.user:
                 address.active = False
                 address.save()
-    return redirect(reverse('users:addaddress'))
+    return redirect(reverse('users:add_address'))
 
 def Login(request):
     """ If the user is already logged in then redirect somewhere else
