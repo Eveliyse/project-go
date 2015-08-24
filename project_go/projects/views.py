@@ -253,7 +253,7 @@ class ProjectDetailsView(DetailView):
         self.pledge_added = None
         self.pledged = None
         
-        if Project.objects.get(pk = kwargs['project_id']).status == Status.objects.get(status = "New"):
+        if get_object_or_404(Project, pk = kwargs['project_id']).status == Status.objects.get(status = "New"):
             return redirect(reverse('projects:index')) 
         
         match_user_pledges = UserPledge.objects.filter(user_id = request.user.id, pledge__project_id=kwargs['project_id'])
