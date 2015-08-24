@@ -104,10 +104,13 @@ def EditAddAddress(request, address_id=None):
                 a.resident = request.user
                 a.active = True
                 a.save()
-                return redirect(reverse('users:editaddress', kwargs={'address_id':a.id}))            
+                return redirect(reverse('users:editaddress', kwargs={'address_id':a.id}))    
             else:
-                #TODO do what if form invalid?
-                return  HttpResponse("Boooom")
+                a = get_list_or_404(Address, resident = request.user, active = True)
+                return render_to_response('users/edit-address.html', {
+                    'form': user_address_form,
+                    'user_addresses' : a,
+                    }, context_instance=RequestContext(request))                
     user_address_form = MemberAddressForm()
     a = get_list_or_404(Address, resident = request.user, active = True)
     if(request.GET.has_key('ajax')):

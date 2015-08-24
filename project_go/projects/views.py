@@ -97,7 +97,6 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
 
 @login_required
 def Edit(request, project_id=None):
-    #TODO edit only if NEW
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
         if p.owner != request.user or p.status != Status.objects.get(status = "New"):
@@ -119,7 +118,6 @@ def Edit(request, project_id=None):
 
 @login_required
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
-    #TODO edit only if NEW
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if project.owner != request.user or project.status != Status.objects.get(status = "New"):
