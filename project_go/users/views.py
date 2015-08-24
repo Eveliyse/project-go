@@ -31,7 +31,7 @@ def Profile(request, user_id=None):
     user = get_object_or_404(User, id = u_id)
     member = get_object_or_404(Member, user = user)
     
-    #if POST then process forms, else create a new user_edit_form
+    #if POST then process forms
     #TODO check if password fields actually have a value
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, instance = user)
@@ -78,42 +78,38 @@ def Profile(request, user_id=None):
             }, context_instance=RequestContext(request))
 
 @login_required
+#TODO make ajax call only div
 def EditAddAddress(request, address_id=None):
-    #user_address_form = MemberAddressForm()
+    #initialise user address form. Do this at the start so render has something to fall back on
+    user_address_form = MemberAddressForm()
+    
+    #if there is an address id then user is editing, not adding
     if address_id:
+        #check address exists and belongs to current logged in user
         address = get_object_or_404(Address, id = address_id, active = True)
         if address.resident != request.user:
             return redirect(reverse('users:userprofile'))
         
+        #if post then user is trying to edit an existing address
         if request.method == "POST":
             user_address_form = MemberAddressForm(data=request.POST, instance=address)
             if user_address_form.is_valid():
                 user_address_form.save()
-        user_address_form = MemberAddressForm(instance=address)
-        a = get_list_or_404(Address, resident = request.user, active = True)
-        return render_to_response('users/edit-address.html', {
-            'form': user_address_form,
-            'user_address' : address,
-            'user_addresses' : a,
-            }, context_instance=RequestContext(request))    
+        user_address_form = MemberAddressForm(instance=address)  
     else:
+        #if post then user is trying to add a new address
         if request.method == "POST":
             user_address_form = MemberAddressForm(data=request.POST)
             if user_address_form.is_valid():
-                a = user_address_form.save(commit = False)
-                a.resident = request.user
-                a.active = True
-                a.save()
-                return redirect(reverse('users:editaddress', kwargs={'address_id':a.id}))    
-            else:
-                a = get_list_or_404(Address, resident = request.user, active = True)
-                return render_to_response('users/edit-address.html', {
-                    'form': user_address_form,
-                    'user_addresses' : a,
-                    }, context_instance=RequestContext(request))                
-    user_address_form = MemberAddressForm()
+                saved_address = user_address_form.save(commit = False)
+                saved_address.resident = request.user
+                saved_address.active = True
+                saved_address.save()
+                return redirect(reverse('users:editaddress', kwargs={'address_id':saved_address.id}))    
+            
+    #get list of user addresses. Do this at the end and not at the start incase we have added or edited addresses
     a = get_list_or_404(Address, resident = request.user, active = True)
-    if(request.GET.has_key('ajax')):
+    if address_id:
         return render_to_response('users/edit-address.html', {
             'form': user_address_form,
             'user_address' : address,
@@ -154,7 +150,7 @@ def Login(request):
             }, context_instance=RequestContext(request))
     else:
         #TODO redirect somewhere more sensible
-        return redirect(reverse('users:index')) 
+        return redirect(reverse('projects:index')) 
 
 @login_required
 def Logout(request):
