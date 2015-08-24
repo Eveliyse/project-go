@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-from projects.views import CreateProjectView, ManageProjectsView, DeletePledgeRewardsView, IndexView, UpdateStatusView, ProjectDetailsView, ProjectListView, ProjectAddPledgeView
+from projects.views import CreateProjectView, ManageProjectsView, DeletePledgeRewardsView, IndexView, UpdateStatusView, ProjectDetailsView, ProjectListView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),

@@ -280,7 +280,7 @@ class ProjectDetailsView(DetailView):
         
         #TODO redirect to not add pledge page
         #p_id = kwargs['project_id']
-        #return reverse('projects:manage')
+            return redirect(reverse('projects:details', kwargs={'project_id':kwargs['project_id']}))
         return super(ProjectDetailsView,self).get(request, *args, **kwargs)    
     
     def get_context_data(self, **kwargs):
@@ -336,31 +336,3 @@ class ProjectListView(ListView):
             if search_term is not None and len(search_term) > 0:        
                 context['search_term'] = search_term
         return context
-    
-class ProjectAddPledgeView(LoginRequiredMixin, RedirectView):
-    pattern_name = 'details'
-    permanent = False
-    
-    def get(self, request, *args, **kwargs):
-        pledge_id = kwargs['pledge_id']
-        pledge_obj = get_object_or_404(Pledge, pk=pledge_id)
-        
-        open_status = get_object_or_404(Status, status = "Open")
-        
-        if pledge_obj.project.status == open_status:
-            match_user_pledges = UserPledge.objects.filter(user = request.user, pledge__project_id=kwargs['project_id'])
-            if not match_user_pledges:
-                userpledge = UserPledge(user = request.user, pledge = pledge_obj)
-                userpledge.save()
-                self.pledge_added = True
-            else:
-                self.pledge_added = False
-        return super(ProjectAddPledgeView,self).get(request, *args, **kwargs)
-                
-    def get_redirect_url(self, *args, **kwargs):
-        url_str = '%s'
-        if self.pledge_added is True:
-            url_str = '%s?added=True'
-        else:
-            url_str = '%s?added=false'
-        return url_str % reverse('projects:details', kwargs={'project_id':kwargs['project_id']})
