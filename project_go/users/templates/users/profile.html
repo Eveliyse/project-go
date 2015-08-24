@@ -17,6 +17,7 @@
             {% endfor %}
         </tbody>
     </table>
+{{ projects }}
 {% else %}
     <p>Hai {{ user.username }} this is your profile page</p>
     <form method="post" action="{% url 'users:userprofile' %}">
@@ -48,6 +49,12 @@
     
     <a class="edit" href="{% url 'users:addaddress' %}">Add</a>
 </div>
+
+{% for userpledge in userpledges %}
+    <p>{{ userpledge.pledge.project.title }}
+    {{ userpledge.pledge }}
+        </p>
+{% endfor %}
 
 {% endif %}
 {% endblock %}

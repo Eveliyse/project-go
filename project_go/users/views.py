@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Member, Address, Country
+from projects.models import Project, UserPledge, Pledge, Reward
 from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, UserEditForm
 
 #placeholder for now
@@ -46,8 +47,12 @@ def Profile(request, user_id=None):
             member_edit_form.save()
     
     #create form for display
-    user_edit_form = UserEditForm(instance = user)        
+    user_edit_form = UserEditForm(instance = user)
     
+    #get user pledged projects for display
+    userpledges = UserPledge.objects.filter(user_id = request.user.id)
+    pledge_projects = Project.objects.filter(project_pledges__pledged_users__user_id = request.user.id)
+
     #if user is viewing own profile then create forms for editing details and fetch data to display.
     #else the user is viewing not own profile so just process the 1 form
     if u_id == request.user.id:
@@ -61,12 +66,15 @@ def Profile(request, user_id=None):
             'form2': password_edit_form,
             'form3': member_edit_form,
             'user_addresses' : a,
-            'userobj' : user
+            'userobj' : user,
+            'projects': pledge_projects,
+            'userpledges' :userpledges,
             }, context_instance=RequestContext(request))
     else:
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
-            'userobj' : user
+            'userobj' : user,
+            'projects': pledge_projects,
             }, context_instance=RequestContext(request))
 
 @login_required
