@@ -102,12 +102,12 @@ class UsersDeleteAdressViewTestCase(BaseUsersTestCase):
         #delete own address
         res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':self.user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:userprofile'))
+        self.assertRedirects(res, reverse('users:addaddress'))
         
         #delete not own address
         res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':self.not_user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:userprofile'))        
+        self.assertRedirects(res, reverse('users:addaddress'))        
         
         #delete nonexistent address
         res=self.client.get(reverse('users:deleteaddress', kwargs={'address_id':9876543210}))
