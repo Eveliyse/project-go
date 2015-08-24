@@ -100,7 +100,7 @@ def Edit(request, project_id=None):
     #TODO edit only if NEW
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
-        if p.owner != request.user:
+        if p.owner != request.user or p.status != Status.objects.get(status = "New"):
             return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:create'))
@@ -122,7 +122,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     #TODO edit only if NEW
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
-        if project.owner != request.user:
+        if project.owner != request.user or project.status != Status.objects.get(status = "New"):
             return redirect(reverse('projects:manage')) 
     else:
         return redirect(reverse('projects:manage')) 
@@ -240,7 +240,7 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
                 project.save()  
             #sanity check?
             elif project.status == closed_status:
-                project.status = new_status
+                project.status = closed_status
                 project.save()       
         return super(UpdateStatusView,self).get(request, *args, **kwargs)
                 
@@ -255,6 +255,8 @@ class ProjectDetailsView(DetailView):
         self.pledge_added = None
         self.pledged = None
         
+        if Project.objects.get(pk = kwargs['project_id']).status == Status.objects.get(status = "New"):
+            return redirect(reverse('projects:index')) 
         
         match_user_pledges = UserPledge.objects.filter(user_id = request.user.id, pledge__project_id=kwargs['project_id'])
         if match_user_pledges:
@@ -277,9 +279,7 @@ class ProjectDetailsView(DetailView):
                 self.pledge_added = True
             else:
                 self.pledge_added = False
-        
-        #TODO redirect to not add pledge page
-        #p_id = kwargs['project_id']
+
             return redirect(reverse('projects:details', kwargs={'project_id':kwargs['project_id']}))
         return super(ProjectDetailsView,self).get(request, *args, **kwargs)    
     
