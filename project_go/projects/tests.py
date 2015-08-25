@@ -206,40 +206,40 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.login()
         
         #delete pledge for own project
-        res=self.client.get(reverse('projects:deletepledge', kwargs={'project_id':self.user_pledges[0].project.id,
-                                                                       'P_R_id':self.user_pledges[0].id}))
+        res=self.client.get(reverse('projects:delete_pledge', kwargs={'project_id':self.new_projects[0].id,
+                                                                       'P_R_id':self.new_projects[0].project_pledges.all()[0].id}))
         self.assertEqual(res.status_code, 302)  
-        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.user_pledges[0].project.id}))
+        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.new_projects[0].id}))
         
         #delete pledge for not own project
-        res=self.client.get(reverse('projects:deletepledge', kwargs={'project_id':self.not_user_pledges[0].project.id,
+        res=self.client.get(reverse('projects:delete_pledge', kwargs={'project_id':self.not_user_pledges[0].project.id,
                                                                        'P_R_id':self.not_user_pledges[0].id}))
         self.assertEqual(res.status_code, 302)  
         self.assertRedirects(res, reverse('projects:manage'))        
         
         #delete nonexistent pledge
-        res=self.client.get(reverse('projects:deletepledge', kwargs={'project_id':self.user_pledges[0].project.id,
+        res=self.client.get(reverse('projects:delete_pledge', kwargs={'project_id':self.user_pledges[0].project.id,
                                                                        'P_R_id':9876543210}))
         self.assertEqual(res.status_code, 404)          
         
-    def test_pledge_delete_id(self):
+    def test_reward_delete_id(self):
         #Should I test '@login_required'? 
         self.login()    
         
         #delete reward for own project
-        res=self.client.get(reverse('projects:deletereward',kwargs={'project_id':self.user_rewards[0].project.id,
-                                                                       'P_R_id':self.user_rewards[0].id}))
+        res=self.client.get(reverse('projects:delete_reward',kwargs={'project_id':self.new_projects[0].id,
+                                                                       'P_R_id':self.new_projects[0].project_pledges.all()[0].rewards.all()[0].id}))
         self.assertEqual(res.status_code, 302)
-        #self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.user_rewards[0].project.id}))
+        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id':self.new_projects[0].id}))
         
         #delete reward for not own project
-        res=self.client.get(reverse('projects:deletereward', kwargs={'project_id':self.not_user_rewards[0].project.id,
+        res=self.client.get(reverse('projects:delete_reward', kwargs={'project_id':self.not_user_rewards[0].project.id,
                                                                        'P_R_id':self.not_user_rewards[0].id}))
         self.assertEqual(res.status_code, 302)  
         self.assertRedirects(res, reverse('projects:manage'))                
 
         #delete nonexistent reward
-        res=self.client.get(reverse('projects:deletereward', kwargs={'project_id':self.user_rewards[0].project.id,
+        res=self.client.get(reverse('projects:delete_reward', kwargs={'project_id':self.user_rewards[0].project.id,
                                                                        'P_R_id':9876543210}))
         self.assertEqual(res.status_code, 404)
         
@@ -271,7 +271,7 @@ class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
 class ProjectsListViewTestCase(BaseProjectsTestCase):
     all_categories = Category.objects.all()
     
-    def test_details(self):
+    def test_list(self):
         #categories
         res=self.client.get(reverse('projects:category', kwargs={'category_id':self.all_categories[0].id}))
         self.assertEqual(res.status_code, 200)

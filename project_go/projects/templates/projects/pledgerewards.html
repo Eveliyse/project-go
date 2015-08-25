@@ -23,7 +23,7 @@
                     {{ pledge.id }}
                     {{ pledge }}
                     <a class="edit" href="{% url 'projects:pledge' project.id pledge.id %}">Edit</a>
-                    <a class="edit" href="{% url 'projects:deletepledge' project.id pledge.id %}">Delete</a>
+                    <a class="edit" href="{% url 'projects:delete_pledge' project.id pledge.id %}">Delete</a>
                 </p>
             {% endfor %}
         </div>    
@@ -46,7 +46,7 @@
                 {{reward.id}}
                 {{reward}}
                 <a class="edit" href="{% url 'projects:reward' project.id reward.id %}">Edit</a>
-                <a class="edit" href="{% url 'projects:deletereward' project.id reward.id %}">Delete</a>
+                <a class="edit" href="{% url 'projects:delete_reward' project.id reward.id %}">Delete</a>
                 </p>
             {% endfor %}
         </div>
