@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <title>{% block title %}{% endblock %}</title>
         
+        <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -12,15 +13,18 @@
 
     <body>
         {% block header %}
-            <div>Page Header Things</div>
+            <div id="header">ProjectGO!</div>
         {% endblock %}
         
-        {% block content %}
-            <div>Page Content Things</div>
-        {% endblock %}
-        
+        <div id="content-wrapper">
+            <div id="content">
+                {% block content %}
+                    Page Content Things
+                {% endblock %}
+            </div>
+        </div>
         {% block footer %}
-            <div>Page Footer Things</div>
+            <div id="footer">Page Footer Things</div>
         {% endblock %}
     </body>
     <script>

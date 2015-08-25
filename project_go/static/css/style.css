@@ -1,7 +1,130 @@
+/********************************/
+/*****    Basic Elements    *****/
+/********************************/
 body {
-    background-color: aquamarine;
+    font-family: Avant Garde, Century Gothic, sans-serif;
+    font-size: 1em;
+    color: #444;   
+    line-height: 1.25em;
+    letter-spacing: 0.02em;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+
+/*************************/
+/*****    Headers    *****/
+/*************************/
+h1, h2, h3, h4 {
+    padding: 0 0 15px 0;
+    box-sizing: border-box;
+    color: #000;
+    line-height: 1em;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+h4 {
+    font-size: 1.30em;
+}
+
+
+/************************************/
+/*****    Text, Fonts, Lists    *****/
+/************************************/
+strong, b {
+    color: #000;
+    font-weight: bold;
 }
 
 p {
-    color: red;
+    margin-bottom: 10px;
+}
+
+ol, ul {
+    margin: 10px 45px;
+}
+
+ol {
+    list-style: decimal outside;
+}
+
+ul {
+    list-style: disc outside;
+}
+
+
+/***********************/
+/*****    Links    *****/
+/***********************/
+a {
+    color: deepskyblue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    color: deepskyblue;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+/**********************************/
+/*****    Inputs and Forms    *****/
+/**********************************/
+
+
+
+/********************************************/
+/*****    Structural Custom Elements    *****/
+/********************************************/
+#header {
+    background-color:deepskyblue;
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+#footer {
+    background-color: #ccc;
+    width: 100%;
+    padding: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+#content-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+#content{
+    width: 75%;
+    min-width: 900px;
+    max-width: 1250px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.content-card {
+    margin: 10px auto;
+    padding: 30px;
+    box-shadow: 0 0 20px -3px #dcdcdc;
 }

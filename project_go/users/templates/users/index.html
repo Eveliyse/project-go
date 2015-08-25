@@ -1,9 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<p>Hai {{ user.username }}</p>
-{% else %}
-<p>You're not logged in!</p>
-{% endif %}
+    <div class="content-card">
+        {% if user.is_authenticated %}
+            <p>Hai {{ user.username }}</p>
+        {% else %}
+            <p>You're not logged in!</p>
+        {% endif %}
+
+        <h1>H1 Header</h1>
+        <h2>H2 Header</h2>
+        <h3>H3 Header</h3>
+        <h4>H4 Header</h4>
+        <p>Lorem Ipsum lalala many words so much wow too much wow for me. Here ya go have some <strong>bold words</strong> cause <strong>bold words</strong> are totally cool right? You know what? Why don't you have some links too? <a href="">Here</a>. Go on, have as many as you want. <a href="">One Link</a> <a href="">Two Link</a> <a href="">Three Link</a> <a href="">Four</a> You know what?...we forgot something...LISTS! We can't do a proper layout without some beautiful lists! Let's start with an ordered list and then an unordered one.</p>
+        <ol>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>List Item 3</li>
+            <li>List Item 4</li>
+            <li>List Item 5</li>
+        </ol>
+        
+        <ul>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>List Item 3</li>
+            <li>List Item 4</li>
+            <li>List Item 5</li>
+        </ul>
+    </div>
 {% endblock %}
