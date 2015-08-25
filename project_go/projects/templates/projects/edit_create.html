@@ -34,8 +34,27 @@
 {% endblock %}
             
 {% block jscript %}
-    $('.edit').click(function(event) {
-        event.preventDefault();
-        $("#pledge-rewards").load(this.href);
+
+    $('#pledge-rewards').on('click', '.edit', function(event) {
+      event.preventDefault();
+
+      $('#pledge-rewards').load(this.href + ' #pledge-rewards > *');
+   });
+
+    $('#pledge-rewards').on('submit', '.pledgereward' , function () {
+        var frm = $(this);
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                $("#pledge-rewards").empty().append(data);
+            },
+            error: function(data) {
+                $("#pledge-rewards").html("Something went wrong!");
+            }
+        });
+        return false;
     });
+
 {% endblock %}

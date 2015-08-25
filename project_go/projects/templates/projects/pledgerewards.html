@@ -7,15 +7,15 @@
     <div id="pledge-rewards">
         <div id="pledge-form">
             {% if mode == "pledge" %}
-                <form id="pledges" method="post" action="{% url 'projects:pledge' project.id instance.id%}">
+                <form class="pledgereward" method="post" action="{% url 'projects:pledge' project.id instance.id%}">
             {% else %}
-                <form id="pledges" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+                <form class="pledgereward" method="post" action="{% url 'projects:pledgerewards' project.id %}">
             {% endif %}
                 {% csrf_token %}
                 <table>
                 {{ form2.as_table }}
             </table>
-            <input type="submit" name="pledge" value="Save Pledge" />
+            <input type="submit" value="Save Pledge" />
             </form>
             
             {% for pledge in pledges %}
@@ -30,15 +30,15 @@
         <div id="reward-form">
             
             {% if mode == "reward" %}
-                <form id="rewards" method="post" action="{% url 'projects:reward' project.id instance.id%}">
+                <form class="pledgereward" method="post" action="{% url 'projects:reward' project.id instance.id%}">
             {% else %}
-                <form id="rewards" method="post" action="{% url 'projects:pledgerewards' project.id %}">
+                <form class="pledgereward" method="post" action="{% url 'projects:pledgerewards' project.id %}">
             {% endif %}
                 {% csrf_token %}
                 <table>
                     {{ form3.as_table }}
                 </table>
-                <input type="submit" name="reward" value="Save Reward" />
+                <input type="submit" value="Save Reward" />
             </form>
             
             {% for reward in rewards %}
@@ -53,45 +53,4 @@
     </div>
     {% endif %}
             
-{% endblock %}
-{% block jscript %}
-    
-    $('.edit').click(function(event) {
-      event.preventDefault();
-
-      $('#pledge-rewards').load(this.href);
-   });
-
-    var frm2 = $("#pledges");
-    frm2.submit(function () {
-        $.ajax({
-            type: frm2.attr('method'),
-            url: frm2.attr('action'),
-            data: frm2.serialize(),
-            success: function (data) {
-                $("#pledge-rewards").empty().append(data);
-            },
-            error: function(data) {
-                $("#pledge-rewards").html("Something went wrong!");
-            }
-        });
-        return false;
-    });
-    
-    var frm = $("#rewards");
-    frm.submit(function () {
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function (data) {
-                $("#pledge-rewards").empty().append(data);
-            },
-            error: function(data) {
-                $("#pledge-rewards").html("Something went wrong!");
-            }
-        });
-        return false;
-    });
-    
 {% endblock %}

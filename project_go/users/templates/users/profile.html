@@ -60,13 +60,13 @@
 
 {% block jscript %}
 
-    $(document).on('click', '.edit', function(event) {
+    $('#current-address').on('click', '.edit', function(event) {
       event.preventDefault();
 
       $('#current-address').load(this.href + ' #current-address > *');
    });
 
-    $(document).on('submit', '#edit-address', function () {
+    $('#current-address').on('submit', '#edit-address', function () {
         var frm = $(this);
         $.ajax({
             type: frm.attr('method'),
