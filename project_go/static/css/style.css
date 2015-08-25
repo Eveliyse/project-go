@@ -13,6 +13,31 @@ div {
     box-sizing: border-box;
 }
 
+table {
+    margin: 25px auto;
+    border-collapse: collapse;
+}
+
+tr, th, td {
+    padding: 10px;
+}
+
+
+/********************************/
+/*****    Helper Classes    *****/
+/********************************/
+.clear {
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
 
 /*************************/
 /*****    Headers    *****/
@@ -88,7 +113,45 @@ a:active {
 /**********************************/
 /*****    Inputs and Forms    *****/
 /**********************************/
+input[type=submit] {
+    background-color:deepskyblue;
+    padding: 10px;
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0px #bbb;
+}
 
+input[type=submit]:hover {
+    top: -5px;
+    left: -5px;
+    box-shadow: 5px 5px 5px 0px #bbb;
+}
+
+.form-table tr:nth-child(odd) {
+    background-color:aliceblue;
+}
+
+#register-form table tr th {
+    width: 140px;
+}
+
+#register-form table tr td {
+    width: 300px;
+}
+
+
+
+/*****    form errors    *****/
+.errorlist {
+    margin: 0;
+}
+
+.errorlist li {
+    list-style-type: none;
+    font-size: 0.85em;
+    color: firebrick;
+}
 
 
 /********************************************/

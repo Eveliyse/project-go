@@ -11,7 +11,7 @@ class Gender(models.Model):
 class Member(models.Model):
     user = models.OneToOneField(User)
     dob = models.DateField('Date of Birth')
-    gender = models.ForeignKey(Gender, blank = True)
+    gender = models.ForeignKey(Gender)
     
     def __str__(self):
         return self.user.username   
@@ -35,7 +35,7 @@ class Address(models.Model):
                                     ),
                                 ])
     country = models.ForeignKey(Country)
-    active = models.BooleanField(blank = True)
+    active = models.BooleanField(blank = True, default = True)
     
     def __str__(self):
         return self.line_1 + ", " + self.line_2 + ", " + self.town + ", " + self.postcode

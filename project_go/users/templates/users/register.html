@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="content-card">
+        <h1>Register</h1>
+        <p>Fill out the form below to start creating your own projects and contributing to others.</p>
+        
+        {% if form.errors %}
+            {{ form.name_of_field.errors }}
+        {% endif %}
 
-{% if form.errors %}
-{{ form.name_of_field.errors }}
-{% endif %}
+        <form id="register-form" class="form-table" method="post" action="{% url 'users:register' %}">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+                {{ form2.as_table }}
+                {{ form3.as_table }}
+            </table>
 
-<form method="post" action="{% url 'users:register' %}">
-{% csrf_token %}
-<table>
-    {{ form.as_table }}
-    {{ form2.as_table }}
-    {{ form3.as_table }}
-</table>
-
-<input type="submit" value="Register" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
+            <input class="right" type="submit" value="Sign me up!" />
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="clear"></div>
+        </form>
+    </div>
 {% endblock %}

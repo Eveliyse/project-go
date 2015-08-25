@@ -181,7 +181,11 @@ def Register(request):
             #TODO redirect somewhere more sensible? login?
             return redirect(reverse('users:login'))
         else:
-            return  HttpResponse("Boooom")        
+            return render_to_response('users/register.html', {
+            'form': user_create_form,
+            'form2': user_details_form,
+            'form3': user_address_form,
+            }, context_instance=RequestContext(request))      
     elif not request.user.is_authenticated():
         user_create_form = UserCreateForm()
         user_details_form = MemberDetailsForm()
