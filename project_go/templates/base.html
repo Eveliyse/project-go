@@ -1,7 +1,12 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
-        <title>{% block page-title %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     </head>
 

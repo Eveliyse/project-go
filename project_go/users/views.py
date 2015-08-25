@@ -12,7 +12,7 @@ from users.forms import MemberAddressForm, MemberDetailsForm, UserCreateForm, Us
 
 #placeholder for now
 def Index(request):
-    return render(request, 'users/index.html')
+    return render_to_response("users/index.html", context_instance=RequestContext(request)) 
 
 def Profile(request, user_id=None):
     """ If the user is viewing own profile then let them edit things
