@@ -23,6 +23,7 @@ body {
 
 div {
     box-sizing: border-box;
+    text-align: left;
 }
 
 table {
@@ -49,6 +50,15 @@ tr, th, td {
 
 .right {
     float: right;
+}
+
+.center-parent {
+    text-align: center;
+}
+
+.center-child {
+    margin: inherit auto;
+    display: inline-block;
 }
 
 .v-center {
@@ -279,9 +289,11 @@ input, select {
     width: 190px;
     min-height: 200px;
     padding: 15px;
-    margin: 15px 10px 5px;
+    margin: 15px 7px 5px;
     box-shadow: 0 0 10px -3px var(--card-shadow-color);
     position: relative;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .project-card-img {

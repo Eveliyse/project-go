@@ -21,8 +21,9 @@
     </div>
     <div class="content-card">
         <h2>{{ userobj.username }}'s Contributions</h2>
+        <div class="center-parent">
         {% for project in projects %}
-            <div class="project-card left">
+            <a href="{% url 'projects:details' project.id %}"><div class="project-card">
                 <div class="card-header">
         <b>{{ project.title }}</b>
     </div>
@@ -33,8 +34,9 @@
             </br>{{ project.pledged_percent }}% to £{{ project.goal }}
             </p>    
             </div>
+</a>
         {% endfor %}
-        <div class="clear"></div>
+        </div>
     </div>
 
     {% else %}
@@ -55,20 +57,18 @@
         </div>
 
         <div class="content-card">
-            <div id="current-address" class="center-parent">
+            <div id="current-address">
                 <h2>Your Addresses</h2>
-                <div class="center-child">
+                <div class="center-parent">
                 {% for address in user_addresses %}
                     {% include "users/includes/address_card.html" %}
                 {% endfor %}
-
-                    <a class="edit" href="{% url 'users:add_address' %}"><div class="address-card action-card left">
+                    <a class="edit" href="{% url 'users:add_address' %}"><div class="address-card action-card">
                         + Add Address
                     </div></a>
-                <div class="clear"></div>
+                </div>
             </div>
         </div>
-    </div>
         <div class="content-card">
             <h2>Your Contributions</h2>
             {% for userpledge in userpledges %}
