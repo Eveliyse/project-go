@@ -1,26 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-<form method="post" action="{% url 'users:login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+    <div class="content-card">
+        <form method="post" action="{% url 'users:login' %}">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            {% if form.errors %}
+                <span>Your username and password didn't match. Please try again.</span>
+            {% endif %}
+            <input class="right" type="submit" value="Login" />
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div class="clear"></div>
+        </form>
+    </div>
 
 {% endblock %}

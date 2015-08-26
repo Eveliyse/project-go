@@ -1,0 +1,20 @@
+<div class="address-card left">
+    <p>
+        <b>{{ address.line_1 }}</b>
+        {% if address.line_2 %}
+            </br>{{ address.line_2 }}
+        {% endif %}
+        </br>{{ address.town }}
+        </br>{{ address.postcode }}
+        </br>{{ address.country }}
+    </p>
+    
+    <div class="card-footer">
+        <a class="edit" href="{% url 'users:edit_address' address.id %}"><span class="octi-margin mega-octicon octicon-pencil"></span></a>
+        <a class="edit" href="{% url 'users:delete_address' address.id %}"><span class="octi-margin mega-octicon octicon-trashcan"></span></a>
+    </div>
+                            
+    <div class="hidden">
+        <span class="octi-margin mega-octicon octicon-pencil"></span>
+    </div>
+</div>

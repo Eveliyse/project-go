@@ -50,8 +50,8 @@ def Profile(request, user_id=None):
     user_edit_form = UserEditForm(instance = user)
     
     #get user pledged projects for display
-    userpledges = UserPledge.objects.filter(user_id = request.user.id)
-    pledge_projects = Project.objects.filter(project_pledges__pledged_users__user_id = request.user.id)
+    userpledges = UserPledge.objects.filter(user_id = u_id)
+    pledge_projects = Project.objects.filter(project_pledges__pledged_users__user_id = u_id)
 
     #if user is viewing own profile then create forms for editing details and fetch data to display.
     #else the user is viewing not own profile so just process the 1 form
@@ -95,7 +95,8 @@ def EditAddAddress(request, address_id=None):
             user_address_form = MemberAddressForm(data=request.POST, instance=address)
             if user_address_form.is_valid():
                 user_address_form.save()
-        user_address_form = MemberAddressForm(instance=address)  
+        else:
+            user_address_form = MemberAddressForm(instance=address)  
     else:
         #if post then user is trying to add a new address
         if request.method == "POST":

@@ -1,61 +1,85 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% if user.id  != userobj.id %}
-    <p>{{ userobj.username }}</p>
-    <table>
-        <tbody>
-            {% for field in form %}
-            <tr>
-                <th>
-                    <label for="id_user-first_name">{{ field.label_tag }}</label>
-                </th>
-                <td>
-                    {{ field.value }}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{{ projects }}
-{% else %}
-    <p>Hai {{ user.username }} this is your profile page</p>
-    <form method="post" action="{% url 'users:profile' %}">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-            {{ form2.as_table }}
-            {{ form3.as_table }}
-        </table>
-        <input type="submit" value="Save Changes" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-
-<div>
-<p>Your Addresses</p>
-    
-    <div id="current-address">
-         {% for address in user_addresses %}
-    <p>
-        {{ address.id }}
-        {{ address.line_1 }}
-        {{ address.line_2 }}
-        {{ address.town }}
-        {{ address.postcode }}
-        
-      <a class="edit" href="{% url 'users:edit_address' address.id %}">Edit</a>    <a class="edit" href="{% url 'users:delete_address' address.id %}">Delete</a></p>
-    {% endfor %}
-        <a class="edit" href="{% url 'users:add_address' %}">Add</a>
+    {% if user.id  != userobj.id %}
+        <div class="content-card">
+            <h1>{{ userobj.username }}'s Profile</h1>
+            <table class="form-table">
+                <tbody>
+                    {% for field in form %}
+                        <tr>
+                            <th>
+                                <label for="id_user-first_name">{{ field.label_tag }}</label>
+                            </th>
+                            <td>
+                                {{ field.value }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     </div>
-</div>
+    <div class="content-card">
+        <h2>{{ userobj.username }}'s Contributions</h2>
+        {% for project in projects %}
+            <div class="project-card left">
+                <div class="card-header">
+        <b>{{ project.title }}</b>
+    </div>
+            <div class="project-card-img"><img src="{{ project.image.url }}"></div>
+            <p>
+            {{ project.short_desc }}
+            </br><b>{{ project.status }}</b>
+            </br>{{ project.pledged_percent }}% to £{{ project.goal }}
+            </p>    
+            </div>
+        {% endfor %}
+        <div class="clear"></div>
+    </div>
 
-{% for userpledge in userpledges %}
-    <p>{{ userpledge.pledge.project.title }}
-    {{ userpledge.pledge }}
-        </p>
-{% endfor %}
+    {% else %}
+        <div class="content-card">
+            <h1>Hello {{ user.username }}</h1>
+            <p>This is your profile page. Feel free to change your details, associated addresses or just view your past pledges.</p>
+            <form method="post" action="{% url 'users:profile' %}">
+                {% csrf_token %}
+                <table class="form-table">
+                    {{ form.as_table }}
+                    {{ form2.as_table }}
+                    {{ form3.as_table }}
+                </table>
+                <input class="right" type="submit" value="Save Changes" />
+                <input type="hidden" name="next" value="{{ next }}" />
+                <div class="clear"></div>
+            </form>
+        </div>
 
-{% endif %}
+        <div class="content-card">
+            <div id="current-address" class="center-parent">
+                <h2>Your Addresses</h2>
+                <div class="center-child">
+                {% for address in user_addresses %}
+                    {% include "users/includes/address_card.html" %}
+                {% endfor %}
+
+                    <a class="edit" href="{% url 'users:add_address' %}"><div class="address-card action-card left">
+                        + Add Address
+                    </div></a>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+        <div class="content-card">
+            <h2>Your Contributions</h2>
+            {% for userpledge in userpledges %}
+                <p>
+                    {{ userpledge.pledge.project.title }}
+                    {{ userpledge.pledge }}
+                </p>
+            {% endfor %}
+        </div>
+
+    {% endif %}
 {% endblock %}
 
 {% block jscript %}
@@ -67,13 +91,13 @@
    });
 
     $('#current-address').on('submit', '#edit-address', function () {
-        var frm = $(this);
+    var frm = $(this);
         $.ajax({
             type: frm.attr('method'),
             url: frm.attr('action'),
             data: frm.serialize(),
             success: function (data) {
-                $("#current-address").html($(data).filter("#current-address").children());
+                $("#current-address").html($(data).find("#current-address").html());
             },
             error: function(data) {
                 $("#current-address").html("Something went wrong!");
