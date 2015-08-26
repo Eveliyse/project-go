@@ -2,8 +2,12 @@
 
 {% block content %}
 
-<p>{{ pledge }}</p>
-
+<div class="center-parent"><p>{{ pledge }}</p>
+    </div>
+<div class="center-parent">
+    <img src="{{ project.image.url }}">
+</div>
+<div class="content-card">
 {{ project.title }}
 {{ project.owner }}
 {{ project.goal }}
@@ -12,8 +16,11 @@
 {{ project.pledgers }}pledgers
 is funded={{ project.is_funded }}
 {{ project.status }}
-<img src="{{ project.image.url }}">
+</div>
+<div class="content-card">
 {{ project.long_desc|safe }}
+</div>
+<div class="content-card">
 <p>PLEDGEREWARDS</p>
         {% for pledge in pledgerewards %}
             <p><a href="{% url 'projects:add_pledge' project.id pledge.id %}">{{ pledge.id }} {{ pledge }}</a> {{ pledge.count }}</p>
@@ -22,5 +29,5 @@ is funded={{ project.is_funded }}
         {% for pledger in pledgers %}
             <p>{{ pledger }}</p>
         {% endfor %}
-
+</div>
 {% endblock %}

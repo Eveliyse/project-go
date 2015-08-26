@@ -1,35 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="content-card">
     {% if project %}
+    <h1>Edit Project</h1>
         <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
     {% else %}
+    <h1>Create Project</h1>
         <form method="post" action="{% url 'projects:create' %}" enctype="multipart/form-data">
     {% endif %}
 
     {% csrf_token %}
-    <table>
+    <table class="form-table">
         {{ form.as_table }}
     </table>
 
     {% if project %}
         <img src="{{ project.image.url }}" />
-        <input type="submit" name="project" value="Save Project" />
+        <input class="right" type="submit" name="project" value="Save Project" />
+                
+    {% else %}
+        <input class="right" type="submit" name="project" value="Create Project" />
+        
+    {% endif %}        
+            <div class="clear"></div>
+        </form>
+    </div>
             
+    {% if project %}
+    <div class="content-card">
                 <div id="pledge-rewards">
+                    <h2>{{ project.title }} Pledge Rewards</h2>
         {% for pledge in pledges %}
             <p>{{ pledge }}</p>
         {% endfor %}
         <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit and delete pledges</a>
     </div>
-    {% else %}
-        <input type="submit" name="project" value="Create Project" />
-    {% endif %}        
-        </form>
-            
-            
-
     </div>
+{% endif %} 
             
 {% endblock %}
             
