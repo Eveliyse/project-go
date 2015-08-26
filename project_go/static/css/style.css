@@ -13,6 +13,7 @@
 /*****    Basic Elements    *****/
 /********************************/
 body {
+    min-width: 1024px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
     color: var(--main-font-color);   
@@ -161,13 +162,13 @@ a:hover {
 
 .nav ul {
     list-style-type: none;
-    margin: 0px;
+    margin: 0 15px;
 }
 
 .nav ul a {
     text-transform: uppercase;
-    font-size: 1.5em;
-    padding: 10px;
+    font-size: 1.4em;
+    padding: 6px;
 }
 
 .nav ul a:hover {
@@ -178,7 +179,7 @@ a:hover {
 
 .nav ul li{
     display: inline;
-    margin: 0 0 0 15px;
+    margin: 0 0 0 4px;
 }
 
 /**********************************/
@@ -200,6 +201,10 @@ input[type=submit]:hover {
     top: -5px;
     left: -5px;
     box-shadow: 5px 5px 5px 0px #bbb;
+}
+
+input[type=search] {
+
 }
 
 input, select {
@@ -271,12 +276,16 @@ input, select {
     text-align: center;
 }
 
-#content{
+#content {
     width: 75%;
     min-width: 900px;
     max-width: 1250px;
     margin: 0 auto;
     text-align: left;
+}
+
+#search {
+    margin: 0 25px;
 }
 
 .content-card {

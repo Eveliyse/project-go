@@ -23,6 +23,13 @@
                 </ul>
             </div>
             
+            <div id="search" class="left v-center">
+                <form method="get" action="{% url 'projects:search' %}">
+                    <input type="search">
+                    <input type="submit" value="S">
+                </form>
+            </div>
+            
             <div class="right nav v-center">
                 <a href="{% url 'users:login' %}">Login</a>/<a href="{% url 'users:register' %}">Register</a>
             </div>
