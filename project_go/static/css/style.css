@@ -13,6 +13,7 @@
 /*****    Basic Elements    *****/
 /********************************/
 body {
+    background-color: #f9f9f9;
     min-width: 1024px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
@@ -55,6 +56,7 @@ tr, th, td {
 
 .center-parent {
     text-align: center;
+    justify-content: center;
 }
 
 .center-child {
@@ -304,15 +306,19 @@ input, select {
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
 }
 
-.address-card, .project-card {
+.address-card, .project-card, .action-card {
     width: 190px;
     min-height: 200px;
     padding: 15px;
     margin: 15px 7px 5px;
-    box-shadow: 0 0 10px -3px var(--card-shadow-color);
+    box-shadow: 0 0 20px -3px var(--card-shadow-color);
     position: relative;
     display: inline-block;
     vertical-align: top;
+}
+
+.content-card, .address-card, .project-card {
+    background-color: #fff;
 }
 
 .project-card-img {
