@@ -1,0 +1,14 @@
+<div class="project-card project-flash-padding hover-parent">
+    <a href="{% url 'projects:details' project.id %}">
+        
+        <div class="project-card-img">
+            <img src="{{ project.image.url }}">
+            <div class="project-flash-card-short-desc hover-hidden">
+                <p><b>{{ project.title }}</b></p>
+                <p class="short-desc">
+                    {{ project.short_desc }}
+                </p> 
+        </div>
+        </div>
+    </a>
+</div>

@@ -50,7 +50,7 @@ class ProjectsIndexViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 200)            
         
 class ProjectsManageViewTestCase(BaseProjectsTestCase):
-    def test_manage(self):
+    def test_manage_projects(self):
         #not logged in
         res=self.client.get(reverse('projects:manage'))
         self.assertEqual(res.status_code, 302)
@@ -62,7 +62,7 @@ class ProjectsManageViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 200)    
         
 class ProjectsCreateViewTestCase(BaseProjectsTestCase):
-    def test_create(self):
+    def test_create_project(self):
         #not logged in
         res=self.client.get(reverse('projects:create'))
         self.assertEqual(res.status_code, 302)
@@ -75,7 +75,7 @@ class ProjectsCreateViewTestCase(BaseProjectsTestCase):
         self.assertIsNotNone(res.context['form'])
         
 class ProjectsEditViewTestCase(BaseProjectsTestCase):
-    def test_edit_project_id(self):
+    def test_edit_project(self):
         #Should I test '@login_required'?
         self.login()
 
@@ -102,7 +102,7 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 404)
         
 class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
-    def test_add_pledgerewards_id(self):
+    def test_add_pledgerewards(self):
         #Should I test '@login_required'?
         self.login()
         
@@ -130,7 +130,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         res=self.client.get(reverse('projects:pledgerewards', kwargs={'project_id':9876543210}))
         self.assertEqual(res.status_code, 404)        
 
-    def test_edit_pledge_id(self):
+    def test_edit_pledgereward(self):
         #Should I test '@login_required'?        
         self.login()
         
@@ -165,7 +165,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                                                                  'P_R_id':9876543210}))
         self.assertEqual(res.status_code, 404)
         
-    def test_edit_reward_id(self):
+    def test_edit_reward(self):
         #Should I test '@login_required'? 
         self.login()
         
@@ -201,7 +201,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 404)
 
 class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
-    def test_pledge_delete_id(self):
+    def test_delete_pledgereward(self):
         #Should I test '@login_required'? 
         self.login()
         
@@ -222,7 +222,7 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
                                                                        'P_R_id':9876543210}))
         self.assertEqual(res.status_code, 404)          
         
-    def test_reward_delete_id(self):
+    def test_delete_reward(self):
         #Should I test '@login_required'? 
         self.login()    
         
@@ -244,7 +244,7 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 404)
         
 class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
-    def test_details(self):
+    def test_view_project_details(self):
         #not logged in
         res=self.client.get(reverse('projects:details', kwargs={'project_id':self.all_projects[0].id}))
         self.assertEqual(res.status_code, 200)
@@ -271,7 +271,7 @@ class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
 class ProjectsListViewTestCase(BaseProjectsTestCase):
     all_categories = Category.objects.all()
     
-    def test_list(self):
+    def test_project_categories(self):
         #categories
         res=self.client.get(reverse('projects:category', kwargs={'category_id':self.all_categories[0].id}))
         self.assertEqual(res.status_code, 200)
@@ -279,6 +279,7 @@ class ProjectsListViewTestCase(BaseProjectsTestCase):
         res=self.client.get(reverse('projects:category', kwargs={'category_id':9876543210}))
         self.assertEqual(res.status_code,404)    
         
+    def test_project_search(self):
         #search
         res=self.client.get(reverse('projects:search'))
         self.assertEqual(res.status_code, 200)

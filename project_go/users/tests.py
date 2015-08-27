@@ -30,7 +30,7 @@ class UsersIndexViewTestCase(BaseUsersTestCase):
         self.assertEqual(res.status_code, 200)
 
 class UsersProfileViewTestCase(BaseUsersTestCase):        
-    def test_profile(self):
+    def test_viewing_own_profile(self):
         #view own profile
         #not logged in
         res=self.client.get(reverse('users:profile'))
@@ -44,7 +44,7 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['userobj'])
         
-    def test_profile_userid(self):
+    def test_viewing_other_user_profiles(self):
         #not logged in
         res=self.client.get(reverse('users:profile' , kwargs={'user_id':self.all_users[0].id}))
         self.assertEqual(res.status_code, 200)           
@@ -75,7 +75,7 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         self.assertEqual(res.status_code, 200)       
         self.assertIsNotNone(res.context['form'])
         
-    def test_edit_address_addressid(self):
+    def test_edit_address(self):
         #Should I test '@login_required'?        
         self.login()        
         

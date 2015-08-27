@@ -3,12 +3,8 @@
 {% block content %}
 {{ cat_name }}
 {{ search_term }}
-    {% for pledge in project_list %}
-        <p>{{ pledge.title }}
-{{ pledge.goal }}
-{{ pledge.pledged_percent }}%
-{{ pledge.short_desc }}
-<img src="{{ pledge.image.url }}"></p>
+    {% for project in project_list %}
+        {% include "projects/includes/project_card.html" %}
     {% endfor %}
 
 {% endblock %}

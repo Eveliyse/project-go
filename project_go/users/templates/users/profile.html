@@ -23,19 +23,7 @@
         <h2>{{ userobj.username }}'s Contributions</h2>
         <div class="center-parent flex">
         {% for project in projects %}
-            <div class="project-card">
-                <a href="{% url 'projects:details' project.id %}">
-                <div class="card-header">
-        <b>{{ project.title }}</b>
-    </div>
-            <div class="project-card-img"><img src="{{ project.image.url }}"></div>
-            <p>
-            {{ project.short_desc }}
-            </br><b>{{ project.status }}</b>
-            </br>{{ project.pledged_percent }}% to £{{ project.goal }}
-            </p>    
-        </a>
-            </div>
+            {% include "projects/includes/project_card.html" %}
         {% endfor %}
         </div>
     </div>

@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-{% for thing in newest_5 %}
-<p>{{ thing.title }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</p>
-{% endfor %}
-----------------------------
-{% for thing in most_pledged_5 %}
-<p>{{ thing.title }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</p>
-{% endfor %}
-
+    <div class="content-non-card">
+        <h2>Newest Projects</h2>
+        <div class="center-parent flex">
+            {% for project in newest_5 %}
+                {% include "projects/includes/project_flash_card.html" %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="content-non-card">
+        <h2>Most Pledged Projects</h2>
+        <div class="center-parent flex">
+            {% for project in most_pledged_5 %}
+                {% include "projects/includes/project_flash_card.html" %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

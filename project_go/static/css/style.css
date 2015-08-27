@@ -79,6 +79,15 @@ tr, th, td {
 .hidden {
     visibility: hidden;
 }
+
+.hover-hidden {
+    display: none;
+}
+
+.hover-parent:hover div {
+    display: block;
+}
+
 /*************************/
 /*****    Headers    *****/
 /*************************/
@@ -120,7 +129,7 @@ strong, b {
 }
 
 p {
-    margin-bottom: 10px;
+    margin: 5px 0;
 }
 
 ol, ul {
@@ -306,34 +315,63 @@ input, select {
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
 }
 
+.content-card, .address-card, .project-card {
+    background-color: #fff;
+}
+
 .address-card, .project-card, .action-card {
     width: 190px;
     min-height: 200px;
     padding: 15px;
-    margin: 15px 7px 5px;
+    margin: 15px 10px 5px;
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
     position: relative;
     display: inline-block;
     vertical-align: top;
 }
 
-.content-card, .address-card, .project-card {
-    background-color: #fff;
+.project-card {
+    width: 240px;
 }
-
 .project-card-img {
-    width: 190px;
-    height: 190px;
+    width: 240px;
+    height: 200px;
     overflow: hidden;
     margin: 0 -15px;
     border-bottom: 1px solid var(--card-shadow-color);
+    position: relative;
 }
 
 .project-card-img img{
+    height: 100%;
+    min-width:  100%;
+    min-height: 200px;
+    object-fit: cover;
+}
+
+.project-card a {
+    color: var(--main-font-color);
+}
+
+.project-card > a:hover {
+    text-decoration: none;
+}
+
+.project-card .short-desc {
+    font-size: 0.9em;
+}
+
+.project-flash-padding {
+    padding: 15px 15px 0 15px;
+}
+
+.project-flash-card-short-desc {
+    background-color: rgba(255,255,255,0.75);
+    position:absolute;
+    top: 0px;
     width: 100%;
     height: 100%;
-    min-width: 190px;
-    min-height: 190px;
+    padding: 15px;
 }
 
 .action-card {
