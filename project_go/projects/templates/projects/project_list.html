@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ cat_name }}
-{{ search_term }}
-    {% for project in project_list %}
-        {% include "projects/includes/project_card.html" %}
-    {% endfor %}
-
+<div class="content-non-card">
+    {% if cat_name %}
+        <h1>Projects in {{ cat_name }}</h1>
+    {% elif search_term %}
+        <h1>Searched: {{ search_term }}</h1>
+    {% endif %}
+    <div class="center-parent flex">
+        {% for project in project_list %}
+            {% include "projects/includes/project_card.html" %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
