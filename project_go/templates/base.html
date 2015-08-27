@@ -14,7 +14,7 @@
     </head>
 
     <body>
-        <div id="header"><p id="title" class="left v-center">ProjectGO!</p>
+        <div id="header"><p id="title" class="left v-center"><a href="{% url 'projects:index' %}">ProjectGO!</a></p>
             
             <div class="left nav v-center">
                 <ul>
@@ -31,7 +31,11 @@
             </div>
             
             <div class="right nav v-center">
-                <a href="{% url 'users:login' %}">Login</a>/<a href="{% url 'users:register' %}">Register</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'users:profile' %}">Profile</a> ◦ <a href="{% url 'projects:manage' %}">Manage</a> ◦ <a href="{% url 'users:logout' %}">Logout</a>
+                {% elif not user.is_authenticated %}
+                    <a href="{% url 'users:login' %}">Login</a> ◦ <a href="{% url 'users:register' %}">Register</a>
+                {% endif %}
             </div>
             <div class="clear"></div>
             

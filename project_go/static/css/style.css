@@ -160,7 +160,16 @@ a:hover {
 }
 
 
-/*****    header link    *****/
+/*****    header links    *****/
+#title a {
+    color: var(--main-font-color);
+}
+
+#title a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
 .nav {
     display: inline-block;
     color: #fff;
