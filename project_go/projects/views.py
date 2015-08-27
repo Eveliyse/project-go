@@ -63,15 +63,27 @@ class ManageProjectsView(LoginRequiredMixin, TemplateView):
         # Call the base implementation first to get a context
         context = super(ManageProjectsView, self).get_context_data(**kwargs)
         
-        newest_1=Project.objects.filter(owner=self.request.user).order_by('created_date')[:5]
-        newest_2=newest_1.annotate(
+        new_status = Status.objects.get(status = "New")
+        open_status = Status.objects.get(status = "Open")
+        closed_status = Status.objects.get(status = "Closed")         
+        
+        user_projects=Project.objects.filter(owner=self.request.user)
+        up_amount_sum=user_projects.annotate(
                             current_pledged=Coalesce(
                                 Sum('project_pledges__pledged_users__pledge__amount'),0.00))
-        newest_5=newest_2.annotate(
+        up_sum_percent=up_amount_sum.annotate(
                             current_percent=Coalesce(
                                 (F('current_pledged')*100.00)/F('goal'),0))        
         
-        context['user_projects'] = newest_5
+        up_sum_percent_new=up_sum_percent.filter(status=new_status)
+        up_sum_percent_open=up_sum_percent.filter(status=open_status)
+        up_sum_percent_closed=up_sum_percent.filter(status=closed_status)
+        
+        context['user_projects'] = up_sum_percent
+        context['user_projects_new'] = up_sum_percent_new
+        context['user_projects_open'] = up_sum_percent_open
+        context['user_projects_closed'] = up_sum_percent_closed
+        
         return context
 
 class CreateProjectView(LoginRequiredMixin, CreateView):
@@ -310,8 +322,10 @@ class ProjectListView(ListView):
         if 'search_term' in request.GET:
             search_term = self.request.GET['search_term']
             if search_term is not None and len(search_term) > 0:
+                open_status=Status.objects.get(status="Open")
                 search_term_list = search_term.split()
-                search_results =  Project.objects.filter(reduce(lambda x, y: x | y, [Q(title__contains=word) for word in search_term_list]))
+                
+                search_results =  Project.objects.filter(reduce(lambda x, y: x | y, [Q(title__contains=word) for word in search_term_list]), status = open_status)
                 if search_results:
                     self.queryset = search_results
                 else:
@@ -319,9 +333,13 @@ class ProjectListView(ListView):
         return super(ProjectListView,self).get(request, *args, **kwargs)
         
     def get_queryset(self):
+        open_status=Status.objects.get(status="Open")
         if 'category_id' in self.kwargs and self.kwargs['category_id'] is not None:
             get_object_or_404(Category, id = self.kwargs['category_id'])
-            return Project.objects.filter(category_id = self.kwargs['category_id'])
+            
+            return Project.objects.filter(category_id = self.kwargs['category_id'], status = open_status)
+        else:
+            return Project.objects.filter(status = open_status)
         return super(ProjectListView,self).get_queryset()
     
     def get_context_data(self, **kwargs):

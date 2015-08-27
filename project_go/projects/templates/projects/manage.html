@@ -2,10 +2,36 @@
 
 {% block content %}
 
-Wheee manage projects
+<div class="content-non-card">
+<h2>New Projects</h2>
+    <div class="center-parent flex">
+    {% for project in user_projects_new %}
+        {% include "projects/includes/project_card.html" %}
+    {% endfor %}
+    <a href="{% url 'projects:create' %}">
+        <div class="action-card">
+            Create New Project
+        </div>
+    </a>
+        </div>
+</div>
+    
+{% if user_projects_open %}
+<div class="content-non-card">
+<h2>Open Projects</h2>
+    {% for project in user_projects_open %}
+        {% include "projects/includes/project_card.html" %}
+    {% endfor %}
+</div>
+{% endif %}
 
-{% for thing in user_projects %}
-<p><a href="{% url 'projects:edit' thing.id %}">{{ thing.title }} {{ thing.owner }} {{ thing.goal }} {{ thing.current_pledged }} {{ thing.current_percent }}</a> <a href="{% url 'projects:update_status' thing.id %}">{{ thing.status }}</a></p>
-{% endfor %}
+{% if user_projects_closed %}
+<div class="content-non-card">
+    <h2>Closed Projects</h2>
+        {% for project in user_projects_closed %}
+            {% include "projects/includes/project_card.html" %}
+        {% endfor %}
+</div>
+{% endif %}
 
 {% endblock %}

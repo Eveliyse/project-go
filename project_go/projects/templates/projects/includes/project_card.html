@@ -13,16 +13,21 @@
         </p> 
         
         <div class="card-footer">
+            {% if project.status != "New" %}
             <p class="center-parent">
                 <b>{{ project.status }}</b>
-                </br>{{ project.pledged_percent }}% Funded
+                    </br>{{ project.pledged_percent }}% Funded
             </p> 
+            {% else %}
+                <a class="edit" href="{% url 'projects:edit' project.id %}"><span class="octi-margin mega-octicon octicon-pencil"></span></a>
+        <a class="edit" href="{% url 'projects:update_status' project.id %}"><span class="octi-margin mega-octicon octicon-trashcan"></span></a>
+            {% endif %}
         </div>
 
         <div class="hidden">
             <p>
-                <b>{{ project.status }}</b>
-                </br>{{ project.pledged_percent }}% Funded
+                </br>
+                </br>
             </p> 
         </div>
     </a>
