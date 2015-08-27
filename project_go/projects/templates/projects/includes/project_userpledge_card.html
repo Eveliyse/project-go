@@ -1,0 +1,43 @@
+<div class="project-card hover-parent">
+    <a href="{% url 'projects:details' project.id %}">
+        <div class="card-header">
+            <b>{{ project.title }}</b>
+        </div>
+        
+        <div class="project-card-img">
+            <img src="{{ project.image.url }}">
+            <div class="project-flash-card-short-desc hover-hidden">
+                <p class="short-desc">
+                    <b>Your Pledge</b>
+                    </br>Amount: £{{ userpledge.pledge.amount }}
+                    </br><b>Your Rewards</b>
+                    <ul>
+                        {% for reward in userpledge.pledge.rewards.all %}
+                            <li>
+                                {{ reward }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </p>
+            </div>
+        </div>
+        
+        <p class="short-desc">
+            {{ project.short_desc }}
+        </p> 
+        
+        <div class="card-footer">
+            <p class="center-parent">
+                <b>{{ project.status }}</b>
+                </br>{{ project.pledged_percent }}% Funded
+            </p> 
+        </div>
+
+        <div class="hidden">
+            <p>
+                <b>{{ project.status }}</b>
+                </br>{{ project.pledged_percent }}% Funded
+            </p> 
+        </div>
+    </a>
+</div>

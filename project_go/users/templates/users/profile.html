@@ -60,12 +60,11 @@
         </div>
         <div class="content-card">
             <h2>Your Contributions</h2>
-            {% for userpledge in userpledges %}
-                <p>
-                    {{ userpledge.pledge.project.title }}
-                    {{ userpledge.pledge }}
-                </p>
-            {% endfor %}
+            <div class="center-parent flex">
+                {% for userpledge in userpledges %}
+                    {% include "projects/includes/project_userpledge_card.html" with project=userpledge.pledge.project %}
+                {% endfor %}
+            </div>
         </div>
 
     {% endif %}
