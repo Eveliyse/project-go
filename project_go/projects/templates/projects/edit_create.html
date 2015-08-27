@@ -5,6 +5,11 @@
     {% if project %}
     <h1>Edit Project</h1>
         <form method="post" action="{% url 'projects:edit' project.id %}" enctype="multipart/form-data">
+            <div class="center-parent">
+                <div class="project-card-img center-child">
+                    <img src="{{ project.image.url }}" />
+                </div>    
+            </div>
     {% else %}
     <h1>Create Project</h1>
         <form method="post" action="{% url 'projects:create' %}" enctype="multipart/form-data">
@@ -16,7 +21,6 @@
     </table>
 
     {% if project %}
-        <img src="{{ project.image.url }}" />
         <input class="right" type="submit" name="project" value="Save Project" />
                 
     {% else %}
@@ -25,17 +29,26 @@
     {% endif %}        
             <div class="clear"></div>
         </form>
+            <div class="clear"></div>
     </div>
             
     {% if project %}
-    <div class="content-card">
-                <div id="pledge-rewards">
-                    <h2>{{ project.title }} Pledge Rewards</h2>
-        {% for pledge in pledges %}
-            <p>{{ pledge }}</p>
-        {% endfor %}
-        <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">Edit and delete pledges</a>
-    </div>
+    
+    <div id="pledge-rewards">
+        <div class="content-non-card">    
+            <h2>{{ project.title }} Pledge Rewards</h2>
+            <div class="center-parent flex">
+                {% for pledgereward in pledgerewards %}
+                    {% include "projects/includes/pledgereward_card.html" %}
+                {% endfor %}
+                
+                <a class="edit" href="{% url 'projects:pledgerewards' project.id %}">
+                    <div class="address-card action-card">
+                        Manage Pledges and Rewards
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 {% endif %} 
             
@@ -56,7 +69,7 @@
             url: frm.attr('action'),
             data: frm.serialize(),
             success: function (data) {
-                $("#pledge-rewards").empty().append(data);
+                $("#pledge-rewards").html($(data).find("#pledge-rewards").html());
             },
             error: function(data) {
                 $("#pledge-rewards").html("Something went wrong!");

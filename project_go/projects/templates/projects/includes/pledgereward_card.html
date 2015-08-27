@@ -1,0 +1,21 @@
+<div class="pledgereward-card">
+    <p>
+        <b>Amount: £{{ pledgereward.amount }}</b>
+        <ul class="reward-list">
+            {% for reward in pledgereward.rewards.all %}
+                <li>
+                    {{ reward }}
+                </li>
+            {% endfor %}
+        </ul>
+    </p>
+    
+    <div class="card-footer">
+        <a class="edit" href="{% url 'projects:pledge' pledgereward.project.id pledgereward.id %}"><span class="octi-margin mega-octicon octicon-pencil"></span></a>
+        <a class="edit" href="{% url 'projects:delete_pledge' pledgereward.project.id pledgereward.id %}"><span class="octi-margin mega-octicon octicon-trashcan"></span></a>
+    </div>
+                            
+    <div class="hidden">
+        <span class="octi-margin mega-octicon octicon-pencil"></span>
+    </div>
+</div>

@@ -147,6 +147,22 @@ ul {
 .octi-margin {
     margin: 0 15px;
 }
+
+.nav ul {
+    list-style-type: none;
+    margin: 0 15px;
+}
+
+.nav ul li{
+    display: inline;
+    margin: 0 0 0 4px;
+}
+
+ul.reward-list {
+    margin: 5px 15px;
+    font-size: 0.85em;
+}
+
 /***********************/
 /*****    Links    *****/
 /***********************/
@@ -183,11 +199,6 @@ a:hover {
     color: var(--main-font-color);
 }
 
-.nav ul {
-    list-style-type: none;
-    margin: 0 15px;
-}
-
 .nav ul a {
     text-transform: uppercase;
     font-size: 1.4em;
@@ -205,10 +216,6 @@ a:hover {
     color: #fff;
 }
 
-.nav ul li{
-    display: inline;
-    margin: 0 0 0 4px;
-}
 
 /**********************************/
 /*****    Inputs and Forms    *****/
@@ -323,6 +330,11 @@ input, select {
     margin: 0 25px;
 }
 
+#project-hero-img {
+    width: 250px;
+    height:250px;
+}
+
 .content-non-card, .content-card, #explore-card {
     margin: 20px auto;
     padding: 30px;
@@ -336,7 +348,7 @@ input, select {
     background-color: #fff;
 }
 
-.address-card, .project-card, .action-card {
+.address-card, .project-card, .action-card, .pledgereward-card {
     width: 190px;
     min-height: 200px;
     padding: 15px;
@@ -347,7 +359,7 @@ input, select {
     vertical-align: top;
 }
 
-.project-card {
+.project-card, .pledgereward-card {
     width: 240px;
 }
 .project-card-img {

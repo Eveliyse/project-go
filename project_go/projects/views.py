@@ -113,7 +113,7 @@ def Edit(request, project_id=None):
     project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
     return render_to_response('projects/edit_create.html', {
         'form': project_edit_form,
-        'pledges' : Pledge.objects.filter(project__id = project_id),
+        'pledgerewards' : Pledge.objects.filter(project__id = project_id),
         'project': p}, context_instance=RequestContext(request))
 
 @login_required
