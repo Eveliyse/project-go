@@ -14,7 +14,7 @@
 /********************************/
 body {
     background-color: #f9f9f9;
-    min-width: 1024px;
+    min-width: 1150px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
     color: var(--main-font-color);   
@@ -171,13 +171,16 @@ a:hover {
 }
 
 .nav {
-    display: inline-block;
     color: #fff;
 }
 .nav a {
     display: inline-block;
-        font-weight: bold;
+    font-weight: bold;
     color: #fff;
+}
+
+.cat-links a {
+    color: var(--main-font-color);
 }
 
 .nav ul {
@@ -195,6 +198,11 @@ a:hover {
     background-color: #fff;
     color: var(--main-accent-color);
     text-decoration: none;
+}
+
+.cat-links ul a:hover {
+    background-color: var(--main-accent-color);
+    color: #fff;
 }
 
 .nav ul li{
@@ -315,16 +323,16 @@ input, select {
     margin: 0 25px;
 }
 
-.content-non-card, .content-card {
+.content-non-card, .content-card, #explore-card {
     margin: 20px auto;
     padding: 30px;
 }
 
-.content-card {
+.content-card, #explore-card {
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
 }
 
-.content-card, .address-card, .project-card {
+.content-card, .address-card, .project-card, #explore-card {
     background-color: #fff;
 }
 

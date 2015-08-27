@@ -327,8 +327,8 @@ class ProjectListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
         
-        if 'category_id' in kwargs and kwargs['category_id'] is not None:
-            context['cat_name'] = Category.objects.get(id = kwargs['category_id']).category
+        if 'category_id' in self.kwargs and self.kwargs['category_id'] is not None:
+            context['cat_name'] = get_object_or_404(Category, id = self.kwargs['category_id']).category
         elif 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is not None and len(search_term) > 0:        

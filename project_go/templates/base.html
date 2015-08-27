@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load projects_tags %}
 
 <!DOCTYPE html>
     <head>
@@ -44,6 +45,9 @@
         <div id="content-wrapper">
             
             <div id="content">
+                <div id="explore-card" class="card-animate-hidden nav cat-links center-parent">
+                    {% category_links %}
+                </div>
                 
                 {% block content %}
                     Page Content Things
