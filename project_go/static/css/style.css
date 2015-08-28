@@ -3,7 +3,7 @@
 /*************************/
 :root {
     --main-font-color: #444;
-    --card-shadow-color: #dcdcdc;
+    --card-shadow-color: rgba(150,150,150, 0.5);
     --main-accent-color: deepskyblue;
     --light-accent-color: aliceblue;
     --main-neutral-color: #ccc;
@@ -324,6 +324,7 @@ input, select {
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
+    box-shadow: 0 0 5px 3px var(--card-shadow-color);
 }
 
 #footer {
