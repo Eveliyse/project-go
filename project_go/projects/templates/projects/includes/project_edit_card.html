@@ -1,5 +1,5 @@
 <div class="project-card">
-    <a href="{% url 'projects:details' project.id %}">
+    <a href="{% url 'projects:edit' project.id %}">
         <div class="card-header">
             <b>{{ project.title }}</b>
         </div>
@@ -13,15 +13,12 @@
         </p> 
         
         <div class="card-footer">
-            <p class="center-parent">
-                <b>{{ project.status }}</b>
-                </br>{{ project.pledged_percent }}% Funded
-            </p> 
+            <a href="{% url 'projects:edit' project.id %}"><span class="octi-margin mega-octicon octicon-pencil"></span></a>
+            <a href="{% url 'projects:details' project.id %}"><span class="octi-margin mega-octicon octicon-eye"></span></a>
         </div>
 
         <div class="hidden">
             <p>
-                </br>
                 </br>
             </p> 
         </div>

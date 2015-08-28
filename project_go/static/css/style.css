@@ -80,6 +80,11 @@ tr, th, td {
     visibility: hidden;
 }
 
+
+.half-width {
+    width: 50%;
+}
+
 .hover-hidden {
     display: none;
 }
@@ -171,10 +176,29 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+p a:hover {
     text-decoration: underline;
 }
 
+a.button {
+    background-color:var(--main-accent-color);
+    padding: 10px;
+    position: relative;
+    border: none;
+    box-shadow: 0 0 3px 0px #bbb;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #fff;
+    display: block;
+    box-sizing: border-box;
+    margin: 0 10px 5px;
+    text-align: center;
+}
+
+a.button:hover {
+    background-color:var(--main-font-color);
+    color: #fff;
+}
 
 /*****    header links    *****/
 #title a {
@@ -183,7 +207,6 @@ a:hover {
 
 #title a:hover {
     color: #fff;
-    text-decoration: none;
 }
 
 .nav {
@@ -208,7 +231,6 @@ a:hover {
 .nav ul a:hover {
     background-color: #fff;
     color: var(--main-accent-color);
-    text-decoration: none;
 }
 
 .cat-links ul a:hover {
@@ -216,6 +238,9 @@ a:hover {
     color: #fff;
 }
 
+.mega-octicon:hover {
+    color: var(--main-font-color);
+}
 
 /**********************************/
 /*****    Inputs and Forms    *****/
@@ -225,7 +250,6 @@ input[type=submit] {
     padding: 10px;
     position: relative;
     border: none;
-    border-radius: 5px;
     box-shadow: 0 0 3px 0px #bbb;
     font-size: 1.2em;
     font-weight: bold;
@@ -233,9 +257,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    top: -5px;
-    left: -5px;
-    box-shadow: 5px 5px 5px 0px #bbb;
+    background-color:var(--main-font-color);
 }
 
 input[type=search] {
@@ -253,7 +275,6 @@ input, select {
     background-color: #fff;
     padding: 5px;
     border: 1px solid #bbb;
-    border-radius: 5px;
     box-shadow: none;
     text-shadow: none;
 }
@@ -344,13 +365,13 @@ input, select {
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
 }
 
-.content-card, .address-card, .project-card, #explore-card {
+.content-card, #explore-card {
     background-color: #fff;
 }
 
-.address-card, .project-card, .action-card, .pledgereward-card {
+.address-card, .project-card, .action-card, .pledgereward-card, .reward-card {
+    background-color: #fff;
     width: 190px;
-    min-height: 200px;
     padding: 15px;
     margin: 15px 10px 5px;
     box-shadow: 0 0 20px -3px var(--card-shadow-color);
@@ -359,9 +380,14 @@ input, select {
     vertical-align: top;
 }
 
+.address-card a, .project-card a, .action-card a, .pledgereward-card a {
+    color: var(--main-font-color);
+}
+
 .project-card, .pledgereward-card {
     width: 240px;
 }
+
 .project-card-img {
     width: 240px;
     height: 200px;
@@ -380,10 +406,6 @@ input, select {
 
 .project-card a {
     color: var(--main-font-color);
-}
-
-.project-card > a:hover {
-    text-decoration: none;
 }
 
 .project-card .short-desc {
@@ -409,6 +431,10 @@ input, select {
     line-height: 1em;
     font-weight: bold;
     color: #fff;    
+}
+
+.action-card:hover {
+    background-color: var(--main-font-color);
 }
 
 .action-card a {
