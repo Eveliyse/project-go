@@ -24,7 +24,7 @@
     </div>
 
     <div class="content-card">
-        {{ project.long_desc|safe }}
+        {{ project.long_desc|safe|linebreaks }}
     </div>
 
     <div class="content-non-card">
@@ -32,20 +32,24 @@
         <div class="center-parent flex">
             {% for pledgereward in pledgerewards %}
                 {% include "projects/includes/pledgereward_card.html" %}
-                <p>
-                    <a href="{% url 'projects:add_pledge' project.id pledgereward.id %}">
-                        {{ pledge.id }} {{ pledge }}
-                    </a>
-                    {{ pledge.count }}
-                </p>
+                {{ pledgereward.count }}
             {% endfor %}
         </div>
     </div>
     
-    <div class="content-non-card">
+    
+    <div class="content-card">
         <h2>Contributors</h2>
-            {% for pledger in pledgers %}
-                <p>{{ pledger }}</p>
-            {% endfor %}
+            {% if pledgers %}
+                <ul>
+                    {% for pledger in pledgers %}
+                        <li>
+                            {{ pledger }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>There are no contributors yet. Why don't you be the first?</p>
+            {% endif %}
     </div>
 {% endblock %}

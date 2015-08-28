@@ -83,7 +83,7 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
         res=self.client.get(reverse('projects:edit', kwargs={'project_id':self.new_projects[0].id}))
         self.assertEqual(res.status_code, 200)   
         self.assertIsNotNone(res.context['form'])
-        self.assertIsNotNone(res.context['pledges'])
+        self.assertIsNotNone(res.context['pledgerewards'])
         self.assertIsNotNone(res.context['project'])
         
         res=self.client.get(reverse('projects:edit', kwargs={'project_id':self.open_projects[0].id}))

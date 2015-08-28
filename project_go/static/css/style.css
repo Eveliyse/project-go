@@ -104,6 +104,7 @@ h1, h2, h3, h4 {
 }
 
 #title {
+    margin: 5px 0;
     font-family: 'Exo', sans-serif;
     font-size: 3.5em;
 }
@@ -134,7 +135,7 @@ strong, b {
 }
 
 p {
-    margin: 5px 0;
+    margin: 0 0 15px 0;
 }
 
 ol, ul {
@@ -450,8 +451,12 @@ input, select {
     padding: 5px 15px;
     text-align: center;
 }
-.card-header a, .card-footer a {
+.card-header *, .card-footer * {
     color: #fff;
+}
+
+.card-header:hover *, .card-footer:hover * {
+    color: var(--main-font-color);
 }
 
 .card-footer {
