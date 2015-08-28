@@ -8,7 +8,7 @@
     {% for project in user_projects_new %}
         {% include "projects/includes/project_card.html" %}
     {% endfor %}
-    <a href="{% url 'projects:create' %}">
+    <a class="flex" href="{% url 'projects:create' %}">
         <div class="action-card">
             Create New Project
         </div>

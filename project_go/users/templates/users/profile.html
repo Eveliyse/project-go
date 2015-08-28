@@ -52,7 +52,7 @@
                 {% for address in user_addresses %}
                     {% include "users/includes/address_card.html" %}
                 {% endfor %}
-                    <a class="edit" href="{% url 'users:add_address' %}">
+                    <a class="edit flex" href="{% url 'users:add_address' %}">
                         <div class="action-card">
                             + Add Address
                         </div>
@@ -61,12 +61,14 @@
             </div>
         </div>
         <div class="content-non-card">
+            {% if userpledges %}
             <h2>Your Contributions</h2>
             <div class="center-parent flex">
                 {% for userpledge in userpledges %}
                     {% include "projects/includes/project_userpledge_card.html" with project=userpledge.pledge.project %}
                 {% endfor %}
             </div>
+            {% endif %}
         </div>
 
     {% endif %}

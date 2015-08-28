@@ -265,7 +265,9 @@ class ProjectDetailsView(DetailView):
         self.pledge_added = None
         self.pledged = None
         
-        if get_object_or_404(Project, pk = kwargs['project_id']).status == Status.objects.get(status = "New"):
+        project = get_object_or_404(Project, pk = kwargs['project_id'])
+        
+        if project.status == Status.objects.get(status = "New") and project.owner.id != self.request.user.id:
             return redirect(reverse('projects:index')) 
         
         match_user_pledges = UserPledge.objects.filter(user_id = request.user.id, pledge__project_id=kwargs['project_id'])
