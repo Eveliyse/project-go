@@ -39,7 +39,7 @@
             <h2>{{ project.title }} Pledge Rewards</h2>
             <div class="center-parent flex">
                 {% for pledgereward in pledgerewards %}
-                    {% include "projects/includes/pledgereward_card.html" %}
+                    {% include "projects/includes/pledgereward_edit_card.html" %}
                 {% endfor %}
                 
                 <a class="edit flex" href="{% url 'projects:pledgerewards' project.id %}">

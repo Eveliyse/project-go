@@ -1,34 +1,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="center-parent"><p>{{ pledge }}</p>
+    <div class="center-parent">
+        <p>
+            {{ pledge }}
+        </p>
     </div>
-<div class="center-parent">
-    <img src="{{ project.image.url }}">
-    <div id="project-edit-img" class="right" style="background-image: url({{ project.image.url }})"></div>
-</div>
-<div class="content-card">
-{{ project.title }}
-{{ project.owner }}
-{{ project.goal }}
-{{ project.pledged_amount }}
-{{ project.pledged_percent }}%
-{{ project.pledgers }}pledgers
-is funded={{ project.is_funded }}
-{{ project.status }}
-</div>
-<div class="content-card">
-{{ project.long_desc|safe }}
-</div>
-<div class="content-card">
-<p>PLEDGEREWARDS</p>
-        {% for pledge in pledgerewards %}
-            <p><a href="{% url 'projects:add_pledge' project.id pledge.id %}">{{ pledge.id }} {{ pledge }}</a> {{ pledge.count }}</p>
-        {% endfor %}
-<p>PLEDGERS</p>
-        {% for pledger in pledgers %}
-            <p>{{ pledger }}</p>
-        {% endfor %}
-</div>
+
+    <div class="center-parent">
+        <img src="{{ project.image.url }}">
+        <div id="project-edit-img" class="right" style="background-image: url({{ project.image.url }})"></div>
+    </div>
+
+    <div class="content-card">
+        {{ project.title }}
+        {{ project.owner }}
+        {{ project.goal }}
+        {{ project.pledged_amount }}
+        {{ project.pledged_percent }}%
+        {{ project.pledgers }}pledgers
+        is funded={{ project.is_funded }}
+        {{ project.status }}
+    </div>
+
+    <div class="content-card">
+        {{ project.long_desc|safe }}
+    </div>
+
+    <div class="content-non-card">
+        <h2>Pledge Rewards</h2>
+        <div class="center-parent flex">
+            {% for pledgereward in pledgerewards %}
+                {% include "projects/includes/pledgereward_card.html" %}
+                <p>
+                    <a href="{% url 'projects:add_pledge' project.id pledgereward.id %}">
+                        {{ pledge.id }} {{ pledge }}
+                    </a>
+                    {{ pledge.count }}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="content-non-card">
+        <h2>Contributors</h2>
+            {% for pledger in pledgers %}
+                <p>{{ pledger }}</p>
+            {% endfor %}
+    </div>
 {% endblock %}
