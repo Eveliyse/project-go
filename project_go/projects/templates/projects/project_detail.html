@@ -2,9 +2,13 @@
 
 {% block content %}
     <div class="center-parent">
-        <p>
-            {{ pledge }}
-        </p>
+        <div id="pledgereward-strip-card">
+            <div class="strip-card-header">
+                <span class="mega-octicon octicon-heart"></span>
+            </div>
+            <b>You have already contributed to this project!</b>
+            <br><b>Your current reward: </b>{{ pledge }}
+        </div>
     </div>
 
     <div class="center-parent">
