@@ -6,7 +6,7 @@
 <h2>New Projects</h2>
     <div class="center-parent flex">
         {% for project in user_projects_new %}
-            <div>
+            <div class="flex">
                 {% include "projects/includes/project_edit_card.html" %}
                 <a class="button" href="{% url 'projects:update_status' project.id %}">Open Project</a>
             </div>

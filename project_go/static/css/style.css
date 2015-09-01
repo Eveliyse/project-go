@@ -427,6 +427,30 @@ input, select {
     padding: 15px;
 }
 
+.pledgereward-count {
+    background-color: var(--main-font-color);
+    min-width: 50px;
+    width: 10%;
+    position: relative;
+    color: #fff;
+}
+
+.pledgereward-count:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.pledgereward-count-content {
+    position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    vertical-align: middle;
+    text-align: center;
+}
+
 .action-card {
     background-color: var(--main-accent-color);
     font-size: 2em;

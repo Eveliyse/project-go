@@ -280,7 +280,7 @@ class ProjectDetailsView(DetailView):
     
             open_status = get_object_or_404(Status, status = "Open")
     
-            if pledge_obj.project.status == open_status:
+            if pledge_obj.project.status == open_status and pledge_obj.project.owner.id != self.request.user.id :
                 if not match_user_pledges:
                     userpledge = UserPledge(user = request.user, pledge = pledge_obj)
                     userpledge.save()
