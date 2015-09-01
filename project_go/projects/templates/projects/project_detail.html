@@ -20,27 +20,27 @@
     <div class="content-non-card">
         <h1>{{ project.title }} <span>by {{ project.owner }}</span></h1>
         
+        <div class="center-parent">
         <div class="project-detail-card">
-            £{{ project.goal }}
+            {{ project.pledgers }} Pledges
+        </div>
+            
+        <div class="project-detail-card">
+            £{{ project.pledged_amount }} Pledged
         </div>
         
-        <div class="project-detail-card hover-parent">
-            {{ project.pledgers }} users pledged
-            £{{ project.pledged_amount }}
-            
-            <div class="project-detail-card hover-hidden">
+        <div class="hover-hidden project-detail-card">
             {{ project.pledged_percent }}%
             of
             {{ project.goal }}
-            </div>
         </div>
         
         <div class="project-detail-card">
             {{ project.status }}
         </div>
         
-        <a class="button" href="#pledges">Pledges</a>
-        
+        <a class="button" href="#pledges">Pledge Now</a>
+        </div>
     </div>
     
     <div class="center-parent">

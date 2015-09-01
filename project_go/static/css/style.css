@@ -199,16 +199,16 @@ p a:hover {
     text-decoration: underline;
 }
 
-a.button {
+a.button, .project-detail-card{
     background-color:var(--main-accent-color);
     padding: 10px;
     position: relative;
     border: none;
-    box-shadow: 0 0 3px 0px #bbb;
+    box-shadow: 0 0 5px 1px #bbb;
     font-size: 1.2em;
     font-weight: bold;
     color: #fff;
-    display: block;
+    display: inline-block;
     box-sizing: border-box;
     margin: 0 10px 5px;
     text-align: center;
@@ -269,7 +269,7 @@ input[type=submit] {
     padding: 10px;
     position: relative;
     border: none;
-    box-shadow: 0 0 3px 0px #bbb;
+    box-shadow: 0 0 5px 1px #bbb;
     font-size: 1.2em;
     font-weight: bold;
     color: #fff;
@@ -523,4 +523,8 @@ input, select {
 
 .banner-left {
     left: 0;
+}
+
+.project-detail-card {
+    background-color: var(--main-font-color);
 }
