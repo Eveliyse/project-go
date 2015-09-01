@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ project.is_funded }}
     {% if project.is_funded %}
         <div class="banner-right">
             <img src="/static/projects/images/funded-banner.png">
@@ -45,7 +44,9 @@
     </div>
     
     <div class="center-parent">
-        <img src="{{ project.image.url }}">
+        <div class="hero-image">
+            <img src="{{ project.image.url }}">
+        </div>
     </div>
 
     <div class="content-card">

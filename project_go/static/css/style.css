@@ -275,6 +275,10 @@ input[type=submit] {
     color: #fff;
 }
 
+#search input[type=submit] {
+    box-shadow: none;
+}
+
 input[type=submit]:hover {
     background-color:var(--main-font-color);
 }
@@ -526,4 +530,15 @@ input, select {
 
 .project-detail-card {
     background-color: var(--main-font-color);
+}
+
+.hero-image {
+    max-width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    box-shadow: var(--default-box-shadow);
+}
+
+div > img{
+    display: block;
 }
