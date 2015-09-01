@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% if project.is_funded %}
+        <div class="banner-right">
+            FUNDED!
+        </div>
+        {% endif %}
     {% if pledge %}
         <div id="pledgereward-strip-card">
             <div class="strip-card-header">
                 <span class="mega-octicon octicon-heart"></span>
             </div>
             <b>You have already contributed to this project!</b>
-            <br><b>Your current reward: </b>{{ pledge }}
+            <br><b>Your reward: </b>{{ pledge }}
         </div>
     {% endif %}
 
@@ -31,8 +36,10 @@
         {{ project.long_desc|safe|linebreaks }}
     </div>
 
+    
     <div class="content-non-card">
         <h2>Pledge Rewards</h2>
+        {% if pledgerewards %}
         <div class="center-parent flex">
             {% for pledgereward in pledgerewards %}
                 <div class="pledgereward-card">
@@ -67,6 +74,9 @@
                 </div>
             {% endfor %}
         </div>
+        {% elif project.status.status == "New" %}
+            <p>You haven't made any pledge rewards! Don't forget to make some on your <a href="{% url 'projects:edit' project.id %}">project edit page.</a></p>
+        {% endif %}
     </div>
     
     
