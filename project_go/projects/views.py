@@ -182,6 +182,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'form3': reward_edit_form,
             'mode': mode,
             'instance':p_instance,
+            'pledges' : Pledge.objects.filter(project__id = project_id).order_by('amount'),
             'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     elif mode == "reward" and P_R_id is not None:
