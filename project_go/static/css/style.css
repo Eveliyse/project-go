@@ -14,7 +14,7 @@
 /*****    Basic Elements    *****/
 /********************************/
 body {
-    background-color: #f9f9f9;
+    background: #f9f9f9 url("../images/pixel-bg.png") repeat-x left bottom;
     min-width: 1150px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
@@ -340,6 +340,7 @@ input, select {
     background-color: var(--main-neutral-color);
     width: 100%;
     padding: 10px;
+    margin: 100px 0 0 0;
     position: relative;
     z-index: 2;
 }
@@ -398,7 +399,7 @@ input, select {
     width: 240px;
 }
 
-.project-card {
+.flex-col > .project-card {
     flex-grow: 2;
 }
 
@@ -487,7 +488,7 @@ input, select {
     color: #fff;
 }
 
-.card-header:hover *, .card-footer:hover * {
+.card-header a:hover, .card-footer a:hover {
     color: var(--main-font-color);
 }
 

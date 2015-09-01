@@ -5,7 +5,8 @@
         <div class="banner-right">
             FUNDED!
         </div>
-        {% endif %}
+    {% endif %}
+
     {% if pledge %}
         <div id="pledgereward-strip-card">
             <div class="strip-card-header">
@@ -16,20 +17,19 @@
         </div>
     {% endif %}
 
-    <div class="center-parent">
-        <img src="{{ project.image.url }}">
-        <div id="project-edit-img" class="right" style="background-image: url({{ project.image.url }})"></div>
-    </div>
-
     <div class="content-card">
-        {{ project.title }}
+        <h1>{{ project.title }}</h1>
         {{ project.owner }}
         {{ project.goal }}
         {{ project.pledged_amount }}
         {{ project.pledged_percent }}%
         {{ project.pledgers }}pledgers
-        is funded={{ project.is_funded }}
         {{ project.status }}
+    </div>
+    
+    <div class="center-parent">
+        <img src="{{ project.image.url }}">
+        <div id="project-edit-img" class="right" style="background-image: url({{ project.image.url }})"></div>
     </div>
 
     <div class="content-card">

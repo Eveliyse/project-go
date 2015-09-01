@@ -45,7 +45,7 @@ class Project(models.Model):
         result = up.aggregate(Count('user'))
         return result['user__count']
     
-    def is_funded(self):		
+    def is_funded(self):
         amount = self.pledged_amount()
         return amount >= self.goal      
     
