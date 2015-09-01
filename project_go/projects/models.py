@@ -47,7 +47,13 @@ class Project(models.Model):
     
     def is_funded(self):
         amount = self.pledged_amount()
-        return amount >= self.goal      
+        percent = self.pledged_percent()
+        pledgers = self.pledgers()
+        goal_amount = self.goal
+        if amount > 0.00 and percent >= 100 and pledgers > 0:
+            if amount >= goal_amount:
+                return True
+        return False
     
     def __str__(self):
         return self.title + " by " + self.owner.username

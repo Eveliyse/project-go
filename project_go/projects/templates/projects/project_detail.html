@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{{ project.is_funded }}
     {% if project.is_funded %}
         <div class="banner-right">
             <img src="/static/projects/images/funded-banner.png">
