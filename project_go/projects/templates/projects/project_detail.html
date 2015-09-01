@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="center-parent">
+    {% if pledge %}
         <div id="pledgereward-strip-card">
             <div class="strip-card-header">
                 <span class="mega-octicon octicon-heart"></span>
@@ -9,7 +9,7 @@
             <b>You have already contributed to this project!</b>
             <br><b>Your current reward: </b>{{ pledge }}
         </div>
-    </div>
+    {% endif %}
 
     <div class="center-parent">
         <img src="{{ project.image.url }}">
@@ -35,7 +35,36 @@
         <h2>Pledge Rewards</h2>
         <div class="center-parent flex">
             {% for pledgereward in pledgerewards %}
-                {% include "projects/includes/pledgereward_card.html" %}
+                <div class="pledgereward-card">
+                    <p>
+                        <b>Amount: £{{ pledgereward.amount }}</b>
+                        </br><b>{{ pledgereward.count }} User Pledges</b>
+                        <ul class="reward-list">
+                            {% for reward in pledgereward.rewards.all %}
+                                <li>
+                                    {{ reward }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </p>
+        
+                    {% if pledgereward == pledge %}
+                        <div>
+                            <span class="mega-octicon octicon-heart right"></span>
+                        </div>
+                        <div class="clear"></div>
+                    {% endif %}
+    
+                    <div class="card-footer">
+                        <a class="edit" href="{% url 'projects:add_pledge' pledgereward.project.id pledgereward.id %}">
+                            <b>Pledge to Project</b>
+                        </a>
+                    </div>
+                            
+                    <div class="hidden">
+                        <span class="octi-margin mega-octicon octicon-pencil"></span>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>
