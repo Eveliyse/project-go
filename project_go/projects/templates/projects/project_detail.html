@@ -17,29 +17,47 @@
         </div>
     {% endif %}
 
-    <div class="content-card">
-        <h1>{{ project.title }}</h1>
-        {{ project.owner }}
-        {{ project.goal }}
-        {{ project.pledged_amount }}
-        {{ project.pledged_percent }}%
-        {{ project.pledgers }}pledgers
-        {{ project.status }}
+    <div class="content-non-card">
+        <h1>{{ project.title }} <span>by {{ project.owner }}</span></h1>
+        
+        <div class="project-detail-card">
+            £{{ project.goal }}
+        </div>
+        
+        <div class="project-detail-card hover-parent">
+            {{ project.pledgers }} users pledged
+            £{{ project.pledged_amount }}
+            
+            <div class="project-detail-card hover-hidden">
+            {{ project.pledged_percent }}%
+            of
+            {{ project.goal }}
+            </div>
+        </div>
+        
+        <div class="project-detail-card">
+            {{ project.status }}
+        </div>
+        
+        <a class="button" href="#pledges">Pledges</a>
+        
     </div>
     
     <div class="center-parent">
         <img src="{{ project.image.url }}">
-        <div id="project-edit-img" class="right" style="background-image: url({{ project.image.url }})"></div>
     </div>
 
     <div class="content-card">
+        <h2>The Story<span>... and the dreams</span></h2>
         {{ project.long_desc|safe|linebreaks }}
     </div>
 
     
     <div class="content-non-card">
+        <a name="pledges"></a>
         <h2>Pledge Rewards</h2>
         {% if pledgerewards %}
+        <p>Contributing to this project not only makes dreams come true but you get some great goodies too!</p>
         <div class="center-parent flex">
             {% for pledgereward in pledgerewards %}
                 <div class="pledgereward-card">
