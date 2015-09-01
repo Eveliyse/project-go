@@ -513,8 +513,7 @@ input, select {
 
 .banner-right, .banner-left {
     position: absolute;
-    top: 50px;
-    background-color: var(--main-accent-color);
+    top: 45px;
 }
 
 .banner-right {
