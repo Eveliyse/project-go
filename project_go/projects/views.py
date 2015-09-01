@@ -125,7 +125,7 @@ def Edit(request, project_id=None):
     project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
     return render_to_response('projects/edit_create.html', {
         'form': project_edit_form,
-        'pledgerewards' : Pledge.objects.filter(project__id = project_id),
+        'pledgerewards' : Pledge.objects.filter(project__id = project_id).order_by('amount'),
         'project': p}, context_instance=RequestContext(request))
 
 @login_required
@@ -182,7 +182,6 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'form3': reward_edit_form,
             'mode': mode,
             'instance':p_instance,
-            'pledges' : Pledge.objects.filter(project__id = project_id),
             'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     elif mode == "reward" and P_R_id is not None:
@@ -196,7 +195,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'form3': reward_edit_form,
             'mode': mode,
             'instance':r_instance,
-            'pledges' : Pledge.objects.filter(project__id = project_id),
+            'pledges' : Pledge.objects.filter(project__id = project_id).order_by('amount'),
             'rewards' : Reward.objects.filter(project__id = project_id) ,
             'project': project}, context_instance=RequestContext(request))  
     else:
@@ -205,7 +204,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     return render_to_response('projects/pledgerewards.html', {
         'form2': pledge_edit_form,
         'form3': reward_edit_form,
-        'pledges' : Pledge.objects.filter(project__id = project_id),
+        'pledges' : Pledge.objects.filter(project__id = project_id).order_by('amount'),
         'rewards' : Reward.objects.filter(project__id = project_id) ,
         'project': project}, context_instance=RequestContext(request))
 
@@ -298,7 +297,7 @@ class ProjectDetailsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailsView, self).get_context_data(**kwargs)
         pledgerewards = Pledge.objects.filter(project_id = self.kwargs['project_id'])
-        pledgerewards_count = pledgerewards.annotate(count=Count('pledged_users__pledge_id'))
+        pledgerewards_count = pledgerewards.annotate(count=Count('pledged_users__pledge_id')).order_by('amount')
         
         pledgers = User.objects.filter(user_pledges__pledge__project_id = self.kwargs['project_id'])
         
