@@ -518,6 +518,7 @@ input, select {
 .banner-right, .banner-left {
     position: absolute;
     top: 45px;
+    z-index: 1;
 }
 
 .banner-right {
