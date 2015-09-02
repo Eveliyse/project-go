@@ -539,6 +539,13 @@ input, select {
     box-shadow: var(--default-box-shadow);
 }
 
+.hero-image img {
+    max-width: 1200px;
+    max-height: 1000px;
+    width: 100%;
+    height: 100%;
+}
+
 div > img{
     display: block;
 }
