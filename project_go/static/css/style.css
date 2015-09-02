@@ -89,8 +89,8 @@ tr, th, td {
 }
 
 
-.half-width {
-    width: 50%;
+.display-none {
+    display: none;
 }
 
 .hover-hidden {
@@ -231,7 +231,7 @@ a.button:hover {
 .nav {
     color: #fff;
 }
-.nav a {
+.nav a, .nav label {
     display: inline-block;
     font-weight: bold;
     color: #fff;
@@ -241,13 +241,13 @@ a.button:hover {
     color: var(--main-font-color);
 }
 
-.nav ul a {
+.nav ul a, .nav ul label {
     text-transform: uppercase;
     font-size: 1.4em;
     padding: 6px;
 }
 
-.nav ul a:hover {
+.nav ul a:hover, .nav ul label:hover {
     background-color: #fff;
     color: var(--main-accent-color);
 }
@@ -314,7 +314,13 @@ input, select {
     width: 300px;
 }
 
+input[type=checkbox]#explore-chck-box {
+    display: none;
+}
 
+input[type=checkbox]#explore-chck-box:checked ~ div#explore-card {
+   display: inherit;
+}
 
 /*****    form text    *****/
 .helptext {

@@ -19,7 +19,7 @@
             
             <div class="left nav v-center">
                 <ul>
-                    <li><a href="">Explore</a></li>    
+                    <li><label for="explore-chck-box">Explore</label></li>    
                     <li><a href="{% url 'projects:create' %}">Start</a></li>    
                 </ul>
             </div>
@@ -45,10 +45,11 @@
         <div id="content-wrapper">
             
             <div id="content">
-              <!--  <div id="explore-card" class="card-animate-hidden nav cat-links center-parent">
+                <input id="explore-chck-box" type="checkbox">
+              <div id="explore-card" class="display-none nav cat-links center-parent">
                     {% category_links %} 
-                </div> -->
-                
+                </div>
+        
                 {% block content %}
                     Page Content Things
                 {% endblock %}
