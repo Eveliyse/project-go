@@ -342,8 +342,8 @@ class ProjectListView(ListView):
             get_object_or_404(Category, id = self.kwargs['category_id'])
             
             return Project.objects.filter(category_id = self.kwargs['category_id'], status = open_status)
-        else:
-            return Project.objects.filter(status = open_status)
+        #else:
+            #return Project.objects.filter(status = open_status)
         return super(ProjectListView,self).get_queryset()
     
     def get_context_data(self, **kwargs):
