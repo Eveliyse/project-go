@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.Index, name='index'),
+    url(r'^$', views.Profile, name='index'),
     url(r'^profile/$', views.Profile, name='profile'),
     url(r'^profile/(?P<user_id>\d+)/$', views.Profile, name='profile'),
     url(r'^profile/add-address/$', views.EditAddAddress, name='add_address'),
