@@ -143,7 +143,7 @@ def Login(request):
                 if user is not None:
                     if user.is_active:
                         auth_login(request, form.get_user())
-                        return redirect(reverse('users:index')) 
+                        return redirect(reverse('projects:index')) 
         else:
             form = AuthenticationForm()
         return render_to_response('users/login.html', {
@@ -156,7 +156,7 @@ def Login(request):
 @login_required
 def Logout(request):
     auth_logout(request)
-    return redirect(reverse('users:index'))
+    return redirect(reverse('projects:index'))
 
 def Register(request):
     """ If POST then process forms and create relevant database entries
