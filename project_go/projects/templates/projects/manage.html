@@ -24,7 +24,7 @@
 <h2>Open Projects</h2>
     <div class="center-parent flex">
     {% for project in user_projects_open %}
-        <div>
+        <div class="flex-col">
             {% include "projects/includes/project_card.html" %}
             <a class="button" href="{% url 'projects:update_status' project.id %}">Close Project</a>
         </div>
