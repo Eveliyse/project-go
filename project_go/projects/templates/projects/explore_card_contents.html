@@ -2,4 +2,5 @@
 {% for category in categories %}
     <li><a href="{% url 'projects:category' category.id %}">{{ category.category }}</a></li>
 {% endfor %}
+    <li><a href="{% url 'projects:search' %}">★All Projects★</a></li>
     </ul>

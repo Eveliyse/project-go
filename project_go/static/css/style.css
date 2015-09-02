@@ -200,12 +200,12 @@ ul {
     margin: 0 15px;
 }
 
-.nav ul {
+nav ul {
     list-style-type: none;
     margin: 0 15px;
 }
 
-.nav ul li{
+nav ul li{
     display: inline;
     margin: 0 0 0 4px;
 }
@@ -256,26 +256,27 @@ a.button:hover {
     color: #fff;
 }
 
-.nav {
+nav {
     color: #fff;
 }
-.nav a, .nav label {
+nav a, nav label {
     display: inline-block;
     font-weight: bold;
     color: #fff;
+    cursor: pointer;
 }
 
 .cat-links a {
     color: var(--main-font-color);
 }
 
-.nav ul a, .nav ul label {
+nav ul a, nav ul label {
     text-transform: uppercase;
     font-size: 1.4em;
     padding: 6px;
 }
 
-.nav ul a:hover, .nav ul label:hover {
+nav ul a:hover, nav ul label:hover {
     background-color: #fff;
     color: var(--main-accent-color);
 }
@@ -346,7 +347,7 @@ input[type=checkbox]#explore-chck-box {
     display: none;
 }
 
-input[type=checkbox]#explore-chck-box:checked ~ div#explore-card {
+input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
    display: inherit;
 }
 

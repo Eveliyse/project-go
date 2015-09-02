@@ -347,10 +347,12 @@ class ProjectListView(ListView):
             get_object_or_404(Category, id = self.kwargs['category_id'])
             
             return Project.objects.filter(category_id = self.kwargs['category_id']).exclude(status = new_status).order_by('status')
-        else:
+        elif 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is None or len(search_term) <= 0:
                 return Project.objects.exclude(status = new_status)
+        else:
+            return Project.objects.exclude(status = new_status)
         return super(ProjectListView,self).get_queryset()
     
     def get_context_data(self, **kwargs):
