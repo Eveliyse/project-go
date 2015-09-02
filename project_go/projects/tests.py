@@ -15,7 +15,8 @@ class BaseProjectsTestCase(TestCase):
     open_status = Status.objects.get(status = "Open")
     closed_status = Status.objects.get(status = "Closed")    
 
-    def login(self, uname='admin', password='admin'):
+    #def login(self, uname='admin', password='admin'):
+    def login(self, uname='elsa', password='elsa'):        
         res=self.client.post(reverse('users:login'), {'username': uname, 'password': password})
         self.assertEqual(res.status_code, 302)
         #self.assertRedirects(res, reverse('users:index'))

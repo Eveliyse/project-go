@@ -1462,6 +1462,46 @@
 },
 {
     "fields": {
+        "project": 10,
+        "desc": "Cool Bag 1"
+    },
+    "model": "projects.reward",
+    "pk": 228
+},
+{
+    "fields": {
+        "project": 10,
+        "desc": "Cool Bag 2"
+    },
+    "model": "projects.reward",
+    "pk": 229
+},
+{
+    "fields": {
+        "project": 10,
+        "desc": "Cool Bag 3"
+    },
+    "model": "projects.reward",
+    "pk": 230
+},
+{
+    "fields": {
+        "project": 10,
+        "desc": "Cool Bag 4"
+    },
+    "model": "projects.reward",
+    "pk": 231
+},
+{
+    "fields": {
+        "project": 10,
+        "desc": "Cool bag 5"
+    },
+    "model": "projects.reward",
+    "pk": 232
+},
+{
+    "fields": {
         "project": 9,
         "amount": "10.00",
         "rewards": [
@@ -3064,6 +3104,66 @@
     },
     "model": "projects.pledge",
     "pk": 182
+},
+{
+    "fields": {
+        "project": 10,
+        "amount": "15.00",
+        "rewards": [
+            228
+        ]
+    },
+    "model": "projects.pledge",
+    "pk": 183
+},
+{
+    "fields": {
+        "project": 10,
+        "amount": "15.00",
+        "rewards": [
+            229
+        ]
+    },
+    "model": "projects.pledge",
+    "pk": 184
+},
+{
+    "fields": {
+        "project": 10,
+        "amount": "30.00",
+        "rewards": [
+            228,
+            229
+        ]
+    },
+    "model": "projects.pledge",
+    "pk": 185
+},
+{
+    "fields": {
+        "project": 10,
+        "amount": "75.00",
+        "rewards": [
+            228,
+            229,
+            230
+        ]
+    },
+    "model": "projects.pledge",
+    "pk": 186
+},
+{
+    "fields": {
+        "project": 10,
+        "amount": "100.00",
+        "rewards": [
+            230,
+            231,
+            232
+        ]
+    },
+    "model": "projects.pledge",
+    "pk": 187
 },
 {
     "fields": {
