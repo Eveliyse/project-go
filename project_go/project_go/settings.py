@@ -116,7 +116,7 @@ STATICFILES_FINDERS = (
 )
 
 LOGIN_URL = '/users/login/'
-LOGIN_REDIRECT_URL  = ''
+LOGIN_REDIRECT_URL = ''
 
 
 PROJECT_ROOT = os.path.dirname(__file__)
