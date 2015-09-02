@@ -12,6 +12,7 @@ from django.conf import settings
 from django.db.models import Count, Sum, Avg, F, Q
 from django.db.models.functions import Coalesce
 from decimal import *
+from django.utils import timezone
 
 class LoginRequiredMixin(object):
     """Add this to a class-based view to reject all non-authenticated users"""
@@ -33,7 +34,7 @@ class IndexView(TemplateView):
 
         open_status=Status.objects.get(status="Open")
     
-        newest_1=Project.objects.filter(status=open_status).order_by('created_date')[:5]
+        newest_1=Project.objects.filter(status=open_status).order_by('-open_date')[:5]
         newest_2=newest_1.annotate(
             current_pledged=Coalesce(
                 Sum('project_pledges__pledged_users__pledge__amount'),0.00))
@@ -244,6 +245,7 @@ class UpdateStatusView(LoginRequiredMixin, RedirectView):
         
             if project.status.id == new_status.id:
                 project.status = open_status
+                project.open_date = timezone.now()
                 project.save()
             elif project.status == open_status:
                 project.status = closed_status

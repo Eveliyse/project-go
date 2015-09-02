@@ -24,7 +24,7 @@ class Project(models.Model):
     long_desc = models.TextField()
     status = models.ForeignKey(Status)
     category = models.ForeignKey(Category)
-    created_date = models.DateTimeField(auto_now_add=True)
+    open_date = models.DateTimeField(auto_now_add=True)
     
     def pledged_amount(self):
         pledges = Pledge.objects.filter(project = self)
