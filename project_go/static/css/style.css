@@ -39,6 +39,34 @@ tr, th, td {
     vertical-align: middle;
 }
 
+header, footer {
+    box-sizing: border-box;
+}
+
+header {
+    background-color:var(--main-accent-color);
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    position: relative;
+    z-index: 2;
+    position:  fixed;
+    top: 0px;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    box-shadow: 0 0 5px 3px var(--card-shadow-color);
+}
+
+footer {
+    background-color: var(--main-neutral-color);
+    width: 100%;
+    padding: 10px;
+    margin: 100px 0 0 0;
+    position: relative;
+    z-index: 2;
+}
+
 
 /********************************/
 /*****    Helper Classes    *****/
@@ -341,30 +369,6 @@ input[type=checkbox]#explore-chck-box:checked ~ div#explore-card {
 /********************************************/
 /*****    Structural Custom Elements    *****/
 /********************************************/
-#header {
-    background-color:var(--main-accent-color);
-    width: 100%;
-    height: 50px;
-    padding: 10px;
-    position: relative;
-    z-index: 2;
-    position:  fixed;
-    top: 0px;
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    box-shadow: 0 0 5px 3px var(--card-shadow-color);
-}
-
-#footer {
-    background-color: var(--main-neutral-color);
-    width: 100%;
-    padding: 10px;
-    margin: 100px 0 0 0;
-    position: relative;
-    z-index: 2;
-}
-
 #content-wrapper {
     width: 100%;
     text-align: center;
@@ -398,6 +402,12 @@ input[type=checkbox]#explore-chck-box:checked ~ div#explore-card {
 
 .content-card, #explore-card {
     background-color: #fff;
+}
+
+#explore-card {
+    width: 100%;
+    position: fixed;
+    z-index: 2;
 }
 
 .address-card, .project-card, .action-card, .pledgereward-card, .reward-card {

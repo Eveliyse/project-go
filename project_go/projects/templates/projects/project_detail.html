@@ -29,7 +29,7 @@
             £{{ project.pledged_amount }} Pledged
         </div>
         
-        <div class="hover-hidden project-detail-card">
+        <div class="project-detail-card">
             {{ project.pledged_percent }}%
             of
             £{{ project.goal }}
@@ -65,7 +65,7 @@
                 <div class="pledgereward-card">
                     <p>
                         <b>Amount: £{{ pledgereward.amount }}</b>
-                        </br><b>{{ pledgereward.count }} User Pledges</b>
+                        <br><b>{{ pledgereward.count }} User Pledges</b>
                         <ul class="reward-list">
                             {% for reward in pledgereward.rewards.all %}
                                 <li>

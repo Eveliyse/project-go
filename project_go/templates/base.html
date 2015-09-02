@@ -15,7 +15,10 @@
     </head>
 
     <body>
-        <div id="header"><div id="title" class="left v-center"><a href="{% url 'projects:index' %}">ProjectGO!</a></div>
+        <header>
+            <div id="title" class="left v-center">
+                <a href="{% url 'projects:index' %}">ProjectGO!</a>
+            </div>
             
             <div class="left nav v-center">
                 <ul>
@@ -40,15 +43,16 @@
             </div>
             <div class="clear"></div>
             
-        </div>
+        </header>
         
         <div id="content-wrapper">
-            
-            <div id="content">
-                <input id="explore-chck-box" type="checkbox">
+            <input id="explore-chck-box" type="checkbox">
               <div id="explore-card" class="display-none nav cat-links center-parent">
-                    {% category_links %} 
+                  <div id="content" class="center-parent">
+                      {% category_links %}
+                  </div>
                 </div>
+            <div id="content">
         
                 {% block content %}
                     Page Content Things
@@ -58,11 +62,11 @@
             
         </div>
         
-        <div id="footer">
+        <footer>
             
             Page Footer Things
             
-        </div>
+        </footer>
         
     </body>
     <script>

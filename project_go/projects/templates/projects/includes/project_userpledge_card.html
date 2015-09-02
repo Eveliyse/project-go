@@ -9,8 +9,8 @@
             <div class="project-flash-card-short-desc hover-hidden">
                 <p class="short-desc">
                     <b>Your Pledge</b>
-                    </br>Amount: £{{ userpledge.pledge.amount }}
-                    </br><b>Your Rewards</b>
+                    <br>Amount: £{{ userpledge.pledge.amount }}
+                    <br><b>Your Rewards</b>
                     <ul>
                         {% for reward in userpledge.pledge.rewards.all %}
                             <li>
@@ -29,14 +29,14 @@
         <div class="card-footer">
             <p class="center-parent">
                 <b>{{ project.status }}</b>
-                </br>{{ project.pledged_percent }}% Funded
+                <br>{{ project.pledged_percent }}% Funded
             </p> 
         </div>
 
         <div class="hidden">
             <p>
                 <b>{{ project.status }}</b>
-                </br>{{ project.pledged_percent }}% Funded
+                <br>{{ project.pledged_percent }}% Funded
             </p> 
         </div>
     </a>
