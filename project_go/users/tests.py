@@ -27,7 +27,11 @@ class BaseUsersTestCase(TestCase):
 class UsersIndexViewTestCase(BaseUsersTestCase):
     def test_index(self):
         res=self.client.get(reverse('users:index'))
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_code, 302)
+        
+        self.login()
+        res=self.client.get(reverse('users:index'))
+        self.assertEqual(res.status_code, 200)        
 
 class UsersProfileViewTestCase(BaseUsersTestCase):        
     def test_viewing_own_profile(self):

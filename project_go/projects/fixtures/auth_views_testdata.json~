@@ -1,0 +1,560 @@
+[
+{
+    "fields": {
+        "codename": "add_logentry",
+        "name": "Can add log entry",
+        "content_type": 27
+    },
+    "model": "auth.permission",
+    "pk": 79
+},
+{
+    "fields": {
+        "codename": "change_logentry",
+        "name": "Can change log entry",
+        "content_type": 27
+    },
+    "model": "auth.permission",
+    "pk": 80
+},
+{
+    "fields": {
+        "codename": "delete_logentry",
+        "name": "Can delete log entry",
+        "content_type": 27
+    },
+    "model": "auth.permission",
+    "pk": 81
+},
+{
+    "fields": {
+        "codename": "add_permission",
+        "name": "Can add permission",
+        "content_type": 28
+    },
+    "model": "auth.permission",
+    "pk": 82
+},
+{
+    "fields": {
+        "codename": "change_permission",
+        "name": "Can change permission",
+        "content_type": 28
+    },
+    "model": "auth.permission",
+    "pk": 83
+},
+{
+    "fields": {
+        "codename": "delete_permission",
+        "name": "Can delete permission",
+        "content_type": 28
+    },
+    "model": "auth.permission",
+    "pk": 84
+},
+{
+    "fields": {
+        "codename": "add_group",
+        "name": "Can add group",
+        "content_type": 29
+    },
+    "model": "auth.permission",
+    "pk": 85
+},
+{
+    "fields": {
+        "codename": "change_group",
+        "name": "Can change group",
+        "content_type": 29
+    },
+    "model": "auth.permission",
+    "pk": 86
+},
+{
+    "fields": {
+        "codename": "delete_group",
+        "name": "Can delete group",
+        "content_type": 29
+    },
+    "model": "auth.permission",
+    "pk": 87
+},
+{
+    "fields": {
+        "codename": "add_user",
+        "name": "Can add user",
+        "content_type": 30
+    },
+    "model": "auth.permission",
+    "pk": 88
+},
+{
+    "fields": {
+        "codename": "change_user",
+        "name": "Can change user",
+        "content_type": 30
+    },
+    "model": "auth.permission",
+    "pk": 89
+},
+{
+    "fields": {
+        "codename": "delete_user",
+        "name": "Can delete user",
+        "content_type": 30
+    },
+    "model": "auth.permission",
+    "pk": 90
+},
+{
+    "fields": {
+        "codename": "add_contenttype",
+        "name": "Can add content type",
+        "content_type": 31
+    },
+    "model": "auth.permission",
+    "pk": 91
+},
+{
+    "fields": {
+        "codename": "change_contenttype",
+        "name": "Can change content type",
+        "content_type": 31
+    },
+    "model": "auth.permission",
+    "pk": 92
+},
+{
+    "fields": {
+        "codename": "delete_contenttype",
+        "name": "Can delete content type",
+        "content_type": 31
+    },
+    "model": "auth.permission",
+    "pk": 93
+},
+{
+    "fields": {
+        "codename": "add_session",
+        "name": "Can add session",
+        "content_type": 32
+    },
+    "model": "auth.permission",
+    "pk": 94
+},
+{
+    "fields": {
+        "codename": "change_session",
+        "name": "Can change session",
+        "content_type": 32
+    },
+    "model": "auth.permission",
+    "pk": 95
+},
+{
+    "fields": {
+        "codename": "delete_session",
+        "name": "Can delete session",
+        "content_type": 32
+    },
+    "model": "auth.permission",
+    "pk": 96
+},
+{
+    "fields": {
+        "codename": "add_gender",
+        "name": "Can add gender",
+        "content_type": 33
+    },
+    "model": "auth.permission",
+    "pk": 97
+},
+{
+    "fields": {
+        "codename": "change_gender",
+        "name": "Can change gender",
+        "content_type": 33
+    },
+    "model": "auth.permission",
+    "pk": 98
+},
+{
+    "fields": {
+        "codename": "delete_gender",
+        "name": "Can delete gender",
+        "content_type": 33
+    },
+    "model": "auth.permission",
+    "pk": 99
+},
+{
+    "fields": {
+        "codename": "add_member",
+        "name": "Can add member",
+        "content_type": 34
+    },
+    "model": "auth.permission",
+    "pk": 100
+},
+{
+    "fields": {
+        "codename": "change_member",
+        "name": "Can change member",
+        "content_type": 34
+    },
+    "model": "auth.permission",
+    "pk": 101
+},
+{
+    "fields": {
+        "codename": "delete_member",
+        "name": "Can delete member",
+        "content_type": 34
+    },
+    "model": "auth.permission",
+    "pk": 102
+},
+{
+    "fields": {
+        "codename": "add_country",
+        "name": "Can add country",
+        "content_type": 35
+    },
+    "model": "auth.permission",
+    "pk": 103
+},
+{
+    "fields": {
+        "codename": "change_country",
+        "name": "Can change country",
+        "content_type": 35
+    },
+    "model": "auth.permission",
+    "pk": 104
+},
+{
+    "fields": {
+        "codename": "delete_country",
+        "name": "Can delete country",
+        "content_type": 35
+    },
+    "model": "auth.permission",
+    "pk": 105
+},
+{
+    "fields": {
+        "codename": "add_address",
+        "name": "Can add address",
+        "content_type": 36
+    },
+    "model": "auth.permission",
+    "pk": 106
+},
+{
+    "fields": {
+        "codename": "change_address",
+        "name": "Can change address",
+        "content_type": 36
+    },
+    "model": "auth.permission",
+    "pk": 107
+},
+{
+    "fields": {
+        "codename": "delete_address",
+        "name": "Can delete address",
+        "content_type": 36
+    },
+    "model": "auth.permission",
+    "pk": 108
+},
+{
+    "fields": {
+        "codename": "add_status",
+        "name": "Can add status",
+        "content_type": 37
+    },
+    "model": "auth.permission",
+    "pk": 109
+},
+{
+    "fields": {
+        "codename": "change_status",
+        "name": "Can change status",
+        "content_type": 37
+    },
+    "model": "auth.permission",
+    "pk": 110
+},
+{
+    "fields": {
+        "codename": "delete_status",
+        "name": "Can delete status",
+        "content_type": 37
+    },
+    "model": "auth.permission",
+    "pk": 111
+},
+{
+    "fields": {
+        "codename": "add_category",
+        "name": "Can add category",
+        "content_type": 38
+    },
+    "model": "auth.permission",
+    "pk": 112
+},
+{
+    "fields": {
+        "codename": "change_category",
+        "name": "Can change category",
+        "content_type": 38
+    },
+    "model": "auth.permission",
+    "pk": 113
+},
+{
+    "fields": {
+        "codename": "delete_category",
+        "name": "Can delete category",
+        "content_type": 38
+    },
+    "model": "auth.permission",
+    "pk": 114
+},
+{
+    "fields": {
+        "codename": "add_project",
+        "name": "Can add project",
+        "content_type": 39
+    },
+    "model": "auth.permission",
+    "pk": 115
+},
+{
+    "fields": {
+        "codename": "change_project",
+        "name": "Can change project",
+        "content_type": 39
+    },
+    "model": "auth.permission",
+    "pk": 116
+},
+{
+    "fields": {
+        "codename": "delete_project",
+        "name": "Can delete project",
+        "content_type": 39
+    },
+    "model": "auth.permission",
+    "pk": 117
+},
+{
+    "fields": {
+        "codename": "add_reward",
+        "name": "Can add reward",
+        "content_type": 40
+    },
+    "model": "auth.permission",
+    "pk": 118
+},
+{
+    "fields": {
+        "codename": "change_reward",
+        "name": "Can change reward",
+        "content_type": 40
+    },
+    "model": "auth.permission",
+    "pk": 119
+},
+{
+    "fields": {
+        "codename": "delete_reward",
+        "name": "Can delete reward",
+        "content_type": 40
+    },
+    "model": "auth.permission",
+    "pk": 120
+},
+{
+    "fields": {
+        "codename": "add_pledge",
+        "name": "Can add pledge",
+        "content_type": 41
+    },
+    "model": "auth.permission",
+    "pk": 121
+},
+{
+    "fields": {
+        "codename": "change_pledge",
+        "name": "Can change pledge",
+        "content_type": 41
+    },
+    "model": "auth.permission",
+    "pk": 122
+},
+{
+    "fields": {
+        "codename": "delete_pledge",
+        "name": "Can delete pledge",
+        "content_type": 41
+    },
+    "model": "auth.permission",
+    "pk": 123
+},
+{
+    "fields": {
+        "codename": "add_userpledge",
+        "name": "Can add user pledge",
+        "content_type": 42
+    },
+    "model": "auth.permission",
+    "pk": 124
+},
+{
+    "fields": {
+        "codename": "change_userpledge",
+        "name": "Can change user pledge",
+        "content_type": 42
+    },
+    "model": "auth.permission",
+    "pk": 125
+},
+{
+    "fields": {
+        "codename": "delete_userpledge",
+        "name": "Can delete user pledge",
+        "content_type": 42
+    },
+    "model": "auth.permission",
+    "pk": 126
+},
+{
+    "fields": {
+        "username": "admin",
+        "first_name": "admin",
+        "last_name": "admin",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2015-09-02T11:09:51.133Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$0M84ZrTJZvLk$s59diN6OedeJS2reVKvIsz6GJURV9J3FSzV8nh1AMOU=",
+        "email": "admin@admin.com",
+        "date_joined": "2015-08-14T14:23:32Z"
+    },
+    "model": "auth.user",
+    "pk": 41
+},
+{
+    "fields": {
+        "username": "bob",
+        "first_name": "bob1",
+        "last_name": "bob2",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T11:10:02.730Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$kIQz4AQFL5i8$MnCv1bstboJ4zzsIgs4Er3VywqaP1bHEv0LP8SYuQY4=",
+        "email": "bob@bob.co.uk",
+        "date_joined": "2015-08-14T14:24:36Z"
+    },
+    "model": "auth.user",
+    "pk": 42
+},
+{
+    "fields": {
+        "username": "charlotte",
+        "first_name": "charlotte1",
+        "last_name": "charlotte2",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T09:14:38.207Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$Yd9iwkyD9HXq$HLdb14gqXH6FT3tIFvMH5q4olKl683NDTLwc8NIKi9A=",
+        "email": "charlotte@charlotte.com",
+        "date_joined": "2015-08-14T14:25:20Z"
+    },
+    "model": "auth.user",
+    "pk": 43
+},
+{
+    "fields": {
+        "username": "danni",
+        "first_name": "danni",
+        "last_name": "danni",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T09:23:25.890Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$ic8RGa8nPY89$GQcqrSRJWMGI8flv3bZuwBKKghkqQJKkFANihoQHE+0=",
+        "email": "danii@danni.com",
+        "date_joined": "2015-08-19T11:35:39.805Z"
+    },
+    "model": "auth.user",
+    "pk": 44
+},
+{
+    "fields": {
+        "username": "elsa",
+        "first_name": "elsa",
+        "last_name": "elsa",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T11:10:33.528Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$jAcyw5CDYX1d$e1H3HN88Rx+LJQN6afEP5k01q9+rj5ReDtgLTiPquWg=",
+        "email": "elsa@elsa.com",
+        "date_joined": "2015-08-19T11:40:18.294Z"
+    },
+    "model": "auth.user",
+    "pk": 45
+},
+{
+    "fields": {
+        "username": "fred",
+        "first_name": "fred",
+        "last_name": "fred",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T09:43:08.621Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$n63a12IVQQEY$5bMwIpk/EeWfDGmUcPy3JlC8W9WOq/3ak0xxQ1kuM/Y=",
+        "email": "fred@fred.com",
+        "date_joined": "2015-08-19T11:49:52.827Z"
+    },
+    "model": "auth.user",
+    "pk": 46
+},
+{
+    "fields": {
+        "username": "gemma",
+        "first_name": "gemma",
+        "last_name": "gemma",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-02T09:47:55.337Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$rvaq0NJoFxhY$Iw9ByY7POuNOXM++2895wxPUfTgvFiUq082gek0G7sE=",
+        "email": "gemma@gemma.com",
+        "date_joined": "2015-08-19T13:10:07.465Z"
+    },
+    "model": "auth.user",
+    "pk": 47
+}
+]
