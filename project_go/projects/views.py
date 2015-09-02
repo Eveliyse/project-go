@@ -50,7 +50,7 @@ class IndexView(TemplateView):
         percent_pledged_5=sum_pledged_5.annotate(
             current_percent=Coalesce(
                 (F('current_pledged')*100.00)/F('goal'),0)) \
-            .order_by('-current_percent')[:5]        
+            .order_by('-current_pledged')[:5]        
         
         context['newest_5'] = newest_5
         context['most_pledged_5'] = percent_pledged_5
