@@ -34,7 +34,7 @@ class IndexView(TemplateView):
 
         open_status=Status.objects.get(status="Open")
     
-        newest_1=Project.objects.filter(status=open_status).order_by('-open_date')[:5]
+        newest_1=Project.objects.filter(status=open_status).order_by('-open_date')[:6]
         newest_2=newest_1.annotate(
             current_pledged=Coalesce(
                 Sum('project_pledges__pledged_users__pledge__amount'),0.00))
@@ -50,7 +50,7 @@ class IndexView(TemplateView):
         percent_pledged_5=sum_pledged_5.annotate(
             current_percent=Coalesce(
                 (F('current_pledged')*100.00)/F('goal'),0)) \
-            .order_by('-current_pledged')[:5]        
+            .order_by('-current_pledged')[:6]        
         
         context['newest_5'] = newest_5
         context['most_pledged_5'] = percent_pledged_5
