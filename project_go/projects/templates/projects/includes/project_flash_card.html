@@ -6,9 +6,10 @@
             <div class="project-flash-card-short-desc hover-hidden">
                 <p><b>{{ project.title }}</b></p>
                 <p class="short-desc">
-                    {{ project.short_desc }}
+                    <b>£{{ project.pledged_amount }} of £{{ project.goal }}</b>
+                    <br>{{ project.short_desc }}
                 </p> 
-                <p><b>{{ project.pledged_percent }}% of £{{ project.goal }}</b></p>
+                <p><b>{{ project.pledged_percent }}% Funded</b></p>
         </div>
         </div>
     </a>

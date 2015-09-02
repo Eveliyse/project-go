@@ -1,4 +1,4 @@
-<div class="project-card">
+<div class="project-card hover-parent">
     <a href="{% url 'projects:details' project.id %}">
         <div class="card-header">
             <b>{{ project.title }}</b>
@@ -6,6 +6,14 @@
         
         <div class="project-card-img">
             <img src="{{ project.image.url }}">
+            <div class="project-flash-card-short-desc hover-hidden">
+                <p class="short-desc">
+                    <b>'{{ project.title }}' by {{ project.owner.username }}</b>
+                    </br>{{ project.open_date }}
+                    </br>
+                    </br><b>£{{ project.pledged_amount }}</b> pledged of £{{ project.goal }}
+                </p>
+            </div>
         </div>
         
         <p class="short-desc">
