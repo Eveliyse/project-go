@@ -326,10 +326,15 @@ class ProjectListView(ListView):
         if 'search_term' in request.GET:
             search_term = self.request.GET['search_term']
             if search_term is not None and len(search_term) > 0:
-                open_status=Status.objects.get(status="Open")
+                new_status=Status.objects.get(status="New")
                 search_term_list = search_term.split()
                 
-                search_results =  Project.objects.filter(reduce(lambda x, y: x | y, [Q(title__contains=word) for word in search_term_list]), status = open_status)
+                search_results =  Project.objects.filter(
+                                                    reduce(
+                                                        lambda x, y: x | y, [
+                                                            Q(title__contains=word) for word in search_term_list]
+                                                        )
+                                                    ).exclude(status = new_status).order_by('status')
                 if search_results:
                     self.queryset = search_results
                 else:
@@ -337,13 +342,15 @@ class ProjectListView(ListView):
         return super(ProjectListView,self).get(request, *args, **kwargs)
         
     def get_queryset(self):
-        open_status=Status.objects.get(status="Open")
+        new_status=Status.objects.get(status="New")
         if 'category_id' in self.kwargs and self.kwargs['category_id'] is not None:
             get_object_or_404(Category, id = self.kwargs['category_id'])
             
-            return Project.objects.filter(category_id = self.kwargs['category_id'], status = open_status)
-        #else:
-            #return Project.objects.filter(status = open_status)
+            return Project.objects.filter(category_id = self.kwargs['category_id']).exclude(status = new_status).order_by('status')
+        else:
+            search_term = self.request.GET['search_term']
+            if search_term is None or len(search_term) <= 0:
+                return Project.objects.exclude(status = new_status)
         return super(ProjectListView,self).get_queryset()
     
     def get_context_data(self, **kwargs):
