@@ -144,8 +144,8 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
 def Edit(request, project_id=None):
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
-        if (p.owner != request.user
-            or p.status != Status.objects.get(status="New")):
+        if (p.owner != request.user or
+            p.status != Status.objects.get(status="New")):
             return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:create'))
@@ -171,8 +171,8 @@ def Edit(request, project_id=None):
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
-        if (project.owner != request.user
-            or project.status != Status.objects.get(status="New")):
+        if (project.owner != request.user or
+            project.status != Status.objects.get(status="New")):
                 return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:manage'))
@@ -320,8 +320,8 @@ class ProjectDetailsView(DetailView):
 
         project = get_object_or_404(Project, pk=kwargs['project_id'])
 
-        if (project.status == Status.objects.get(status="New") 
-            and project.owner.id != self.request.user.id):
+        if (project.status == Status.objects.get(status="New") and
+            project.owner.id != self.request.user.id):
             return redirect(reverse('projects:index'))
 
         match_user_pledges = UserPledge.objects.filter(
@@ -336,8 +336,8 @@ class ProjectDetailsView(DetailView):
 
             open_status = get_object_or_404(Status, status="Open")
 
-            if (pledge_obj.project.status == open_status 
-                and pledge_obj.project.owner.id != self.request.user.id):
+            if (pledge_obj.project.status == open_status and
+                pledge_obj.project.owner.id != self.request.user.id):
                 if not match_user_pledges:
                     userpledge = UserPledge(user=request.user,
                                             pledge=pledge_obj)
@@ -397,7 +397,8 @@ class ProjectListView(ListView):
                 search_results = Project.objects.filter(
                     reduce(
                         lambda x, y: x | y, [
-                            Q(title__contains=word) for word in search_term_list]
+                            Q(title__contains=word)
+                            for word in search_term_list]
                         )
                     ).exclude(status=new_status).order_by('status')
                 if search_results:
@@ -408,8 +409,8 @@ class ProjectListView(ListView):
 
     def get_queryset(self):
         new_status = Status.objects.get(status="New")
-        if ('category_id' in self.kwargs
-            and self.kwargs['category_id'] is not None):
+        if ('category_id' in self.kwargs and
+            self.kwargs['category_id'] is not None):
                 get_object_or_404(Category, id=self.kwargs['category_id'])
 
                 return (Project.objects.filter(
@@ -428,8 +429,8 @@ class ProjectListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
 
-        if ('category_id' in self.kwargs
-            and self.kwargs['category_id'] is not None):
+        if ('category_id' in self.kwargs and
+            self.kwargs['category_id'] is not None):
                 context['cat_name'] = get_object_or_404(
                     Category,
                     id=self.kwargs['category_id']).category
