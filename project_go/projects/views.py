@@ -54,8 +54,8 @@ class IndexView(TemplateView):
         open_status = Status.objects.get(status="Open")
 
         # Getting set of newest open projects and adding extra columns
-        newest_projects = Project.objects.filter(status=open_status) \
-            .order_by('-open_date')[:6]
+        newest_projects = (Project.objects.filter(status=open_status)
+                           .order_by('-open_date')[:6])
 
         newest_projects_amount = newest_projects.annotate(
             current_pledged=Coalesce(
@@ -72,10 +72,10 @@ class IndexView(TemplateView):
             current_pledged=Coalesce(
                 Sum('project_pledges__pledged_users__pledge__amount'), 0.00))
 
-        percent_pledged_5 = sum_pledged_5.annotate(
-            current_percent=Coalesce(
-                (F('current_pledged')*100.00)/F('goal'), 0)) \
-            .order_by('-current_pledged')[:6]
+        percent_pledged_5 = (
+            sum_pledged_5.annotate(current_percent=Coalesce(
+                (F('current_pledged')*100.00)/F('goal'), 0))
+                .order_by('-current_pledged')[:6])
 
         # adding sets to context
         context['newest_5'] = newest_projects_amount_percent
@@ -144,8 +144,8 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
 def Edit(request, project_id=None):
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
-        if p.owner != request.user \
-           or p.status != Status.objects.get(status="New"):
+        if (p.owner != request.user
+            or p.status != Status.objects.get(status="New")):
             return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:create'))
@@ -171,8 +171,8 @@ def Edit(request, project_id=None):
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
-        if project.owner != request.user \
-           or project.status != Status.objects.get(status="New"):
+        if (project.owner != request.user
+            or project.status != Status.objects.get(status="New")):
                 return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:manage'))
@@ -320,8 +320,8 @@ class ProjectDetailsView(DetailView):
 
         project = get_object_or_404(Project, pk=kwargs['project_id'])
 
-        if project.status == Status.objects.get(status="New") \
-           and project.owner.id != self.request.user.id:
+        if (project.status == Status.objects.get(status="New") 
+            and project.owner.id != self.request.user.id):
             return redirect(reverse('projects:index'))
 
         match_user_pledges = UserPledge.objects.filter(
@@ -336,8 +336,8 @@ class ProjectDetailsView(DetailView):
 
             open_status = get_object_or_404(Status, status="Open")
 
-            if pledge_obj.project.status == open_status \
-               and pledge_obj.project.owner.id != self.request.user.id:
+            if (pledge_obj.project.status == open_status 
+                and pledge_obj.project.owner.id != self.request.user.id):
                 if not match_user_pledges:
                     userpledge = UserPledge(user=request.user,
                                             pledge=pledge_obj)
@@ -412,17 +412,17 @@ class ProjectListView(ListView):
             and self.kwargs['category_id'] is not None):
                 get_object_or_404(Category, id=self.kwargs['category_id'])
 
-                return Project.objects.filter(
-                    category_id=self.kwargs['category_id']) \
-                    .exclude(status=new_status).order_by('status')
+                return (Project.objects.filter(
+                    category_id=self.kwargs['category_id'])
+                        .exclude(status=new_status).order_by('status'))
         elif 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is None or len(search_term) <= 0:
-                return Project.objects.exclude(status=new_status) \
-                    .order_by('status')
+                return (Project.objects.exclude(status=new_status)
+                        .order_by('status'))
         else:
-            return Project.objects.exclude(status=new_status) \
-                .order_by('status')
+            return (Project.objects.exclude(status=new_status)
+                    .order_by('status'))
         return super(ProjectListView, self).get_queryset()
 
     def get_context_data(self, **kwargs):

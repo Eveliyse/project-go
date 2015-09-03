@@ -191,9 +191,9 @@ def Register(request):
         user_create_form = UserCreateForm(data=request.POST)
         user_details_form = MemberDetailsForm(data=request.POST)
         user_address_form = MemberAddressForm(data=request.POST)
-        if user_create_form.is_valid() and \
-           user_details_form.is_valid() and \
-           user_address_form.is_valid():
+        if (user_create_form.is_valid()
+            and user_details_form.is_valid()
+            and user_address_form.is_valid()):
             user = user_create_form.save()
             user.is_staff = False
             user.save()
