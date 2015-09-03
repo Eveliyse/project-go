@@ -75,7 +75,7 @@ class IndexView(TemplateView):
         percent_pledged_5 = (
             sum_pledged_5.annotate(current_percent=Coalesce(
                 (F('current_pledged')*100.00)/F('goal'), 0))
-                .order_by('-current_pledged')[:6])
+            .order_by('-current_pledged')[:6])
 
         # adding sets to context
         context['newest_5'] = newest_projects_amount_percent
@@ -145,7 +145,7 @@ def Edit(request, project_id=None):
     if project_id:
         p = get_object_or_404(Project, pk=project_id)
         if (p.owner != request.user or
-            p.status != Status.objects.get(status="New")):
+                p.status != Status.objects.get(status="New")):
             return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:create'))
@@ -163,7 +163,7 @@ def Edit(request, project_id=None):
     return render_to_response('projects/edit_create.html', {
         'form': project_edit_form,
         'pledgerewards': Pledge.objects.filter(project__id=project_id)
-            .order_by('amount'),
+        .order_by('amount'),
         'project': p}, context_instance=RequestContext(request))
 
 
@@ -172,8 +172,8 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
         if (project.owner != request.user or
-            project.status != Status.objects.get(status="New")):
-                return redirect(reverse('projects:manage'))
+                project.status != Status.objects.get(status="New")):
+            return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:manage'))
 
@@ -228,7 +228,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'mode': mode,
             'instance': p_instance,
             'pledges': Pledge.objects.filter(project__id=project_id)
-                .order_by('amount'),
+            .order_by('amount'),
             'rewards': Reward.objects.filter(project__id=project_id),
             'project': project}, context_instance=RequestContext(request))
     elif mode == "reward" and P_R_id is not None:
@@ -244,7 +244,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'mode': mode,
             'instance': r_instance,
             'pledges': Pledge.objects.filter(project__id=project_id)
-                .order_by('amount'),
+            .order_by('amount'),
             'rewards': Reward.objects.filter(project__id=project_id),
             'project': project}, context_instance=RequestContext(request))
     else:
@@ -255,7 +255,7 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
         'form2': pledge_edit_form,
         'form3': reward_edit_form,
         'pledges': Pledge.objects.filter(project__id=project_id)
-            .order_by('amount'),
+        .order_by('amount'),
         'rewards': Reward.objects.filter(project__id=project_id),
         'project': project}, context_instance=RequestContext(request))
 
@@ -321,7 +321,7 @@ class ProjectDetailsView(DetailView):
         project = get_object_or_404(Project, pk=kwargs['project_id'])
 
         if (project.status == Status.objects.get(status="New") and
-            project.owner.id != self.request.user.id):
+                project.owner.id != self.request.user.id):
             return redirect(reverse('projects:index'))
 
         match_user_pledges = UserPledge.objects.filter(
@@ -337,7 +337,7 @@ class ProjectDetailsView(DetailView):
             open_status = get_object_or_404(Status, status="Open")
 
             if (pledge_obj.project.status == open_status and
-                pledge_obj.project.owner.id != self.request.user.id):
+                    pledge_obj.project.owner.id != self.request.user.id):
                 if not match_user_pledges:
                     userpledge = UserPledge(user=request.user,
                                             pledge=pledge_obj)
@@ -353,7 +353,8 @@ class ProjectDetailsView(DetailView):
                 self.pledge_added = False
 
             return redirect(reverse('projects:details',
-                                    kwargs={'project_id': kwargs['project_id']}))
+                                    kwargs={'project_id':
+                                            kwargs['project_id']}))
         return super(ProjectDetailsView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -410,12 +411,12 @@ class ProjectListView(ListView):
     def get_queryset(self):
         new_status = Status.objects.get(status="New")
         if ('category_id' in self.kwargs and
-            self.kwargs['category_id'] is not None):
-                get_object_or_404(Category, id=self.kwargs['category_id'])
+                self.kwargs['category_id'] is not None):
+            get_object_or_404(Category, id=self.kwargs['category_id'])
 
-                return (Project.objects.filter(
-                    category_id=self.kwargs['category_id'])
-                        .exclude(status=new_status).order_by('status'))
+            return (Project.objects.filter(
+                category_id=self.kwargs['category_id'])
+                .exclude(status=new_status).order_by('status'))
         elif 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is None or len(search_term) <= 0:
@@ -430,10 +431,9 @@ class ProjectListView(ListView):
         context = super(ProjectListView, self).get_context_data(**kwargs)
 
         if ('category_id' in self.kwargs and
-            self.kwargs['category_id'] is not None):
-                context['cat_name'] = get_object_or_404(
-                    Category,
-                    id=self.kwargs['category_id']).category
+                self.kwargs['category_id'] is not None):
+            context['cat_name'] = get_object_or_404(
+                Category, id=self.kwargs['category_id']).category
         elif 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is not None and len(search_term) > 0:

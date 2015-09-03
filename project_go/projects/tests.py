@@ -18,8 +18,9 @@ class BaseProjectsTestCase(TestCase):
 
     # def login(self, uname='admin', password='admin'):
     def login(self, uname='elsa', password='elsa'):
-        res = self.client.post(reverse('users:login'),
-                               {'username': uname, 'password': password})
+        res = self.client.post(
+            reverse('users:login'),
+            {'username': uname, 'password': password})
         self.assertEqual(res.status_code, 302)
         # self.assertRedirects(res, reverse('users:index'))
         self.assertIn('_auth_user_id', self.client.session)
@@ -91,34 +92,35 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # edit own project
-        res = self.client.get(reverse('projects:edit',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:edit',
+                    kwargs={'project_id': self.new_projs[0].id}))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['pledgerewards'])
         self.assertIsNotNone(res.context['project'])
 
-        res = self.client.get(reverse('projects:edit',
-                                      kwargs={'project_id':
-                                              self.open_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:edit',
+                    kwargs={'project_id': self.open_projs[0].id}))
         self.assertEqual(res.status_code, 302)
 
-        res = self.client.get(reverse('projects:edit',
-                                      kwargs={'project_id':
-                                              self.closed_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:edit',
+                    kwargs={'project_id': self.closed_projs[0].id}))
         self.assertEqual(res.status_code, 302)
 
         # edit not own project
-        res = self.client.get(reverse('projects:edit',
-                                      kwargs={'project_id':
-                                              self.not_user_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:edit',
+                    kwargs={'project_id': self.not_user_projs[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # edit nonexistent project
-        res = self.client.get(reverse('projects:edit',
-                                      kwargs={'project_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:edit',
+                    kwargs={'project_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
 
@@ -128,9 +130,9 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # add pledge/rewards to own project
-        res = self.client.get(reverse('projects:pledgerewards',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:pledgerewards',
+                    kwargs={'project_id': self.new_projs[0].id}))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form2'])
         self.assertIsNotNone(res.context['form3'])
@@ -138,26 +140,27 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.assertIsNotNone(res.context['rewards'])
         self.assertIsNotNone(res.context['project'])
 
-        res = self.client.get(reverse('projects:pledgerewards',
-                                      kwargs={'project_id':
-                                              self.open_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:pledgerewards',
+                    kwargs={'project_id': self.open_projs[0].id}))
         self.assertEqual(res.status_code, 302)
 
-        res = self.client.get(reverse('projects:pledgerewards',
-                                      kwargs={'project_id':
-                                              self.closed_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:pledgerewards',
+                    kwargs={'project_id': self.closed_projs[0].id}))
         self.assertEqual(res.status_code, 302)
 
         # add pledge/rewards to not own project
-        res = self.client.get(reverse('projects:pledgerewards',
-                                      kwargs={'project_id':
-                                              self.not_user_projs[0].id}))
+        res = self.client.get(
+            reverse('projects:pledgerewards',
+                    kwargs={'project_id': self.not_user_projs[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # add pledge/rewards to nonexistent project
-        res = self.client.get(reverse('projects:pledgerewards',
-                                      kwargs={'project_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:pledgerewards',
+                    kwargs={'project_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
     def test_edit_pledgereward(self):
@@ -165,11 +168,11 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # edit pledge for own project
-        res = self.client.get(reverse('projects:pledge',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id':
-                                              self.new_projs[0].project_pledges.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:pledge',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': (self.new_projs[0].project_pledges
+                                       .all()[0].id)}))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form2'])
         self.assertIsNotNone(res.context['form3'])
@@ -179,34 +182,35 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.assertIsNotNone(res.context['rewards'])
         self.assertIsNotNone(res.context['project'])
 
-        res = self.client.get(reverse('projects:pledge',
-                                      kwargs={'project_id':
-                                              self.open_projs[0].id,
-                                              'P_R_id':
-                                              self.open_projs[0].project_pledges.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:pledge',
+                    kwargs={'project_id': self.open_projs[0].id,
+                            'P_R_id': (self.open_projs[0].project_pledges
+                                       .all()[0].id)}))
         self.assertEqual(res.status_code, 302)
 
-        res = self.client.get(reverse('projects:pledge',
-                                      kwargs={'project_id':
-                                              self.closed_projs[0].id,
-                                              'P_R_id':
-                                              self.closed_projs[0].project_pledges.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:pledge',
+                    kwargs={'project_id':
+                            self.closed_projs[0].id,
+                            'P_R_id': (self.closed_projs[0].project_pledges
+                                       .all()[0].id)}))
         self.assertEqual(res.status_code, 302)
 
         # edit pledge for not own project
-        res = self.client.get(reverse('projects:pledge',
-                                      kwargs={'project_id':
-                                              self.not_user_pledges[0].project.id,
-                                              'P_R_id':
-                                              self.not_user_pledges[0].id}))
+        res = self.client.get(
+            reverse('projects:pledge',
+                    kwargs={
+                        'project_id': (self.not_user_pledges[0].project.id),
+                        'P_R_id': self.not_user_pledges[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # edit nonexistnet pledge
-        res = self.client.get(reverse('projects:pledge',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:pledge',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
     def test_edit_reward(self):
@@ -214,11 +218,11 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # edit reward for own project
-        res = self.client.get(reverse('projects:reward',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id':
-                                              self.new_projs[0].project_pledges.all()[0].rewards.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': (self.new_projs[0].project_pledges
+                                       .all()[0].rewards.all()[0].id)}))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form2'])
         self.assertIsNotNone(res.context['form3'])
@@ -228,33 +232,33 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.assertIsNotNone(res.context['rewards'])
         self.assertIsNotNone(res.context['project'])
 
-        res = self.client.get(reverse('projects:reward',
-                                      kwargs={'project_id':
-                                              self.open_projs[0].id,
-                                              'P_R_id': self.open_projs[0].project_pledges.all()[0].rewards.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.open_projs[0].id,
+                            'P_R_id': (self.open_projs[0].project_pledges
+                                       .all()[0].rewards.all()[0].id)}))
         self.assertEqual(res.status_code, 302)
 
-        res = self.client.get(reverse('projects:reward',
-                                      kwargs={'project_id':
-                                              self.closed_projs[0].id,
-                                              'P_R_id':
-                                              self.closed_projs[0].project_pledges.all()[0].rewards.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.closed_projs[0].id,
+                            'P_R_id': (self.closed_projs[0].project_pledges
+                                       .all()[0].rewards.all()[0].id)}))
         self.assertEqual(res.status_code, 302)
 
         # edit reward for not own project
-        res = self.client.get(reverse('projects:reward',
-                                      kwargs={'project_id':
-                                              self.not_user_rewards[0].project.id,
-                                              'P_R_id':
-                                              self.not_user_rewards[0].id}))
+        res = self.client.get(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.not_user_rewards[0].project.id,
+                            'P_R_id': self.not_user_rewards[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # edit nonexistent reward
-        res = self.client.get(reverse('projects:reward',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
 
@@ -264,28 +268,30 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # delete pledge for own project
-        res = self.client.get(reverse('projects:delete_pledge',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id':
-                                              self.new_projs[0].project_pledges.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:delete_pledge',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': (self.new_projs[0].project_pledges
+                                       .all()[0].id)}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('projects:pledgerewards', kwargs={'project_id': self.new_projs[0].id}))
+        self.assertRedirects(res,
+                             reverse('projects:pledgerewards',
+                                     kwargs={
+                                         'project_id': self.new_projs[0].id}))
 
         # delete pledge for not own project
-        res = self.client.get(reverse('projects:delete_pledge',
-                                      kwargs={'project_id':
-                                              self.not_user_pledges[0].project.id,
-                                              'P_R_id':
-                                              self.not_user_pledges[0].id}))
+        res = self.client.get(
+            reverse('projects:delete_pledge',
+                    kwargs={'project_id': self.not_user_pledges[0].project.id,
+                            'P_R_id': self.not_user_pledges[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # delete nonexistent pledge
-        res = self.client.get(reverse('projects:delete_pledge',
-                                      kwargs={'project_id':
-                                              self.user_pledges[0].project.id,
-                                              'P_R_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:delete_pledge',
+                    kwargs={'project_id': self.user_pledges[0].project.id,
+                            'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
     def test_delete_reward(self):
@@ -293,30 +299,32 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.login()
 
         # delete reward for own project
-        res = self.client.get(reverse('projects:delete_reward',
-                                      kwargs={'project_id':
-                                              self.new_projs[0].id,
-                                              'P_R_id':
-                                              self.new_projs[0].project_pledges.all()[0].rewards.all()[0].id}))
+        res = self.client.get(
+            reverse('projects:delete_reward',
+                    kwargs={'project_id': self.new_projs[0].id,
+                            'P_R_id': (self.new_projs[0].project_pledges
+                                       .all()[0].rewards.all()[0].id)}))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('projects:pledgerewards',
-                                          kwargs={'project_id':
-                                                  self.new_projs[0].id}))
+        self.assertRedirects(res,
+                             reverse('projects:pledgerewards',
+                                     kwargs={
+                                         'project_id': self.new_projs[0].id}))
 
         # delete reward for not own project
-        res = self.client.get(reverse('projects:delete_reward',
-                                      kwargs={'project_id':
-                                              self.not_user_rewards[0].project.id,
-                                              'P_R_id':
-                                              self.not_user_rewards[0].id}))
+        res = self.client.get(
+            reverse(
+                'projects:delete_reward',
+                kwargs={
+                    'project_id': self.not_user_rewards[0].project.id,
+                    'P_R_id': self.not_user_rewards[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('projects:manage'))
 
         # delete nonexistent reward
-        res = self.client.get(reverse('projects:delete_reward',
-                                      kwargs={'project_id':
-                                              self.user_rewards[0].project.id,
-                                              'P_R_id': 9876543210}))
+        res = self.client.get(
+            reverse('projects:delete_reward',
+                    kwargs={'project_id': self.user_rewards[0].project.id,
+                            'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
 
