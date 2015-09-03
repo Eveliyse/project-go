@@ -31,13 +31,11 @@ class Address(models.Model):
     line_1 = models.CharField(max_length=50)
     line_2 = models.CharField(max_length=50, blank=True)
     town = models.CharField(max_length=50)
-    postcode = models.CharField(max_length=10,
-                                validators=[RegexValidator(
-                                    regex='^[a-zA-Z][a-zA-Z][0-9][0-9a-zA-Z]?[ |-]?[0-9][a-zA-Z]{2}$',
-                                    message='Your postcode was not in the correct format',
-                                    code='invalid_postcode'
-                                    ),
-                                ])
+    postcode = (models.CharField(
+        max_length=10, validators=[RegexValidator(
+            regex=('^[a-zA-Z]{2}[0-9][0-9a-zA-Z]?[ |-]?[0-9][a-zA-Z]{2}$'),
+            message=('Your postcode was not in the correct format'),
+            code='invalid_postcode')]))
     country = models.ForeignKey(Country)
     active = models.BooleanField(blank=True, default=True)
 

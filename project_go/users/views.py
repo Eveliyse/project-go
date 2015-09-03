@@ -192,22 +192,22 @@ def Register(request):
         user_details_form = MemberDetailsForm(data=request.POST)
         user_address_form = MemberAddressForm(data=request.POST)
         if (user_create_form.is_valid() and
-            user_details_form.is_valid() and
-            user_address_form.is_valid()):
-                user = user_create_form.save()
-                user.is_staff = False
-                user.save()
+                user_details_form.is_valid() and
+                user_address_form.is_valid()):
+            user = user_create_form.save()
+            user.is_staff = False
+            user.save()
 
-                details = user_details_form.save(commit=False)
-                details.user = user
-                details.save()
+            details = user_details_form.save(commit=False)
+            details.user = user
+            details.save()
 
-                address = user_address_form.save(commit=False)
-                address.resident = user
-                address.active = True
-                address.save()
-                # TODO redirect somewhere more sensible? login?
-                return redirect(reverse('users:login'))
+            address = user_address_form.save(commit=False)
+            address.resident = user
+            address.active = True
+            address.save()
+            # TODO redirect somewhere more sensible? login?
+            return redirect(reverse('users:login'))
         else:
             return render_to_response('users/register.html', {
                 'form': user_create_form,
