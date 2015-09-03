@@ -15,7 +15,7 @@
 /********************************/
 body {
     background-color: #f9f9f9;
-    min-width: 1150px;
+    min-width: 960px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
     color: var(--main-font-color);   
@@ -39,16 +39,16 @@ tr, th, td {
     vertical-align: middle;
 }
 
-header, footer {
+header, footer, nav {
     box-sizing: border-box;
 }
 
 header {
     background-color:var(--main-accent-color);
     width: 100%;
+    min-width: 960px;
     height: 50px;
-    padding: 10px;
-    position: relative;
+    padding: 10px 0 10px 10px;
     z-index: 2;
     position:  fixed;
     top: 0px;
@@ -67,6 +67,14 @@ footer {
     z-index: 2;
 }
 
+header > nav {
+    background-color:var(--main-accent-color);
+    height: 50px;
+    padding: 10px;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
 
 /********************************/
 /*****    Helper Classes    *****/
@@ -202,7 +210,7 @@ ul {
 
 nav ul {
     list-style-type: none;
-    margin: 0 15px;
+    margin: 0;
 }
 
 nav ul li{
