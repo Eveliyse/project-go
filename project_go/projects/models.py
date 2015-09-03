@@ -1,23 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Count, Sum, Avg
-from decimal import *
+from django.db.models import Count, Sum
+from decimal import Decimal
+
 
 class Status(models.Model):
     status = models.CharField(max_length=100)
-    
+
     def __str__(self):
-        return self.status     
-    
+        return self.status
+
+
 class Category(models.Model):
     category = models.CharField(max_length=100)
-    
+
     def __str__(self):
-        return self.category     
+        return self.category
+
 
 class Project(models.Model):
     owner = models.ForeignKey(User)
-    title = models.CharField(max_length=100, unique = True)
+    title = models.CharField(max_length=100, unique=True)
     goal = models.DecimalField(max_digits=12, decimal_places=2)
     image = models.ImageField(upload_to='project_images/%Y-%m/%d')
     short_desc = models.CharField(max_length=200)
@@ -25,10 +28,10 @@ class Project(models.Model):
     status = models.ForeignKey(Status)
     category = models.ForeignKey(Category)
     open_date = models.DateTimeField(auto_now_add=True)
-    
+
     def pledged_amount(self):
-        pledges = Pledge.objects.filter(project = self)
-        user_pledges = UserPledge.objects.filter(pledge__in = pledges)
+        pledges = Pledge.objects.filter(project=self)
+        user_pledges = UserPledge.objects.filter(pledge__in=pledges)
         sum_amount = user_pledges.aggregate(amount=Sum('pledge__amount'))
         result = sum_amount['amount']
         if result is None:
@@ -38,13 +41,14 @@ class Project(models.Model):
     def pledged_percent(self):
         if self.pledged_amount() is None or self.pledged_amount() == 0:
             return 0
-        return format(Decimal(self.pledged_amount()) / Decimal(self.goal) * 100, '.0f')
-    
-    def pledgers(self):			
-        up = UserPledge.objects.filter(pledge__project = self)
+        return format(
+            Decimal(self.pledged_amount()) / Decimal(self.goal) * 100, '.0f')
+
+    def pledgers(self):
+        up = UserPledge.objects.filter(pledge__project=self)
         result = up.aggregate(Count('user'))
         return result['user__count']
-    
+
     def is_funded(self):
         amount = self.pledged_amount()
         percent = self.pledged_percent()
@@ -54,31 +58,34 @@ class Project(models.Model):
             if amount >= goal_amount:
                 return True
         return False
-    
+
     def __str__(self):
         return self.title + " by " + self.owner.username
-    
+
+
 class Reward(models.Model):
     project = models.ForeignKey(Project)
     desc = models.CharField(max_length=200)
-    
+
     def __str__(self):
         return self.desc
-    
+
+
 class Pledge(models.Model):
     project = models.ForeignKey(Project, related_name='project_pledges')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    rewards = models.ManyToManyField(Reward, blank= True)
-    
+    rewards = models.ManyToManyField(Reward, blank=True)
+
     def __str__(self):
         rstr = " "
         for reward in self.rewards.all():
             rstr = rstr + reward.desc + ", "
         return self.project.title + " " + str(self.amount) + " " + rstr
 
+
 class UserPledge(models.Model):
     user = models.ForeignKey(User, related_name='user_pledges')
     pledge = models.ForeignKey(Pledge, related_name='pledged_users')
-    
+
     def __str__(self):
         return self.user.username + ", " + str(self.pledge)
