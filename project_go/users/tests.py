@@ -2,10 +2,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from hypothesis.extra.django import TestCase
-from hypothesis import given
-from hypothesis.extra.django.models import models
-
 from .models import Member, Address, Gender, Country
 
 class BaseUsersTestCase(TestCase):
@@ -42,17 +38,6 @@ class UsersIndexViewTestCase(BaseUsersTestCase):
 
 
 class UsersCreateViewTestCase(BaseUsersTestCase):
-    member_example = models(
-        Member,
-        user=models(User),
-        gender=models(Gender)
-        ).example
-    address_example = models(
-        Address,
-        owner=models(User),
-        country=models(Country)
-        ).example
-    
     def test_view_page(self):
         res = self.client.get(reverse('users:register'))
         self.assertEqual(res.status_code, 200)
