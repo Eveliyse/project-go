@@ -1,0 +1,6 @@
+Django==1.8.3
+fake-factory==0.5.2
+Faker==0.0.4
+hypothesis==1.11.0
+Pillow==2.9.0
+pytz==2015.4
