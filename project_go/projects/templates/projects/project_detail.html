@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
-{% block content %}
-    {% if project.is_funded %}
-        <div class="banner-right">
-            <img src="/static/projects/images/funded-banner.png">
+{% block outer-content %}
+{% if project.is_funded %}
+    <div id="funded-banner-container">
+        <div id="funded-banner">
+            <!--<img src="/static/projects/images/funded-banner.png">-->
+            <span>FUNDED</span><span>❤</span>
+        </div>
         </div>
     {% endif %}
+{% endblock %}
 
+{% block content %}
     {% if pledge %}
         <div id="pledgereward-strip-card">
             <div class="strip-card-header">

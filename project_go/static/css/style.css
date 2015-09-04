@@ -576,3 +576,41 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 div > img{
     display: block;
 }
+
+#funded-banner-container {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 370px;
+    height: 260px;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#funded-banner {
+    position: absolute;
+    left: -20px;
+    top: 80px;
+    background-color: deepskyblue;
+    width: 500px;
+    padding: 15px 100px;
+    -ms-transform: rotate(35deg); /* IE 9 */
+    -webkit-transform: rotate(35deg); /* Safari */
+    transform: rotate(35deg);
+}
+
+#funded-banner > span {
+    font-family: Impact, Charcoal, sans-serif;
+    letter-spacing: -0.05em;
+    font-size: 3.5em;
+    font-weight: 900;
+    color: #000;
+    vertical-align: middle;
+    display: inline-block;
+    padding: 10px 0;
+}
+
+#funded-banner > span:nth-child(2) {
+    color: #fff;
+}
