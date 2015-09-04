@@ -18,7 +18,7 @@ body {
     min-width: 960px;
     font-family: Avant Garde, Century Gothic, sans-serif;
     font-size: 1em;
-    color: var(--main-font-color);   
+    color: #444;   
     line-height: 1.25em;
     letter-spacing: 0.02em;
     padding-top: 50px;
@@ -44,7 +44,7 @@ header, footer, nav {
 }
 
 header {
-    background-color:var(--main-accent-color);
+    background-color:deepskyblue;
     width: 100%;
     min-width: 960px;
     height: 50px;
@@ -55,11 +55,11 @@ header {
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    box-shadow: 0 0 5px 3px var(--card-shadow-color);
+    box-shadow: 0 0 5px 3px rgba(150,150,150, 0.5);
 }
 
 footer {
-    background-color: var(--main-neutral-color);
+    background-color: #ccc;
     width: 100%;
     padding: 10px;
     margin: 100px 0 0 0;
@@ -68,7 +68,7 @@ footer {
 }
 
 header > nav {
-    background-color:var(--main-accent-color);
+    background-color:deepskyblue;
     height: 50px;
     padding: 10px;
     -webkit-transform-style: preserve-3d;
@@ -227,7 +227,7 @@ ul.reward-list {
 /*****    Links    *****/
 /***********************/
 a {
-    color: var(--main-accent-color);
+    color: deepskyblue;
     text-decoration: none;
 }
 
@@ -236,7 +236,7 @@ p a:hover {
 }
 
 a.button, .project-detail-card{
-    background-color:var(--main-accent-color);
+    background-color:deepskyblue;
     padding: 10px;
     position: relative;
     border: none;
@@ -251,13 +251,13 @@ a.button, .project-detail-card{
 }
 
 a.button:hover {
-    background-color:var(--main-font-color);
+    background-color:#444;
     color: #fff;
 }
 
 /*****    header links    *****/
 #title a {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 #title a:hover {
@@ -275,7 +275,7 @@ nav a, nav label {
 }
 
 .cat-links a {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 nav ul a, nav ul label {
@@ -286,23 +286,23 @@ nav ul a, nav ul label {
 
 nav ul a:hover, nav ul label:hover {
     background-color: #fff;
-    color: var(--main-accent-color);
+    color: deepskyblue;
 }
 
 .cat-links ul a:hover {
-    background-color: var(--main-accent-color);
+    background-color: deepskyblue;
     color: #fff;
 }
 
 .mega-octicon:hover {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 /**********************************/
 /*****    Inputs and Forms    *****/
 /**********************************/
 input[type=submit] {
-    background-color:var(--main-accent-color);
+    background-color:deepskyblue;
     padding: 10px;
     position: relative;
     border: none;
@@ -317,7 +317,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color:var(--main-font-color);
+    background-color:#444;
 }
 
 input[type=search] {
@@ -328,7 +328,7 @@ input[type=search] {
     left: 0px;
     box-shadow: none;
     background-color: #fff;
-    color:var(--main-accent-color);
+    color:deepskyblue;
 }
 
 input, select {
@@ -340,7 +340,7 @@ input, select {
 }
 
 .form-table tr:nth-child(odd) {
-    background-color: var(--light-accent-color);
+    background-color: aliceblue;
 }
 
 #register-form table tr th {
@@ -406,7 +406,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .content-card, #explore-card {
-    box-shadow: var(--default-box-shadow);
+    box-shadow: 0 0 20px -3px rgba(150,150,150, 0.5);
 }
 
 .content-card, #explore-card {
@@ -425,14 +425,14 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
     width: 190px;
     padding: 15px;
     margin: 15px 10px 5px;
-    box-shadow: var(--default-box-shadow);
+    box-shadow: 0 0 20px -3px rgba(150,150,150, 0.5);
     position: relative;
     display: inline-block;
     vertical-align: top;
 }
 
 .address-card a, .project-card a, .action-card a, .pledgereward-card a {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 .project-card, .pledgereward-card {
@@ -448,7 +448,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
     height: 200px;
     overflow: hidden;
     margin: 0 -15px;
-    border-bottom: 1px solid var(--card-shadow-color);
+    border-bottom: 1px solid rgba(150,150,150, 0.5);
     position: relative;
 }
 
@@ -460,7 +460,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .project-card a {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 .project-card .short-desc {
@@ -481,14 +481,14 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 #pledgereward-strip-card {
     background-color: #fff;
     width: 100%;
-    box-shadow: var(--default-box-shadow);
+    box-shadow: 0 0 20px -3px rgba(150,150,150, 0.5);
     margin: 20px auto;
     padding: 15px 30px 15px 60px;
     position: relative;
 }
 
 .strip-card-header {
-    background-color: var(--main-accent-color);
+    background-color: deepskyblue;
     color: #fff;
     padding: 10px;
     height:100%;
@@ -499,7 +499,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .action-card {
-    background-color: var(--main-accent-color);
+    background-color: deepskyblue;
     font-size: 2em;
     line-height: 1em;
     font-weight: bold;
@@ -507,7 +507,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .action-card:hover {
-    background-color: var(--main-font-color);
+    background-color: #444;
 }
 
 .action-card a {
@@ -515,7 +515,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .card-header, .card-footer {
-    background-color:var(--main-accent-color);
+    background-color:deepskyblue;
     color: #fff;
     width: 100%;
     margin: 0 -15px;
@@ -527,7 +527,7 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .card-header a:hover, .card-footer a:hover {
-    color: var(--main-font-color);
+    color: #444;
 }
 
 .card-footer {
@@ -556,14 +556,14 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
 }
 
 .project-detail-card {
-    background-color: var(--main-font-color);
+    background-color: #444;
 }
 
 .hero-image {
     max-width: 100%;
     display: inline-block;
     overflow: hidden;
-    box-shadow: var(--default-box-shadow);
+    box-shadow: 0 0 20px -3px rgba(150,150,150, 0.5);
 }
 
 .hero-image img {
