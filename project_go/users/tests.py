@@ -52,19 +52,24 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
                                 'first_name': 'zac',
                                 'last_name': 'zac',
                                 'email': 'zac@zac.com',
-                                'password1': '',
-                                'password2': '',
+                                'password1': 'zac',
+                                'password2': 'zac',
                                 'dob_month': '1',
                                 'dob_day': '1',
                                 'dob_year': '2000',
                                 'gender': '6',
-                                'line1': 'zac+zouse',
-                                'line2': '',
-                                'town': 'zac+town',
-                                'postcode': 'ZA12+1ZA',
+                                'line_1': 'zac zouse',
+                                'line_2': '',
+                                'town': 'zac town',
+                                'postcode': 'ZA12 1ZA',
                                 'country': '30',
                                 })
         self.assertEqual(res.status_code, 302)
+
+        res = self.client.post(reverse('users:register'),
+                               {})
+        self.assertEqual(res.status_code, 200)      
+
 
 class UsersProfileViewTestCase(BaseUsersTestCase):
     def test_viewing_own_profile(self):
@@ -106,6 +111,25 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
         res = self.client.get(
             reverse('users:profile', kwargs={'user_id': 901299012}))
         self.assertEqual(res.status_code, 404)
+
+    def test_edit_profile(self):
+        self.login()
+        res = self.client.post(reverse('users:profile'),
+                               {'first_name': 'zac',
+                                'last_name': 'zac',
+                                'email': 'zac@zac.com',
+                                'new_password1': 'zac',
+                                'new_password2': 'zac',
+                                'dob_month': '1',
+                                'dob_day': '1',
+                                'dob_year': '2000',
+                                'gender': '6',
+                                })
+        self.assertEqual(res.status_code, 200)
+
+        res = self.client.post(reverse('users:profile'),
+                               {})
+        self.assertEqual(res.status_code, 200)   
 
 
 class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
