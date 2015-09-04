@@ -598,6 +598,7 @@ div > img{
     -ms-transform: rotate(35deg); /* IE 9 */
     -webkit-transform: rotate(35deg); /* Safari */
     transform: rotate(35deg);
+    pointer-events: auto;
 }
 
 #funded-banner > span {
