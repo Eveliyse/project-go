@@ -57,6 +57,21 @@ def Profile(request, user_id=None):
                 password_edit_form.save()
         if member_edit_form.is_valid():
             member_edit_form.save()
+        
+        a = get_list_or_404(Address, resident=request.user, active=True)
+        userpledges = UserPledge.objects.filter(user_id=u_id)
+        pledge_projects = Project.objects.filter(
+            project_pledges__pledged_users__user_id=u_id)        
+        
+        return render_to_response('users/profile.html', {
+            'form': user_edit_form,
+            'form2': password_edit_form,
+            'form3': member_edit_form,
+            'user_addresses': a,
+            'userobj': user,
+            'projects': pledge_projects,
+            'userpledges': userpledges,
+            }, context_instance=RequestContext(request))        
 
     # create form for display
     user_edit_form = UserEditForm(instance=user)
