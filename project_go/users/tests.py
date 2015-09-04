@@ -1,4 +1,4 @@
-#from django.test import TestCase
+from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -47,7 +47,24 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
         self.assertEqual(res.status_code, 302)        
 
     def test_create_user(self):
-        res = self.client.post(reverse('users:register'))
+        res = self.client.post(reverse('users:register'),
+                               {'username': 'zac',
+                                'first_name': 'zac',
+                                'last_name': 'zac',
+                                'email': 'zac@zac.com',
+                                'password1': '',
+                                'password2': '',
+                                'dob_month': '1',
+                                'dob_day': '1',
+                                'dob_year': '2000',
+                                'gender': '6',
+                                'line1': 'zac+zouse',
+                                'line2': '',
+                                'town': 'zac+town',
+                                'postcode': 'ZA12+1ZA',
+                                'country': '30',
+                                })
+        self.assertEqual(res.status_code, 302)
 
 class UsersProfileViewTestCase(BaseUsersTestCase):
     def test_viewing_own_profile(self):
