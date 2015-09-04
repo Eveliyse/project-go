@@ -541,20 +541,6 @@ input[type=checkbox]#explore-chck-box:checked ~ nav#explore-card {
     position: relative;
 }
 
-.banner-right, .banner-left {
-    position: absolute;
-    top: 45px;
-    z-index: 1;
-}
-
-.banner-right {
-    right: 0;
-}
-
-.banner-left {
-    left: 0;
-}
-
 .project-detail-card {
     background-color: #444;
 }
