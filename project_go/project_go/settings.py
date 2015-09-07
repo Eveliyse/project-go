@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
     'users',
     'projects',
 )
@@ -118,8 +119,9 @@ STATICFILES_FINDERS = (
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = ''
 
-
+PROJECT_NAME = 'project_go'
 PROJECT_ROOT = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(BASE_DIR)
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
