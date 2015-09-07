@@ -46,7 +46,7 @@ class UsersIndexViewTestCase(BaseUsersTestCase):
 
 
 class UsersCreateViewTestCase(BaseUsersTestCase):
-    def test_view_page(self):
+    def test_view_create_user(self):
         res = self.client.get(reverse('users:register'))
         self.assertEqual(res.status_code, 200)
 
@@ -54,7 +54,7 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
         res = self.client.get(reverse('users:register'))
         self.assertEqual(res.status_code, 302)
 
-    def test_create_user(self):
+    def test_action_create_user(self):
         res = self.client.post(reverse('users:register'),
                                {'username': 'zac',
                                 'first_name': 'zac',
@@ -73,14 +73,15 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
                                 'country': '30',
                                 })
         self.assertEqual(res.status_code, 302)
-
+        self.assertTrue(User.objects.filter(username='zac').exists())
+        
         res = self.client.post(reverse('users:register'),
-                               {'username': 'zac',
-                                'first_name': 'zac',
-                                'last_name': 'zac',
-                                'email': 'zac@zac.com',
-                                'password1': 'zac1',
-                                'password2': 'zac2',
+                               {'username': 'banana',
+                                'first_name': 'banana',
+                                'last_name': 'banana',
+                                'email': 'banana@banana.com',
+                                'password1': 'PWORD1',
+                                'password2': 'PWORD2',
                                 'dob_month': '1',
                                 'dob_day': '1',
                                 'dob_year': '2000',
@@ -92,13 +93,14 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
                                 'country': '30',
                                 })
         self.assertEqual(res.status_code, 200)
+        self.assertFalse(User.objects.filter(username='banana').exists())
 
         res = self.client.post(reverse('users:register'), {})
         self.assertEqual(res.status_code, 200)
 
 
 class UsersProfileViewTestCase(BaseUsersTestCase):
-    def test_viewing_own_profile(self):
+    def test_view_noID_profile(self):
         # view own profile
         # not logged in
         res = self.client.get(reverse('users:profile'))
@@ -107,20 +109,24 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
 
         # logged in
         self.login()
+        
         res = self.client.get(reverse('users:profile'))
         self.assertEqual(res.status_code, 200)
-        self.assertIsNotNone(res.context['form'])
-        self.assertIsNotNone(res.context['userobj'])
 
-    def test_viewing_other_user_profiles(self):
+    def test_view_ID_profiles(self):
         # not logged in
         res = self.client.get(
             reverse('users:profile',
-                    kwargs={'user_id': self.all_users[0].id}))
+                    kwargs={'user_id': self.user.id}))
         self.assertEqual(res.status_code, 200)
+        
+        res = self.client.get(
+            reverse('users:profile',
+                    kwargs={'user_id': self.all_users[1].id}))
+        self.assertEqual(res.status_code, 200)        
 
         res = self.client.get(
-            reverse('users:profile', kwargs={'user_id': 901299012}))
+            reverse('users:profile', kwargs={'user_id': 987654321}))
         self.assertEqual(res.status_code, 404)
 
         # logged in
@@ -128,21 +134,23 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
         res = self.client.get(
             reverse('users:profile', kwargs={'user_id': self.user.id}))
         self.assertEqual(res.status_code, 200)
-        self.assertIsNotNone(res.context['form'])
-        self.assertIsNotNone(res.context['form2'])
-        self.assertIsNotNone(res.context['form3'])
-        self.assertIsNotNone(res.context['user_addresses'])
-        self.assertIsNotNone(res.context['userobj'])
+        
+        res = self.client.get(
+            reverse('users:profile',
+                    kwargs={'user_id': self.all_users[1].id}))
+        self.assertEqual(res.status_code, 200)           
 
         res = self.client.get(
-            reverse('users:profile', kwargs={'user_id': 901299012}))
+            reverse('users:profile', kwargs={'user_id': 987654321}))
         self.assertEqual(res.status_code, 404)
 
     def test_edit_profile(self):
         self.login()
+        
         res = self.client.post(reverse('users:profile'), {})
         self.assertEqual(res.status_code, 200)
-
+        
+        self.assertFalse(User.objects.filter(first_name='zac').exists())
         res = self.client.post(
             reverse('users:profile'), {
                 'first_name': 'zac',
@@ -157,6 +165,7 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
             }
         )
         self.assertEqual(res.status_code, 200)
+        self.assertTrue(User.objects.filter(first_name='zac').exists())
 
         res = self.client.post(
             reverse('users:profile'), {
