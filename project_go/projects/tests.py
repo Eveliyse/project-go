@@ -10,7 +10,7 @@ class BaseProjectsTestCase(TestCase):
 
     all_projects = Project.objects.all()
     all_pledges = Pledge.objects.all()
-    all_rewards = Reward.objects.all()
+    all_rewards = Reward.objects.all()    
 
     new_status = Status.objects.get(status="New")
     open_status = Status.objects.get(status="Open")
