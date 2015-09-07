@@ -4,7 +4,6 @@ from django.core.urlresolvers import reverse
 
 from .models import Member, Address, Gender, Country
 
-
 class BaseUsersTestCase(TestCase):
 
     fixtures = ['users_views_testdata.json', 'auth_views_testdata.json']
@@ -28,13 +27,6 @@ class BaseUsersTestCase(TestCase):
         self.not_user_addresses = Address.objects.exclude(resident=self.user)
 
 
-class UsersLoginLogoutViewTestCase(BaseUsersTestCase):
-    def test_logout(self):
-        self.login()
-        res = self.client.get(reverse('users:logout'))
-        self.assertEqual(res.status_code, 302)
-
-
 class UsersIndexViewTestCase(BaseUsersTestCase):
     def test_index(self):
         res = self.client.get(reverse('users:index'))
@@ -49,10 +41,10 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
     def test_view_page(self):
         res = self.client.get(reverse('users:register'))
         self.assertEqual(res.status_code, 200)
-
+        
         self.login()
         res = self.client.get(reverse('users:register'))
-        self.assertEqual(res.status_code, 302)
+        self.assertEqual(res.status_code, 302)        
 
     def test_create_user(self):
         res = self.client.post(reverse('users:register'),
@@ -94,7 +86,7 @@ class UsersCreateViewTestCase(BaseUsersTestCase):
         self.assertEqual(res.status_code, 200)
 
         res = self.client.post(reverse('users:register'), {})
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_code, 200)      
 
 
 class UsersProfileViewTestCase(BaseUsersTestCase):
@@ -140,38 +132,22 @@ class UsersProfileViewTestCase(BaseUsersTestCase):
 
     def test_edit_profile(self):
         self.login()
-        res = self.client.post(reverse('users:profile'), {})
+        res = self.client.post(reverse('users:profile'),
+                               {'first_name': 'zac',
+                                'last_name': 'zac',
+                                'email': 'zac@zac.com',
+                                'new_password1': 'zac',
+                                'new_password2': 'zac',
+                                'dob_month': '1',
+                                'dob_day': '1',
+                                'dob_year': '2000',
+                                'gender': '6',
+                                })
         self.assertEqual(res.status_code, 200)
 
-        res = self.client.post(
-            reverse('users:profile'), {
-                'first_name': 'zac',
-                'last_name': 'zac',
-                'email': 'zac@zac.com',
-                'new_password1': '',
-                'new_password2': '',
-                'dob_month': '1',
-                'dob_day': '1',
-                'dob_year': '2000',
-                'gender': '6',
-            }
-        )
+        res = self.client.post(reverse('users:profile'), {}, follow=True)
+	print res.redirect_chain
         self.assertEqual(res.status_code, 200)
-
-        res = self.client.post(
-            reverse('users:profile'), {
-                'first_name': 'zac',
-                'last_name': 'zac',
-                'email': 'zac@zac.com',
-                'new_password1': 'zac',
-                'new_password2': 'zac',
-                'dob_month': '1',
-                'dob_day': '1',
-                'dob_year': '2000',
-                'gender': '6',
-            }
-        )
-        self.assertEqual(res.status_code, 302)
 
 
 class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
@@ -179,12 +155,11 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         # Should I test '@login_required'?
         self.login()
 
-        # view add address
+        # can view add address
         res = self.client.get(reverse('users:add_address'))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form'])
 
-        # add address
         res = self.client.post(reverse('users:add_address'),
                                {'line_1': 'zac\'s house',
                                 'line_2': '',
@@ -198,7 +173,7 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         # Should I test '@login_required'?
         self.login()
 
-        # view own address
+        # edit own address
         res = self.client.get(
             reverse('users:edit_address',
                     kwargs={'address_id': self.user_addresses[0].id}))
@@ -206,25 +181,14 @@ class UsersEditAddAdressViewTestCase(BaseUsersTestCase):
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['user_address'])
 
-        res = self.client.post(
-            reverse('users:edit_address',
-                    kwargs={'address_id': self.user_addresses[0].id}), {
-                        'line_1': 'zac\'s house',
-                        'line_2': '',
-                        'town': 'zac town',
-                        'postcode': 'ZA12 3ZA',
-                        'country': '35',
-                    })
-        self.assertEqual(res.status_code, 200)
-
-        # view not own address
+        # edit not own address
         res = self.client.get(
             reverse('users:edit_address',
                     kwargs={'address_id': self.not_user_addresses[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('users:profile'))
 
-        # view nonexistent address
+        # edit nonexistent address
         res = self.client.get(
             reverse('users:edit_address', kwargs={'address_id': 9876543210}))
         self.assertEqual(res.status_code, 404)

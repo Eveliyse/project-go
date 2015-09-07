@@ -1,20 +1,31 @@
-from django.shortcuts import (get_object_or_404,
-                              get_list_or_404,
-                              render_to_response,
-                              redirect)
+from django.shortcuts import (
+    get_object_or_404,
+    get_list_or_404,
+    render_to_response,
+    redirect
+)
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from django.contrib.auth import (login as auth_login,
-                                 logout as auth_logout,
-                                 authenticate)
+from django.contrib.auth import (
+    login as auth_login,
+    logout as auth_logout,
+    authenticate
+)
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import (AuthenticationForm,
-                                       SetPasswordForm)
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    SetPasswordForm
+)
 from django.contrib.auth.models import User
 from .models import Member, Address
 from projects.models import Project, UserPledge
-from users.forms import (MemberAddressForm, MemberDetailsForm,
-                         UserCreateForm, UserEditForm, ChangePasswordForm)
+from users.forms import (
+    MemberAddressForm,
+    MemberDetailsForm,
+    UserCreateForm,
+    UserEditForm,
+    ChangePasswordForm
+)
 
 
 # placeholder for now
