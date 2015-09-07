@@ -278,7 +278,18 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                                 .all()[0].rewards.all()[0].id,
                             }
         )
-        self.assertEqual(res.status_code, 200)        
+        self.assertEqual(res.status_code, 200)  
+        
+        res = self.client.post(
+            reverse('projects:pledge',
+                    kwargs={'project_id': self.not_user_projs[0].id, 
+                            'P_R_id': (self.not_user_projs[0].project_pledges.all()[0].id)}), {
+                                'amount': '123',
+                                'rewards': self.not_user_projs[0].project_pledges
+                                .all()[0].rewards.all()[0].id,
+                            }
+        )
+        self.assertEqual(res.status_code, 302)          
 
     def test_view_edit_add_reward(self):
         # Should I test '@login_required'?
@@ -348,7 +359,17 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                                            'desc': '123',
                                        }
         )
-        self.assertEqual(res.status_code, 200)        
+        self.assertEqual(res.status_code, 200)    
+        
+        res = self.client.post(
+            reverse('projects:reward',
+                    kwargs={'project_id': self.not_user_projs[0].id,
+                            'P_R_id': (self.not_user_projs[0].project_pledges
+                                       .all()[0].rewards.all()[0].id)}), {
+                                           'desc': '123',
+                                       }
+        )
+        self.assertEqual(res.status_code, 302)            
 
 
 class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):

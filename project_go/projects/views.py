@@ -209,8 +209,6 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
 
     if mode == "pledge" and P_R_id is not None:
         p_instance = get_object_or_404(Pledge, id=P_R_id)
-        if p_instance.project.owner != request.user:
-            return redirect(reverse('projects:manage'))
         pledge_edit_form = PledgeEditAddForm(current_project=project_id,
                                              instance=p_instance)
         reward_edit_form = RewardEditAddForm()
@@ -225,8 +223,6 @@ def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
             'project': project}, context_instance=RequestContext(request))
     elif mode == "reward" and P_R_id is not None:
         r_instance = get_object_or_404(Reward, id=P_R_id)
-        if r_instance.project.owner != request.user:
-            return redirect(reverse('projects:manage'))
         pledge_edit_form = PledgeEditAddForm(initial={},
                                              current_project=project_id)
         reward_edit_form = RewardEditAddForm(initial={}, instance=r_instance)
