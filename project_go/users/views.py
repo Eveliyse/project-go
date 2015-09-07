@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from .models import Member, Address
 from projects.models import Project, UserPledge
 from users.forms import (MemberAddressForm, MemberDetailsForm,
-                         UserCreateForm, UserEditForm)
+                         UserCreateForm, UserEditForm, ChangePasswordForm)
 
 
 # placeholder for now
@@ -44,7 +44,7 @@ def Profile(request, user_id=None):
     # TODO check if password fields actually have a value
     if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, instance=user)
-        password_edit_form = SetPasswordForm(data=request.POST,
+        password_edit_form = ChangePasswordForm(data=request.POST,
                                              user=user,
                                              initial={})
         member_edit_form = MemberDetailsForm(data=request.POST,
@@ -55,6 +55,7 @@ def Profile(request, user_id=None):
         if password_edit_form.has_changed():
             if password_edit_form.is_valid():
                 password_edit_form.save()
+                return redirect(reverse('users:login'))
         if member_edit_form.is_valid():
             member_edit_form.save()
         
@@ -85,7 +86,7 @@ def Profile(request, user_id=None):
     # and fetch data to display. Else the user is viewing not own profile
     # so just process the 1 form
     if u_id == request.user.id:
-        password_edit_form = SetPasswordForm(user=user, initial={})
+        password_edit_form = ChangePasswordForm(user=user, initial={})
         member_edit_form = MemberDetailsForm(instance=member)
 
         a = get_list_or_404(Address, resident=request.user, active=True)

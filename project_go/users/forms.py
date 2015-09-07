@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from .models import Address, Member
 import datetime
 
@@ -52,3 +52,20 @@ class UserCreateForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class ChangePasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(label=("New password"),
+                                    widget=forms.PasswordInput, required=False)
+    new_password2 = forms.CharField(label=("New password confirmation"),
+                                        widget=forms.PasswordInput, required=False)
+    
+    def save(self, commit=True):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')        
+        if password1 and password2:
+            self.user.set_password(password1)
+            if commit:
+                self.user.save()
+        return self.user 
+    
