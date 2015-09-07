@@ -39,8 +39,7 @@ class LoginRequiredMixin(object):
                                                             **kwargs)
 
         if request.is_ajax():
-            return HttpResponseUnauthorized('You must be logged in to ' +
-                                            'perform this operation.')
+            return HttpResponseUnauthorized('You must be logged in to perform this operation.')
         return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
 
@@ -54,8 +53,7 @@ class IndexView(TemplateView):
         open_status = Status.objects.get(status="Open")
 
         # Getting set of newest open projects and adding extra columns
-        newest_projects = (Project.objects.filter(status=open_status)
-                           .order_by('-open_date')[:6])
+        newest_projects = (Project.objects.filter(status=open_status).order_by('-open_date')[:6])
 
         newest_projects_amount = newest_projects.annotate(
             current_pledged=Coalesce(
@@ -74,8 +72,7 @@ class IndexView(TemplateView):
 
         percent_pledged_5 = (
             sum_pledged_5.annotate(current_percent=Coalesce(
-                (F('current_pledged')*100.00)/F('goal'), 0))
-            .order_by('-current_pledged')[:6])
+                (F('current_pledged')*100.00)/F('goal'), 0)).order_by('-current_pledged')[:6])
 
         # adding sets to context
         context['newest_5'] = newest_projects_amount_percent
@@ -125,16 +122,14 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
     template_name = 'projects/edit_create.html'
 
     def post(self, request, *args, **kwargs):
-        project_create_form = ProjectEditCreateForm(data=request.POST,
-                                                    files=request.FILES)
+        project_create_form = ProjectEditCreateForm(data=request.POST, files=request.FILES)
 
         if project_create_form.is_valid():
             p = project_create_form.save(commit=False)
             p.owner = request.user
             p.status = Status.objects.get(status="New")
             p.save()
-            return redirect(reverse('projects:edit',
-                                    kwargs={'project_id': p.id}))
+            return redirect(reverse('projects:edit', kwargs={'project_id': p.id}))
         return render_to_response('projects/edit_create.html', {
             'form': project_create_form,
             }, context_instance=RequestContext(request))
@@ -151,15 +146,13 @@ def Edit(request, project_id=None):
         return redirect(reverse('projects:create'))
 
     if request.POST:
-        if 'project' in request.POST:
             project_edit_form = ProjectEditCreateForm(data=request.POST,
                                                       files=request.FILES,
-                                                      instance=p,
-                                                      prefix="project")
+                                                      instance=p)
             if project_edit_form.is_valid():
                 project_edit_form.save()
 
-    project_edit_form = ProjectEditCreateForm(instance=p, prefix="project")
+    project_edit_form = ProjectEditCreateForm(instance=p)
     return render_to_response('projects/edit_create.html', {
         'form': project_edit_form,
         'pledgerewards': Pledge.objects.filter(project__id=project_id)
@@ -171,8 +164,7 @@ def Edit(request, project_id=None):
 def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
     if project_id:
         project = get_object_or_404(Project, pk=project_id)
-        if (project.owner != request.user or
-                project.status != Status.objects.get(status="New")):
+        if (project.owner != request.user or project.status != Status.objects.get(status="New")):
             return redirect(reverse('projects:manage'))
     else:
         return redirect(reverse('projects:manage'))
