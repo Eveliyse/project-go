@@ -3,6 +3,5 @@
 htmlcov
 htmlcov/*
 db.sqlite3
-*/media/*
 test_img.jpg
 *~
