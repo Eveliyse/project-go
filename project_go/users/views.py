@@ -12,10 +12,7 @@ from django.contrib.auth import (
     authenticate
 )
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import (
-    AuthenticationForm,
-    SetPasswordForm
-)
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Member, Address
 from projects.models import Project, UserPledge
@@ -69,12 +66,12 @@ def Profile(request, user_id=None):
                 return redirect(reverse('users:login'))
         if member_edit_form.is_valid():
             member_edit_form.save()
-        
+
         a = get_list_or_404(Address, resident=request.user, active=True)
         userpledges = UserPledge.objects.filter(user_id=u_id)
         pledge_projects = Project.objects.filter(
-            project_pledges__pledged_users__user_id=u_id)        
-        
+            project_pledges__pledged_users__user_id=u_id)
+
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
             'form2': password_edit_form,
@@ -83,7 +80,7 @@ def Profile(request, user_id=None):
             'userobj': user,
             'projects': pledge_projects,
             'userpledges': userpledges,
-            }, context_instance=RequestContext(request))        
+        }, context_instance=RequestContext(request))
 
     # create form for display
     user_edit_form = UserEditForm(instance=user)
@@ -110,13 +107,13 @@ def Profile(request, user_id=None):
             'userobj': user,
             'projects': pledge_projects,
             'userpledges': userpledges,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
     else:
         return render_to_response('users/profile.html', {
             'form': user_edit_form,
             'userobj': user,
             'projects': pledge_projects,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -161,11 +158,11 @@ def EditAddAddress(request, address_id=None):
             'form': user_address_form,
             'user_address': address,
             'user_addresses': a,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
     return render_to_response('users/edit-address.html', {
         'form': user_address_form,
         'user_addresses': a,
-        }, context_instance=RequestContext(request))
+    }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -197,7 +194,7 @@ def Login(request):
             form = AuthenticationForm()
         return render_to_response('users/login.html', {
             'form': form,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
     else:
         # TODO redirect somewhere more sensible
         return redirect(reverse('projects:index'))
@@ -240,7 +237,7 @@ def Register(request):
                 'form': user_create_form,
                 'form2': user_details_form,
                 'form3': user_address_form,
-                }, context_instance=RequestContext(request))
+            }, context_instance=RequestContext(request))
     elif not request.user.is_authenticated():
         user_create_form = UserCreateForm()
         user_details_form = MemberDetailsForm()
@@ -249,5 +246,5 @@ def Register(request):
             'form': user_create_form,
             'form2': user_details_form,
             'form3': user_address_form,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
     return redirect(reverse('users:index'))

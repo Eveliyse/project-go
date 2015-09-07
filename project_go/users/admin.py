@@ -15,4 +15,4 @@ class AddressAdmin(admin.ModelAdmin):
 admin.site.register(Gender)
 admin.site.register(Member)
 admin.site.register(Address, AddressAdmin)
-admin.site.register(Country)    
+admin.site.register(Country)

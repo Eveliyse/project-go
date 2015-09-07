@@ -29,4 +29,4 @@ class PledgeEditAddForm(forms.ModelForm):
 
         widgets = {
             'rewards': forms.CheckboxSelectMultiple()
-            }
+        }

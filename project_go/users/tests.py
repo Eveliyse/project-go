@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from .models import Member, Address, Gender, Country
+from .models import Member, Address
 
 
 class BaseUsersTestCase(TestCase):

@@ -61,7 +61,7 @@ class IndexView(TemplateView):
 
         newest_projects_amount_percent = newest_projects_amount.annotate(
             current_percent=Coalesce(
-                (F('current_pledged')*100.00)/F('goal'), 0))
+                (F('current_pledged') * 100.00) / F('goal'), 0))
 
         # Getting set of most funded open projects and adding extra columns
         open_projects = Project.objects.filter(status=open_status)
@@ -72,7 +72,7 @@ class IndexView(TemplateView):
 
         percent_pledged_5 = (
             sum_pledged_5.annotate(current_percent=Coalesce(
-                (F('current_pledged')*100.00)/F('goal'), 0)).order_by('-current_pledged')[:6])
+                (F('current_pledged') * 100.00) / F('goal'), 0)).order_by('-current_pledged')[:6])
 
         # adding sets to context
         context['newest_5'] = newest_projects_amount_percent
@@ -99,7 +99,7 @@ class ManageProjectsView(LoginRequiredMixin, TemplateView):
 
         up_sum_percent = up_amount_sum.annotate(
             current_percent=Coalesce(
-                (F('current_pledged')*100.00)/F('goal'), 0))
+                (F('current_pledged') * 100.00) / F('goal'), 0))
 
         up_sum_percent_new = up_sum_percent.filter(status=new_status)
         up_sum_percent_open = up_sum_percent.filter(status=open_status)
@@ -132,7 +132,7 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
             return redirect(reverse('projects:edit', kwargs={'project_id': p.id}))
         return render_to_response('projects/edit_create.html', {
             'form': project_create_form,
-            }, context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -388,8 +388,8 @@ class ProjectListView(ListView):
                         lambda x, y: x | y, [
                             Q(title__contains=word)
                             for word in search_term_list]
-                        )
-                    ).exclude(status=new_status).order_by('status')
+                    )
+                ).exclude(status=new_status).order_by('status')
                 if search_results:
                     self.queryset = search_results
                 else:

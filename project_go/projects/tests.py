@@ -84,7 +84,7 @@ class ProjectsCreateViewTestCase(BaseProjectsTestCase):
         res = self.client.get(reverse('projects:create'))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form'])
-    
+
     def test_action_create_project(self):
         self.login()
         with open('projects/test_img.jpg') as img:
@@ -95,9 +95,9 @@ class ProjectsCreateViewTestCase(BaseProjectsTestCase):
                                     'short_desc': 'short desc',
                                     'long_desc': 'long desc',
                                     'category': '6',
-                                    })            
+                                    })
         self.assertEqual(res.status_code, 302)
-        
+
         with open('projects/test_img.jpg') as img:
             res = self.client.post(reverse('projects:create'),
                                    {'title': 'PROJECT X',
@@ -146,24 +146,25 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
             reverse('projects:edit',
                     kwargs={'project_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
-        
+
         # edit no project
         res = self.client.get(reverse('projects:edit'))
         self.assertEqual(res.status_code, 302)
-        
+
     def test_action_edit_project(self):
         self.login()
         with open('projects/test_img.jpg') as img:
-            res = self.client.post(reverse('projects:edit',
-                    kwargs={'project_id': self.new_projs[0].id}),
-                                    {'title': 'PROJECT X',
-                                    'goal': '666',
-                                    'image': img,
-                                    'short_desc': 'short desc',
-                                    'long_desc': 'long desc',
-                                    'category': '6',
-                                    })
-        self.assertEqual(res.status_code, 200)              
+            res = self.client.post(
+                reverse('projects:edit',
+                        kwargs={'project_id': self.new_projs[0].id}),
+                {'title': 'PROJECT X',
+                 'goal': '666',
+                 'image': img,
+                 'short_desc': 'short desc',
+                 'long_desc': 'long desc',
+                 'category': '6',
+                 })
+        self.assertEqual(res.status_code, 200)
 
 
 class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
@@ -204,15 +205,14 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
             reverse('projects:pledgerewards',
                     kwargs={'project_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
-        
+
     def test_action_add_pledgerewards(self):
         self.login()
         res = self.client.post(
             reverse('projects:pledgerewards',
                     kwargs={'project_id': self.new_projs[0].id}), {
                         'amount': '123',
-                        'rewards': self.new_projs[0].project_pledges
-                                       .all()[0].rewards.all()[0].id,
+                        'rewards': self.new_projs[0].project_pledges.all()[0].rewards.all()[0].id,
                     }
         )
         self.assertEqual(res.status_code, 200)
@@ -266,30 +266,30 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                     kwargs={'project_id': self.new_projs[0].id,
                             'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
-        
+
     def test_action_edit_pledgerewards(self):
         self.login()
         res = self.client.post(
             reverse('projects:pledge',
-                    kwargs={'project_id': self.new_projs[0].id, 
+                    kwargs={'project_id': self.new_projs[0].id,
                             'P_R_id': (self.new_projs[0].project_pledges.all()[0].id)}), {
                                 'amount': '123',
                                 'rewards': self.new_projs[0].project_pledges
                                 .all()[0].rewards.all()[0].id,
                             }
         )
-        self.assertEqual(res.status_code, 200)  
-        
+        self.assertEqual(res.status_code, 200)
+
         res = self.client.post(
             reverse('projects:pledge',
-                    kwargs={'project_id': self.not_user_projs[0].id, 
+                    kwargs={'project_id': self.not_user_projs[0].id,
                             'P_R_id': (self.not_user_projs[0].project_pledges.all()[0].id)}), {
                                 'amount': '123',
                                 'rewards': self.not_user_projs[0].project_pledges
                                 .all()[0].rewards.all()[0].id,
                             }
         )
-        self.assertEqual(res.status_code, 302)          
+        self.assertEqual(res.status_code, 302)
 
     def test_view_edit_add_reward(self):
         # Should I test '@login_required'?
@@ -338,17 +338,14 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                     kwargs={'project_id': self.new_projs[0].id,
                             'P_R_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
-        
+
     def test_action_add_reward(self):
         self.login()
         res = self.client.post(
-            reverse('projects:pledgerewards',
-                    kwargs={'project_id': self.new_projs[0].id}), {
-                        'desc': '123',
-                        }
-        )
-        self.assertEqual(res.status_code, 200)        
-        
+            reverse('projects:pledgerewards', kwargs={'project_id': self.new_projs[0].id}),
+            {'desc': '123'})
+        self.assertEqual(res.status_code, 200)
+
     def test_action_edit_reward(self):
         self.login()
         res = self.client.post(
@@ -359,8 +356,8 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                                            'desc': '123',
                                        }
         )
-        self.assertEqual(res.status_code, 200)    
-        
+        self.assertEqual(res.status_code, 200)
+
         res = self.client.post(
             reverse('projects:reward',
                     kwargs={'project_id': self.not_user_projs[0].id,
@@ -369,7 +366,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
                                            'desc': '123',
                                        }
         )
-        self.assertEqual(res.status_code, 302)            
+        self.assertEqual(res.status_code, 302)
 
 
 class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
@@ -476,14 +473,14 @@ class ProjectsUpdateStatusViewTestCase(BaseProjectsTestCase):
     # TODO check status actually changed
     def test_update_project(self):
         self.login()
-        
+
         res = self.client.post(reverse('projects:update_status',
                 kwargs={'project_id': self.new_projs[0].id}))
-        self.assertEqual(res.status_code, 302)               
-        
+        self.assertEqual(res.status_code, 302)
+
         res = self.client.post(reverse('projects:update_status',
                                        kwargs={'project_id': self.open_projs[0].id}))
-        self.assertEqual(res.status_code, 302)        
+        self.assertEqual(res.status_code, 302)
 
         res = self.client.post(reverse('projects:update_status',
                                        kwargs={'project_id': self.closed_projs[0].id}))
@@ -495,22 +492,20 @@ class ProejctsAddUserPledgeViewTestCase(BaseProjectsTestCase):
     def test_add_userpledge(self):
         self.login()
         other_open_projs = Project.objects.filter(status=self.open_status).exclude(owner=self.user)
-        
-        res = self.client.get(reverse('projects:add_pledge',
-                                       kwargs={
-                                           'project_id': other_open_projs[0].id,
-                                           'pledge_id': other_open_projs[0].project_pledges.all()[0].id
-                                       })
-                               )
+
+        res = self.client.get(reverse(
+            'projects:add_pledge', kwargs={
+                'project_id': other_open_projs[0].id,
+                'pledge_id': other_open_projs[0].project_pledges.all()[0].id
+            }))
         self.assertEqual(res.status_code, 302)
-        
-        res = self.client.get(reverse('projects:add_pledge',
-                                      kwargs={
-                                          'project_id': other_open_projs[0].id,
-                                          'pledge_id': other_open_projs[0].project_pledges.all()[1].id
-                                      })
-                              )
-        self.assertEqual(res.status_code, 302)        
+
+        res = self.client.get(reverse(
+            'projects:add_pledge', kwargs={
+                'project_id': other_open_projs[0].id,
+                'pledge_id': other_open_projs[0].project_pledges.all()[1].id
+            }))
+        self.assertEqual(res.status_code, 302)
 
 
 class ProjectsListViewTestCase(BaseProjectsTestCase):
