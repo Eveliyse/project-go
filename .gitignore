@@ -2,6 +2,6 @@
 *.coverage
 htmlcov
 htmlcov/*
-db.sqlite3
-test_img.jpg
+*.sqlite3
+*test_img*.jpg
 *~
