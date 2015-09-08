@@ -7,10 +7,10 @@
         "is_active": true,
         "is_superuser": true,
         "is_staff": true,
-        "last_login": "2015-09-02T11:09:51.133Z",
+        "last_login": "2015-09-08T09:33:49.153Z",
         "groups": [],
         "user_permissions": [],
-        "password": "pbkdf2_sha256$20000$0M84ZrTJZvLk$s59diN6OedeJS2reVKvIsz6GJURV9J3FSzV8nh1AMOU=",
+        "password": "pbkdf2_sha256$20000$KjU4LW15yF1n$QEAXppwsVi4ipY6bYhGKLVzgBz4fxXAbH9govEalyng=",
         "email": "admin@admin.com",
         "date_joined": "2015-08-14T14:23:32Z"
     },
@@ -124,5 +124,23 @@
     },
     "model": "auth.user",
     "pk": 47
+},
+{
+    "fields": {
+        "username": "harry",
+        "first_name": "harry",
+        "last_name": "harry",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-08T11:09:52Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$TgjkHKJBvOCq$B8EeGfzlgLJZfyeY/Vk345Uk8StuMvic5VDKRfqQiTc=",
+        "email": "harry@harry.com",
+        "date_joined": "2015-09-08T11:09:53Z"
+    },
+    "model": "auth.user",
+    "pk": 48
 }
 ]
