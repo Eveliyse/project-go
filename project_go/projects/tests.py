@@ -555,3 +555,7 @@ class ProjectsListTests(BaseProjectsTestCase):
         res = self.client.get("%s?search_term=kjghskerhbgseserknguybserkgu" %
                               reverse('projects:search'))
         self.assertEqual(res.status_code, 200)
+
+        res = self.client.get("%s?search_term= " %
+                              reverse('projects:search'))
+        self.assertEqual(res.status_code, 200)
