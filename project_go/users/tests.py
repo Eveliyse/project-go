@@ -240,8 +240,7 @@ class UsersAddressTests(BaseUsersTestCase):
         res = self.client.get(
             reverse('users:edit_address',
                     kwargs={'address_id': self.not_user_addresses.filter(active=True)[0].id}))
-        self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:profile'))
+        self.assertEqual(res.status_code, 404)
 
         # view nonexistent address
         res = self.client.get(
@@ -259,7 +258,7 @@ class UsersAddressTests(BaseUsersTestCase):
                         'postcode': 'ZA12 3ZA',
                         'country': '35',
                     })
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_code, 302)
         
         res = self.client.post(
             reverse('users:edit_address',

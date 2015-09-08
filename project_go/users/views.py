@@ -136,53 +136,46 @@ def Profile(request, user_id=None):
         }, context_instance=RequestContext(request))
 
 
-@login_required
-# TODO make ajax call only div
-def EditAddAddress(request, address_id=None):
-    # initialise user address form. Do this at the start
-    # so render has something to fall back on
-    user_address_form = MemberAddressForm()
+class CreateAddressView(LoginRequiredMixin, CreateView):
+    form_class = MemberAddressForm
+    model = Address
+    template_name = 'users/edit-address.html'
+    
+    def post(self, request, *args, **kwargs):
+        user_address_form = MemberAddressForm(data=request.POST)
+        if user_address_form.is_valid():
+            saved_address = user_address_form.save(commit=False)
+            saved_address.resident = request.user
+            saved_address.active = True
+            saved_address.save()
+            
+            return redirect(reverse('users:edit_address', kwargs={'address_id': saved_address.id}))
+        return super(CreateAddressView, self).post(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super(CreateAddressView, self).get_context_data(**kwargs)
+        context['user_addresses'] = get_list_or_404(Address, resident=self.request.user, active=True)
+        
+        return context
 
-    # if there is an address id then user is editing, not adding
-    if address_id:
-        # check address exists and belongs to current logged in user
-        address = get_object_or_404(Address, id=address_id, active=True)
-        if address.resident != request.user:
-            return redirect(reverse('users:profile'))
-
-        # if post then user is trying to edit an existing address
-        if request.method == "POST":
-            user_address_form = MemberAddressForm(data=request.POST,
-                                                  instance=address)
-            if user_address_form.is_valid():
-                user_address_form.save()
-        else:
-            user_address_form = MemberAddressForm(instance=address)
-    else:
-        # if post then user is trying to add a new address
-        if request.method == "POST":
-            user_address_form = MemberAddressForm(data=request.POST)
-            if user_address_form.is_valid():
-                saved_address = user_address_form.save(commit=False)
-                saved_address.resident = request.user
-                saved_address.active = True
-                saved_address.save()
-                return redirect(reverse('users:edit_address',
-                                kwargs={'address_id': saved_address.id}))
-
-    # get list of user addresses. Do this at the end and not at start
-    # incase we have added or edited addresses
-    a = get_list_or_404(Address, resident=request.user, active=True)
-    if address_id:
-        return render_to_response('users/edit-address.html', {
-            'form': user_address_form,
-            'user_address': address,
-            'user_addresses': a,
-        }, context_instance=RequestContext(request))
-    return render_to_response('users/edit-address.html', {
-        'form': user_address_form,
-        'user_addresses': a,
-    }, context_instance=RequestContext(request))
+class EditAddressView(LoginRequiredMixin, UpdateView):
+    form_class = MemberAddressForm
+    model = Address
+    template_name = 'users/edit-address.html'
+    pk_url_kwarg = 'address_id'
+    
+    def get_queryset(self):
+        return Address.objects.filter(active=True, resident=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditAddressView, self).get_context_data(**kwargs)
+        context['user_addresses'] = get_list_or_404(Address, resident=self.request.user, active=True)
+        context['user_address'] = self.get_object()
+        
+        return context
+    
+    def get_success_url(self):
+        return reverse('users:edit_address', kwargs={'address_id': self.get_object().id})
 
 
 class DeleteAddressView(LoginRequiredMixin, RedirectView):
@@ -200,11 +193,11 @@ class DeleteAddressView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('users:add_address')
 
-
+""" replaced with django login view
 def Login(request):
-    """ If the user is already logged in then redirect somewhere else
+     If the user is already logged in then redirect somewhere else
         Otherwise, render template and form or process POST data
-    """
+    
     if not request.user.is_authenticated():
         if request.method == 'POST':
             form = AuthenticationForm(data=request.POST)
@@ -223,7 +216,7 @@ def Login(request):
     else:
         # TODO redirect somewhere more sensible
         return redirect(reverse('projects:index'))
-
+"""
 
 @login_required
 def Logout(request):
