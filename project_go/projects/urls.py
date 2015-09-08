@@ -7,7 +7,8 @@ from projects.views import (
     IndexView,
     UpdateStatusView,
     ProjectDetailsView,
-    ProjectListView
+    ProjectListView,
+    ProjectAddUserPledgeView
 )
 
 urlpatterns = [
@@ -31,7 +32,7 @@ urlpatterns = [
 
     url(r'^details/(?P<project_id>\d+)/$', ProjectDetailsView.as_view(), name='details'),
 
-    url(r'^details/(?P<project_id>\d+)/add_pledge/(?P<pledge_id>\d+)/$', ProjectDetailsView.as_view(), name='add_pledge'),
+    url(r'^details/(?P<project_id>\d+)/add_pledge/(?P<pledge_id>\d+)/$', ProjectAddUserPledgeView.as_view(), name='add_pledge'),
 
     url(r'^category/(?P<category_id>\d+)/$', ProjectListView.as_view(), name='category'),
 

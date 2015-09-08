@@ -303,7 +303,7 @@ class ProjectDetailsView(DetailView):
     pk_url_kwarg = 'project_id'
 
     def get(self, request, *args, **kwargs):
-        self.pledge_added = None
+        #check if user is allowed to view page and if they have already pledged
         self.pledged = None
 
         project = get_object_or_404(Project, pk=kwargs['project_id'])
@@ -312,40 +312,15 @@ class ProjectDetailsView(DetailView):
                 project.owner.id != self.request.user.id):
             return redirect(reverse('projects:index'))
 
-        match_user_pledges = UserPledge.objects.filter(
-            user_id=request.user.id,
-            pledge__project_id=kwargs['project_id'])
-        if match_user_pledges:
+        matched_user_pledge = UserPledge.objects.filter(user_id=request.user.id,
+                                                       pledge__project_id=kwargs['project_id'])
+        if matched_user_pledge:
             self.pledged = True
 
-        if 'pledge_id' in kwargs:
-            pledge_id = kwargs['pledge_id']
-            pledge_obj = get_object_or_404(Pledge, pk=pledge_id)
-
-            open_status = get_object_or_404(Status, status="Open")
-
-            if (pledge_obj.project.status == open_status and
-                    pledge_obj.project.owner.id != self.request.user.id):
-                if not match_user_pledges:
-                    userpledge = UserPledge(user=request.user,
-                                            pledge=pledge_obj)
-                    userpledge.save()
-                else:
-                    userpledge = UserPledge.objects.get(
-                        user=request.user,
-                        pledge__project_id=kwargs['project_id'])
-                    userpledge.pledge = pledge_obj
-                    userpledge.save()
-                self.pledge_added = True
-            else:
-                self.pledge_added = False
-
-            return redirect(reverse('projects:details',
-                                    kwargs={'project_id':
-                                            kwargs['project_id']}))
         return super(ProjectDetailsView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        #load in pledgerewards, list of user pledgers and viewer's pledge amount if applicable
         context = super(ProjectDetailsView, self).get_context_data(**kwargs)
         pledgerewards = Pledge.objects.filter(
             project_id=self.kwargs['project_id'])
@@ -358,11 +333,6 @@ class ProjectDetailsView(DetailView):
         context['pledgerewards'] = pledgerewards_count
         context['pledgers'] = pledgers
 
-        if self.pledge_added is True:
-            context['pledge_added'] = 'PLEDGE ADDED'
-        elif self.pledge_added is False:
-            context['pledge_added'] = 'NOOO FAIL BOOO'
-
         if self.pledged is True:
             up = UserPledge.objects.get(
                 user_id=self.request.user.id,
@@ -370,6 +340,32 @@ class ProjectDetailsView(DetailView):
             context['pledge'] = Pledge.objects.get(id=up.pledge.id)
 
         return context
+
+
+class ProjectAddUserPledgeView(LoginRequiredMixin, RedirectView):
+    permanent = False
+    
+    def get(self, request, *args, **kwargs):
+        pledge_obj = get_object_or_404(Pledge, pk=kwargs['pledge_id'])
+
+        open_status = get_object_or_404(Status, status="Open")
+
+        if (pledge_obj.project.status == open_status and
+            pledge_obj.project.owner.id != self.request.user.id):
+            
+            matched_user_pledge = UserPledge.objects.filter(user_id=request.user.id,
+                                                           pledge__project_id=kwargs['project_id'])            
+
+            if not matched_user_pledge:
+                userpledge = UserPledge(user=request.user, pledge=pledge_obj)
+                userpledge.save()
+            else:
+                userpledge = UserPledge.objects.get(user=request.user,
+                                                    pledge__project_id=kwargs['project_id'])
+                userpledge.pledge = pledge_obj
+                userpledge.save()
+
+        return redirect(reverse('projects:details', kwargs={'project_id': kwargs['project_id']}))    
 
 
 class ProjectListView(ListView):
