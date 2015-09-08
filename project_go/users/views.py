@@ -6,6 +6,15 @@ from django.shortcuts import (
 )
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.http import HttpResponse
+from django.views.generic import (
+    CreateView,
+    TemplateView,
+    RedirectView,
+    DetailView,
+    ListView,
+    UpdateView
+)
 from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
@@ -25,10 +34,21 @@ from users.forms import (
 )
 
 
-# placeholder for now
-def Index(request):
-    return render_to_response("users/index.html",
-                              context_instance=RequestContext(request))
+class HttpResponseUnauthorized(HttpResponse):
+    status_code = 401
+
+
+class LoginRequiredMixin(object):
+    """Add this to a class-based view to reject all non-authenticated users"""
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return super(LoginRequiredMixin, self).dispatch(request,
+                                                            *args,
+                                                            **kwargs)
+
+        if request.is_ajax():
+            return HttpResponseUnauthorized('You must be logged in to perform this operation.')
+        return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
 
 def Profile(request, user_id=None):
@@ -165,15 +185,20 @@ def EditAddAddress(request, address_id=None):
     }, context_instance=RequestContext(request))
 
 
-@login_required
-def DeleteAddress(request, address_id=None):
-    if address_id:
+class DeleteAddressView(LoginRequiredMixin, RedirectView):
+    permanent = False
+    
+    def get(self, request, *args, **kwargs):
+        address_id = kwargs['address_id']
         address = get_object_or_404(Address, id=address_id, active=True)
-
+        
         if address.resident == request.user:
-                address.active = False
-                address.save()
-    return redirect(reverse('users:add_address'))
+            address.active = False
+            address.save()        
+        return super(DeleteAddressView, self).get(request, *args, **kwargs)
+
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('users:add_address')
 
 
 def Login(request):

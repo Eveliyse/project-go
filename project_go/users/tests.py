@@ -25,7 +25,7 @@ class BaseUsersTestCase(TestCase):
         self.user_member = Member.objects.get(user=self.user)
 
         self.not_users = User.objects.exclude(username=uname)
-        self.not_user_addresses = Address.objects.exclude(resident=self.user)
+        self.not_user_addresses = Address.objects.filter(active=True).exclude(resident=self.user)
 
 
 class UsersAuthTests(BaseUsersTestCase):
@@ -226,15 +226,20 @@ class UsersAddressTests(BaseUsersTestCase):
         # view own address
         res = self.client.get(
             reverse('users:edit_address',
-                    kwargs={'address_id': self.user_addresses[0].id}))
+                    kwargs={'address_id': self.user_addresses.filter(active=True)[0].id}))
         self.assertEqual(res.status_code, 200)
         self.assertIsNotNone(res.context['form'])
         self.assertIsNotNone(res.context['user_address'])
+        
+        res = self.client.get(
+            reverse('users:edit_address',
+                    kwargs={'address_id': self.user_addresses.filter(active=False)[0].id}))
+        self.assertEqual(res.status_code, 404)
 
         # view not own address
         res = self.client.get(
             reverse('users:edit_address',
-                    kwargs={'address_id': self.not_user_addresses[0].id}))
+                    kwargs={'address_id': self.not_user_addresses.filter(active=True)[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('users:profile'))
 
@@ -247,7 +252,7 @@ class UsersAddressTests(BaseUsersTestCase):
         self.login()
         res = self.client.post(
             reverse('users:edit_address',
-                    kwargs={'address_id': self.user_addresses[0].id}), {
+                    kwargs={'address_id': self.user_addresses.filter(active=True)[0].id}), {
                         'line_1': 'zac\'s house',
                         'line_2': '',
                         'town': 'zac town',
@@ -258,7 +263,7 @@ class UsersAddressTests(BaseUsersTestCase):
         
         res = self.client.post(
             reverse('users:edit_address',
-                    kwargs={'address_id': self.user_addresses[0].id}), {
+                    kwargs={'address_id': self.user_addresses.filter(active=True)[0].id}), {
                         'line_1': 'zac\'s house',
                         'line_2': '',
                         'town': 'zac town',
@@ -269,7 +274,7 @@ class UsersAddressTests(BaseUsersTestCase):
         
         res = self.client.post(
             reverse('users:edit_address',
-                    kwargs={'address_id': self.user_addresses[0].id}), {})
+                    kwargs={'address_id': self.user_addresses.filter(active=True)[0].id}), {})
         self.assertEqual(res.status_code, 200)
 
 
@@ -281,14 +286,14 @@ class UsersDeleteAddressTests(BaseUsersTestCase):
         # delete own address
         res = self.client.get(
             reverse('users:delete_address',
-                    kwargs={'address_id': self.user_addresses[0].id}))
+                    kwargs={'address_id': self.user_addresses.filter(active=True)[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('users:add_address'))
 
         # delete not own address
         res = self.client.get(
             reverse('users:delete_address',
-                    kwargs={'address_id': self.not_user_addresses[0].id}))
+                    kwargs={'address_id': self.not_user_addresses.filter(active=True)[0].id}))
         self.assertEqual(res.status_code, 302)
         self.assertRedirects(res, reverse('users:add_address'))
 
