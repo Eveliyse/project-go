@@ -368,15 +368,16 @@ class ProjectAddUserPledgeView(LoginRequiredMixin, RedirectView):
         return redirect(reverse('projects:details', kwargs={'project_id': kwargs['project_id']}))    
 
 
-class ProjectListView(ListView):
+class ProjectSearchListView(ListView):
     model = Project
     context_object_name = 'project_list'
 
-    def get(self, request, *args, **kwargs):
-        if 'search_term' in request.GET:
+    def get_queryset(self):
+        new_status = Status.objects.get(status="New")
+        
+        if 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
-            if search_term is not None and len(search_term) > 0:
-                new_status = Status.objects.get(status="New")
+            if search_term is not None and len(search_term.replace(" ", "")) > 0:
                 search_term_list = search_term.split()
 
                 search_results = Project.objects.filter(
@@ -385,41 +386,40 @@ class ProjectListView(ListView):
                             Q(title__contains=word)
                             for word in search_term_list]
                     )
-                ).exclude(status=new_status).order_by('status')
+                    ).exclude(status=new_status).order_by('status')
                 if search_results:
-                    self.queryset = search_results
+                    return search_results
                 else:
-                    self.queryset = Project.objects.none()
-        return super(ProjectListView, self).get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        new_status = Status.objects.get(status="New")
-        if ('category_id' in self.kwargs and
-                self.kwargs['category_id'] is not None):
-            get_object_or_404(Category, id=self.kwargs['category_id'])
-
-            return (Project.objects.filter(
-                category_id=self.kwargs['category_id'])
-                .exclude(status=new_status).order_by('status'))
-        elif 'search_term' in self.request.GET:
-            search_term = self.request.GET['search_term']
-            if search_term is None or len(search_term) <= 0:
-                return (Project.objects.exclude(status=new_status)
-                        .order_by('status'))
-        else:
-            return (Project.objects.exclude(status=new_status)
-                    .order_by('status'))
-        return super(ProjectListView, self).get_queryset()
+                    return Project.objects.none()
+                
+        return (Project.objects.exclude(status=new_status)
+                .order_by('status'))
 
     def get_context_data(self, **kwargs):
-        context = super(ProjectListView, self).get_context_data(**kwargs)
-
-        if ('category_id' in self.kwargs and
-                self.kwargs['category_id'] is not None):
-            context['cat_name'] = get_object_or_404(
-                Category, id=self.kwargs['category_id']).category
-        elif 'search_term' in self.request.GET:
+        context = super(ProjectSearchListView, self).get_context_data(**kwargs)
+        if 'search_term' in self.request.GET:
             search_term = self.request.GET['search_term']
             if search_term is not None and len(search_term) > 0:
                 context['search_term'] = search_term
+
+        return context
+
+
+class ProjectCategoryListView(ListView):
+    model = Project
+    context_object_name = 'project_list'
+
+    def get_queryset(self):
+        new_status = Status.objects.get(status="New")
+        
+        get_object_or_404(Category, id=self.kwargs['category_id'])
+
+        return (Project.objects.filter(category_id=self.kwargs['category_id'])
+                .exclude(status=new_status).order_by('status'))
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
+        
+        context['cat_name'] = get_object_or_404(Category, id=self.kwargs['category_id']).category
+        
         return context
