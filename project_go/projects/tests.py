@@ -16,7 +16,6 @@ class BaseProjectsTestCase(TestCase):
     open_status = Status.objects.get(status="Open")
     closed_status = Status.objects.get(status="Closed")
 
-    # def login(self, uname='admin', password='admin'):
     def login(self, uname='elsa', password='elsa'):
         res = self.client.post(
             reverse('users:login'),
@@ -45,7 +44,7 @@ class BaseProjectsTestCase(TestCase):
             project__id__in=self.user_projs)
 
 
-class ProjectsIndexViewTestCase(BaseProjectsTestCase):
+class ProjectsIndexTests(BaseProjectsTestCase):
     def test_index(self):
         # not logged in
         res = self.client.get(reverse('projects:index'))
@@ -57,8 +56,8 @@ class ProjectsIndexViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 200)
 
 
-class ProjectsManageViewTestCase(BaseProjectsTestCase):
-    def test_manage_projects(self):
+class ProjectsManageTests(BaseProjectsTestCase):
+    def test_view_manage_projects(self):
         # not logged in
         res = self.client.get(reverse('projects:manage'))
         self.assertEqual(res.status_code, 302)
@@ -71,7 +70,7 @@ class ProjectsManageViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 200)
 
 
-class ProjectsCreateViewTestCase(BaseProjectsTestCase):
+class ProjectsCreateTests(BaseProjectsTestCase):
     def test_view_create_project(self):
         # not logged in
         res = self.client.get(reverse('projects:create'))
@@ -110,7 +109,7 @@ class ProjectsCreateViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 200)
 
 
-class ProjectsEditViewTestCase(BaseProjectsTestCase):
+class ProjectsEditTests(BaseProjectsTestCase):
     def test_view_edit_project(self):
         # Should I test '@login_required'?
         self.login()
@@ -153,6 +152,7 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
 
     def test_action_edit_project(self):
         self.login()
+        
         with open('projects/test_img.jpg') as img:
             res = self.client.post(
                 reverse('projects:edit',
@@ -165,9 +165,29 @@ class ProjectsEditViewTestCase(BaseProjectsTestCase):
                  'category': '6',
                  })
         self.assertEqual(res.status_code, 200)
+        
+        with open('projects/test_img.jpg') as img:
+            res = self.client.post(
+                reverse('projects:edit',
+                        kwargs={'project_id': self.new_projs[0].id}),{})
+        self.assertEqual(res.status_code, 200)
+        
+        with open('projects/test_img.jpg') as img:
+            res = self.client.post(
+                reverse('projects:edit',
+                        kwargs={'project_id': self.new_projs[0].id}),
+                {'title': '',
+                 'goal': '',
+                 'image': '',
+                 'short_desc': '',
+                 'long_desc': '',
+                 'category': '',
+                 })
+        self.assertEqual(res.status_code, 200)
+        # no error messages?
 
 
-class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
+class ProjectsPledgeRewardsTests(BaseProjectsTestCase):
     def test_view_add_pledgerewards(self):
         # Should I test '@login_required'?
         self.login()
@@ -291,7 +311,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         )
         self.assertEqual(res.status_code, 302)
 
-    def test_view_edit_add_reward(self):
+    def test_view_reward(self):
         # Should I test '@login_required'?
         self.login()
 
@@ -369,7 +389,7 @@ class ProjectsPledgeRewardsViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 302)
 
 
-class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
+class ProjectsPledgeRewardsDeleteTests(BaseProjectsTestCase):
     def test_delete_pledgereward(self):
         # Should I test '@login_required'?
         self.login()
@@ -435,7 +455,7 @@ class ProjectsPledgeRewardsDeleteViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 404)
 
 
-class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
+class ProjectsDetailsTests(BaseProjectsTestCase):
     def test_view_project_details(self):
         # not logged in
         res = self.client.get(reverse('projects:details',
@@ -469,7 +489,7 @@ class ProjectsDetailsViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 404)
 
 
-class ProjectsUpdateStatusViewTestCase(BaseProjectsTestCase):
+class ProjectsUpdateStatusTests(BaseProjectsTestCase):
     # TODO check status actually changed
     def test_update_project(self):
         self.login()
@@ -487,7 +507,7 @@ class ProjectsUpdateStatusViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 302)
 
 
-class ProejctsAddUserPledgeViewTestCase(BaseProjectsTestCase):
+class ProejctsAddUserPledgeTests(BaseProjectsTestCase):
     #TODO check pledge added
     def test_add_userpledge(self):
         self.login()
@@ -508,7 +528,7 @@ class ProejctsAddUserPledgeViewTestCase(BaseProjectsTestCase):
         self.assertEqual(res.status_code, 302)
 
 
-class ProjectsListViewTestCase(BaseProjectsTestCase):
+class ProjectsListTests(BaseProjectsTestCase):
     all_categories = Category.objects.all()
 
     def test_project_categories(self):
