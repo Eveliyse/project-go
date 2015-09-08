@@ -161,12 +161,9 @@ def Edit(request, project_id=None):
 
 
 @login_required
-def EditAddPledgeRewards(request, project_id=None, mode=None, P_R_id=None):
-    if project_id:
-        project = get_object_or_404(Project, pk=project_id)
-        if (project.owner != request.user or project.status != Status.objects.get(status="New")):
-            return redirect(reverse('projects:manage'))
-    else:
+def EditAddPledgeRewards(request, project_id, mode=None, P_R_id=None):
+    project = get_object_or_404(Project, pk=project_id)
+    if (project.owner != request.user or project.status != Status.objects.get(status="New")):
         return redirect(reverse('projects:manage'))
 
     if request.POST:

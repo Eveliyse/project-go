@@ -15,6 +15,10 @@ class BaseProjectsTestCase(TestCase):
     new_status = Status.objects.get(status="New")
     open_status = Status.objects.get(status="Open")
     closed_status = Status.objects.get(status="Closed")
+    
+    new_projs = Project.objects.filter(status=new_status)
+    open_projs = Project.objects.filter(status=open_status)
+    closed_projs = Project.objects.filter(status=closed_status)    
 
     def login(self, uname='elsa', password='elsa'):
         res = self.client.post(
@@ -457,11 +461,15 @@ class ProjectsPledgeRewardsDeleteTests(BaseProjectsTestCase):
 
 class ProjectsDetailsTests(BaseProjectsTestCase):
     def test_view_project_details(self):
+        
         # not logged in
         res = self.client.get(reverse('projects:details',
-                                      kwargs={'project_id':
-                                              self.all_projects[0].id}))
+                                      kwargs={'project_id': self.all_projects[0].id}))
         self.assertEqual(res.status_code, 200)
+
+        res = self.client.get(reverse('projects:details',
+                                      kwargs={'project_id': self.new_projs[0].id}))
+        self.assertEqual(res.status_code, 302)
 
         res = self.client.get(reverse('projects:details',
                                       kwargs={'project_id': 9876543210}))
@@ -469,18 +477,22 @@ class ProjectsDetailsTests(BaseProjectsTestCase):
 
         # logged in
         self.login()
+        other_new_projs = Project.objects.filter(status=self.new_status).exclude(owner=self.user)
 
         # details for own project
         res = self.client.get(reverse('projects:details',
-                                      kwargs={'project_id':
-                                              self.user_projs[0].id}))
+                                      kwargs={'project_id': self.user_projs[0].id}))
         self.assertEqual(res.status_code, 200)
+        
+        # details for not own new projects
+        res = self.client.get(reverse('projects:details',
+                                      kwargs={'project_id': other_new_projs[0].id}))
+        self.assertEqual(res.status_code, 302)        
 
         # details for not own project
         self.login()
         res = self.client.get(reverse('projects:details',
-                                      kwargs={'project_id':
-                                              self.not_user_projs[0].id}))
+                                      kwargs={'project_id': self.not_user_projs[0].id}))
         self.assertEqual(res.status_code, 200)
 
         # details for nonexistent project
@@ -510,6 +522,17 @@ class ProjectsUpdateStatusTests(BaseProjectsTestCase):
 class ProejctsAddUserPledgeTests(BaseProjectsTestCase):
     #TODO check pledge added
     def test_add_userpledge(self):
+        self.login(uname='harry', password='harry')
+        other_open_projs = Project.objects.filter(status=self.open_status).exclude(owner=self.user)
+
+        res = self.client.get(reverse(
+            'projects:add_pledge', kwargs={
+                'project_id': other_open_projs[0].id,
+                'pledge_id': other_open_projs[0].project_pledges.all()[0].id
+            }))
+        self.assertEqual(res.status_code, 302)        
+
+    def test_change_userpledge(self):
         self.login()
         other_open_projs = Project.objects.filter(status=self.open_status).exclude(owner=self.user)
 
