@@ -10,7 +10,8 @@ from django.views.generic import (
     TemplateView,
     RedirectView,
     DetailView,
-    ListView
+    ListView,
+    UpdateView
 )
 from django.conf import settings
 from django.db.models import Count, Sum, F, Q
@@ -135,29 +136,28 @@ class CreateProjectView(LoginRequiredMixin, CreateView):
         }, context_instance=RequestContext(request))
 
 
-@login_required
-def Edit(request, project_id=None):
-    if project_id:
-        p = get_object_or_404(Project, pk=project_id)
-        if (p.owner != request.user or
-                p.status != Status.objects.get(status="New")):
+class EditProjectView(LoginRequiredMixin, UpdateView):
+    form_class = ProjectEditCreateForm
+    model = Project
+    template_name = 'projects/edit_create.html'
+    pk_url_kwarg = 'project_id'
+    
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if (self.object.owner != request.user or self.object.status != Status.objects.get(status="New")):
             return redirect(reverse('projects:manage'))
-    else:
-        return redirect(reverse('projects:create'))
+        return super(EditProjectView, self).get(request, *args, **kwargs)
 
-    if request.POST:
-            project_edit_form = ProjectEditCreateForm(data=request.POST,
-                                                      files=request.FILES,
-                                                      instance=p)
-            if project_edit_form.is_valid():
-                project_edit_form.save()
+    def get_success_url(self):
+        return reverse('projects:edit', kwargs={'project_id': self.get_object().id})
 
-    project_edit_form = ProjectEditCreateForm(instance=p)
-    return render_to_response('projects/edit_create.html', {
-        'form': project_edit_form,
-        'pledgerewards': Pledge.objects.filter(project__id=project_id)
-        .order_by('amount'),
-        'project': p}, context_instance=RequestContext(request))
+    def get_context_data(self, **kwargs):
+        context = super(EditProjectView, self).get_context_data(**kwargs)
+        
+        context['pledgerewards'] = Pledge.objects.filter(project__id=self.object.id).order_by('amount')
+        context['project'] =  self.object
+        
+        return context
 
 
 @login_required

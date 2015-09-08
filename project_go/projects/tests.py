@@ -150,17 +150,13 @@ class ProjectsEditTests(BaseProjectsTestCase):
                     kwargs={'project_id': 9876543210}))
         self.assertEqual(res.status_code, 404)
 
-        # edit no project
-        res = self.client.get(reverse('projects:edit'))
-        self.assertEqual(res.status_code, 302)
 
     def test_action_edit_project(self):
         self.login()
         
         with open('projects/test_img.jpg') as img:
-            res = self.client.post(
-                reverse('projects:edit',
-                        kwargs={'project_id': self.new_projs[0].id}),
+            res = self.client.post(reverse('projects:edit',
+                                           kwargs={'project_id': self.new_projs[0].id}),
                 {'title': 'PROJECT X',
                  'goal': '666',
                  'image': img,
@@ -168,18 +164,16 @@ class ProjectsEditTests(BaseProjectsTestCase):
                  'long_desc': 'long desc',
                  'category': '6',
                  })
+        self.assertEqual(res.status_code, 302)
+        
+        with open('projects/test_img.jpg') as img:
+            res = self.client.post(reverse('projects:edit',
+                                           kwargs={'project_id': self.new_projs[0].id}),{})
         self.assertEqual(res.status_code, 200)
         
         with open('projects/test_img.jpg') as img:
-            res = self.client.post(
-                reverse('projects:edit',
-                        kwargs={'project_id': self.new_projs[0].id}),{})
-        self.assertEqual(res.status_code, 200)
-        
-        with open('projects/test_img.jpg') as img:
-            res = self.client.post(
-                reverse('projects:edit',
-                        kwargs={'project_id': self.new_projs[0].id}),
+            res = self.client.post(reverse('projects:edit',
+                                           kwargs={'project_id': self.new_projs[0].id}),
                 {'title': '',
                  'goal': '',
                  'image': '',
@@ -503,7 +497,7 @@ class ProjectsDetailsTests(BaseProjectsTestCase):
 
 class ProjectsUpdateStatusTests(BaseProjectsTestCase):
     # TODO check status actually changed
-    def test_update_project(self):
+    def test_update_project_status(self):
         self.login()
 
         res = self.client.post(reverse('projects:update_status',

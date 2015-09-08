@@ -9,15 +9,15 @@ from projects.views import (
     ProjectDetailsView,
     ProjectSearchListView,
     ProjectCategoryListView,
-    ProjectAddUserPledgeView
+    ProjectAddUserPledgeView,
+    EditProjectView
 )
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'^manage/$', ManageProjectsView.as_view(), name='manage'),
     url(r'^create/$', CreateProjectView.as_view(), name='create'),
-    url(r'^edit/(?P<project_id>\d+)/$', views.Edit, name='edit'),
-    url(r'^edit/$', views.Edit, name='edit'),
+    url(r'^edit/(?P<project_id>\d+)/$', EditProjectView.as_view(), name='edit'),
 
     url(r'^update_status/(?P<project_id>\d+)/$', UpdateStatusView.as_view(), name='update_status'),
 
