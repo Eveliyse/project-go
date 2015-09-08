@@ -19,12 +19,12 @@
                 </div>
                 <div class="content-non-card">
                 <h2>Your Addresses</h2>
-            <div class="center-parent">
+            <div class="center-parent flex">
                 {% for address in user_addresses %}
                 {% include "users/includes/address_card.html" %}
                 {% endfor %}
 
-                <a class="edit" href="{% url 'users:add_address' %}">
+                <a class="edit flex" href="{% url 'users:add_address' %}">
                     <div class="address-card action-card">
                         <p>+ Add Address</p>
                     </div>
