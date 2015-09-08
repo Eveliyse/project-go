@@ -4,4 +4,4 @@ htmlcov
 htmlcov/*
 *.sqlite3
 *test_img*.jpg
-*~
+*.*~
