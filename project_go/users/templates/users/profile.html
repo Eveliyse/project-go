@@ -20,14 +20,14 @@
             </table>
     </div>
     {% if userpledges %}
-    <div class="content-non-card">
-        <h2>{{ userobj.username }}'s Contributions</h2>
-        <div class="center-parent flex">
-        {% for project in userpledges %}
-            {% include "projects/includes/project_card.html" %}
-        {% endfor %}
+        <div class="content-non-card">
+            <h2>{{ userobj.username }}'s Contributions</h2>
+            <div class="center-parent flex">
+                {% for project in userpledges %}
+                    {% include "projects/includes/project_card.html" %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
     {% endif %}
 
     {% else %}
@@ -45,8 +45,9 @@
                 <div class="clear"></div>
             </form>
         </div>
-<div id="current-address">
-        <div class="content-non-card">
+        
+        <div id="current-address">
+            <div class="content-non-card">
             
                 <h2>Your Addresses</h2>
                 <div class="center-parent flex">
@@ -62,17 +63,17 @@
             </div>
         </div>
         {% if userpledges %}
-        <div class="content-non-card">
+            <div class="content-non-card">
             
-            <h2>Your Contributions</h2>
-            <div class="center-parent flex">
-                {% for userpledge in userpledges %}
-                    {% include "projects/includes/project_userpledge_card.html" with project=userpledge.pledge.project %}
-                {% endfor %}
+                <h2>Your Contributions</h2>
+                <div class="center-parent flex">
+                    {% for userpledge in userpledges %}
+                        {% include "projects/includes/project_userpledge_card.html" with project=userpledge.pledge.project %}
+                    {% endfor %}
+                </div>
+            
             </div>
-            
-        </div>
-{% endif %}
+        {% endif %}
 
     {% endif %}
 {% endblock %}
