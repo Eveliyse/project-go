@@ -54,15 +54,7 @@ class IndexView(TemplateView):
         open_status = Status.objects.get(status="Open")
 
         # Getting set of newest open projects and adding extra columns
-        newest_projects = (Project.objects.filter(status=open_status).order_by('-open_date')[:6])
-
-        newest_projects_amount = newest_projects.annotate(
-            current_pledged=Coalesce(
-                Sum('project_pledges__pledged_users__pledge__amount'), 0.00))
-
-        newest_projects_amount_percent = newest_projects_amount.annotate(
-            current_percent=Coalesce(
-                (F('current_pledged') * 100.00) / F('goal'), 0))
+        newest_projects = Project.objects.filter(status=open_status).order_by('-open_date')[:6]
 
         # Getting set of most funded open projects and adding extra columns
         open_projects = Project.objects.filter(status=open_status)
@@ -76,7 +68,7 @@ class IndexView(TemplateView):
                 (F('current_pledged') * 100.00) / F('goal'), 0)).order_by('-current_pledged')[:6])
 
         # adding sets to context
-        context['newest_5'] = newest_projects_amount_percent
+        context['newest_5'] = newest_projects
         context['most_pledged_5'] = percent_pledged_5
 
         return context
