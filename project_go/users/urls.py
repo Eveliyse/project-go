@@ -9,7 +9,7 @@ from users.views import (
     DeleteAddressView)
 
 urlpatterns = [
-    url(r'^$', views.Profile, name='index'),
+    url(r'^$', EditUserProfile.as_view(), name='index'),
     url(r'^profile/$', EditUserProfile.as_view(), name='profile'),
     url(r'^profile/(?P<user_id>\d+)/$', ViewUserProfile.as_view(), name='profile'),
     url(r'^profile/add-address/$', CreateAddressView.as_view(), name='add_address'),
