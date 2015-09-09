@@ -54,6 +54,12 @@ class LoginRequiredMixin(object):
 class ViewUserProfile(TemplateView):
     template_name = 'users/profile.html'
     
+    def get(self, request, *args, **kwargs):
+        if int(kwargs['user_id']) is request.user.id:
+            return redirect(reverse('users:profile'))
+        
+        return super(ViewUserProfile, self).get(request, *args, **kwargs)
+    
     def get_context_data(self, **kwargs):
         context = super(ViewUserProfile, self).get_context_data(**kwargs)
         
@@ -125,7 +131,7 @@ def Profile(request, user_id=None):
     user_edit_form = UserEditForm(instance=user)
 
     # get user pledged projects for display
-    userpledges = UserPledge.objects.filter(user_id=u_id)
+    userpledges = UserPledge.objects.filter(user=user)
     pledge_projects = Project.objects.filter(
         project_pledges__pledged_users__user_id=u_id)
 

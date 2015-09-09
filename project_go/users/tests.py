@@ -129,12 +129,16 @@ class UsersProfileTests(BaseUsersTestCase):
         # logged in
         self.login()
         res = self.client.get(
-            reverse('users:profile', kwargs={'user_id': self.user.id}))
+            reverse('users:profile'))
         self.assertEqual(res.status_code, 200)
         
         res = self.client.get(
+            reverse('users:profile', kwargs={'user_id': self.user.id}))
+        self.assertEqual(res.status_code, 302)        
+        
+        res = self.client.get(
             reverse('users:profile',
-                    kwargs={'user_id': self.all_users[1].id}))
+                    kwargs={'user_id': self.all_users[3].id}))
         self.assertEqual(res.status_code, 200)           
 
         res = self.client.get(
