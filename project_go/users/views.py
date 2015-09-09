@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import (
     get_object_or_404,
     get_list_or_404,
@@ -21,6 +22,7 @@ from django.contrib.auth import (
     authenticate
 )
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Member, Address
@@ -76,89 +78,52 @@ class ViewUserProfile(TemplateView):
         return context
 
 
-def Profile(request, user_id=None):
-    """ If the user is viewing own profile then let them edit things
-        Otherwise, show basic details of 'other' user
-    """
-    # if available, use a supplied id or grab current user's id.
-    # Otherwise redirect user to register page
-    if user_id:
-        u_id = int(user_id)
-    elif request.user.is_authenticated():
-        u_id = int(request.user.id)
-    else:
-        return redirect(reverse('users:register'))
+class EditUserProfile(LoginRequiredMixin, TemplateView):
+    form_class = UserEditForm
+    template_name = 'users/profile.html'
+    
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, id=self.request.user.id)
+        member = get_object_or_404(Member, user=user)        
 
-    # Get user and member objects based on supplied userid
-    user = get_object_or_404(User, id=u_id)
-    member = get_object_or_404(Member, user=user)
-
-    # if POST then process forms
-    # TODO check if password fields actually have a value
-    if request.method == "POST":
         user_edit_form = UserEditForm(data=request.POST, instance=user)
-        password_edit_form = ChangePasswordForm(data=request.POST,
-                                             user=user,
-                                             initial={})
-        member_edit_form = MemberDetailsForm(data=request.POST,
-                                             instance=member)
+        password_edit_form = ChangePasswordForm(data=request.POST, user=user, initial={})
+        member_edit_form = MemberDetailsForm(data=request.POST, instance=member)
 
         if user_edit_form.is_valid():
             user_edit_form.save()
+            
         if password_edit_form.has_changed():
             if password_edit_form.is_valid():
                 password_edit_form.save()
                 return redirect(reverse('users:login'))
+            
         if member_edit_form.is_valid():
             member_edit_form.save()
+            
+        context = self.get_context_data(**kwargs)
+        
+        context['form'] = user_edit_form
+        context['form2'] = password_edit_form
+        context['form3'] = member_edit_form
+        
+        return render_to_response(self.template_name, context, context_instance=RequestContext(request))
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditUserProfile, self).get_context_data(**kwargs)
 
-        a = get_list_or_404(Address, resident=request.user, active=True)
-        userpledges = UserPledge.objects.filter(user_id=u_id)
-        pledge_projects = Project.objects.filter(
-            project_pledges__pledged_users__user_id=u_id)
+        user = get_object_or_404(User, id=self.request.user.id)
+        member = get_object_or_404(Member, user=user)
 
-        return render_to_response('users/profile.html', {
-            'form': user_edit_form,
-            'form2': password_edit_form,
-            'form3': member_edit_form,
-            'user_addresses': a,
-            'userobj': user,
-            'projects': pledge_projects,
-            'userpledges': userpledges,
-        }, context_instance=RequestContext(request))
-
-    # create form for display
-    user_edit_form = UserEditForm(instance=user)
-
-    # get user pledged projects for display
-    userpledges = UserPledge.objects.filter(user=user)
-    pledge_projects = Project.objects.filter(
-        project_pledges__pledged_users__user_id=u_id)
-
-    # if user is viewing own profile then create forms for editing details
-    # and fetch data to display. Else the user is viewing not own profile
-    # so just process the 1 form
-    if u_id == request.user.id:
-        password_edit_form = ChangePasswordForm(user=user, initial={})
-        member_edit_form = MemberDetailsForm(instance=member)
-
-        a = get_list_or_404(Address, resident=request.user, active=True)
-
-        return render_to_response('users/profile.html', {
-            'form': user_edit_form,
-            'form2': password_edit_form,
-            'form3': member_edit_form,
-            'user_addresses': a,
-            'userobj': user,
-            'projects': pledge_projects,
-            'userpledges': userpledges,
-        }, context_instance=RequestContext(request))
-    else:
-        return render_to_response('users/profile.html', {
-            'form': user_edit_form,
-            'userobj': user,
-            'projects': pledge_projects,
-        }, context_instance=RequestContext(request))
+        context['form'] = UserEditForm(instance=user)
+        context['form2'] = ChangePasswordForm(user=user, initial={})
+        context['form3'] = MemberDetailsForm(instance=member)
+        context['user_addresses'] = get_list_or_404(Address, resident=user, active=True)
+        context['userobj'] = user
+        context['projects'] = Project.objects.filter(project_pledges__pledged_users__user_id=user.id)
+        context['userpledges'] = UserPledge.objects.filter(user=user)
+        
+        return context
 
 
 class CreateAddressView(LoginRequiredMixin, CreateView):
@@ -217,31 +182,6 @@ class DeleteAddressView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         return reverse('users:add_address')
-
-""" replaced with django login view
-def Login(request):
-     If the user is already logged in then redirect somewhere else
-        Otherwise, render template and form or process POST data
-    
-    if not request.user.is_authenticated():
-        if request.method == 'POST':
-            form = AuthenticationForm(data=request.POST)
-            if form.is_valid():
-                user = authenticate(username=request.POST['username'],
-                                    password=request.POST['password'])
-                if user is not None:
-                    if user.is_active:
-                        auth_login(request, form.get_user())
-                        return redirect(reverse('projects:index'))
-        else:
-            form = AuthenticationForm()
-        return render_to_response('users/login.html', {
-            'form': form,
-        }, context_instance=RequestContext(request))
-    else:
-        # TODO redirect somewhere more sensible
-        return redirect(reverse('projects:index'))
-"""
 
 @login_required
 def Logout(request):

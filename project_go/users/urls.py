@@ -3,13 +3,14 @@ from . import views
 from django.contrib.auth import views as auth_views
 from users.views import (
     ViewUserProfile,
+    EditUserProfile,
     CreateAddressView,
     EditAddressView,
     DeleteAddressView)
 
 urlpatterns = [
     url(r'^$', views.Profile, name='index'),
-    url(r'^profile/$', views.Profile, name='profile'),
+    url(r'^profile/$', EditUserProfile.as_view(), name='profile'),
     url(r'^profile/(?P<user_id>\d+)/$', ViewUserProfile.as_view(), name='profile'),
     url(r'^profile/add-address/$', CreateAddressView.as_view(), name='add_address'),
     url(r'^profile/edit-address/$', CreateAddressView.as_view(), name='edit_address'),

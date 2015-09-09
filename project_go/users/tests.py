@@ -106,7 +106,6 @@ class UsersProfileTests(BaseUsersTestCase):
         # not logged in
         res = self.client.get(reverse('users:profile'))
         self.assertEqual(res.status_code, 302)
-        self.assertRedirects(res, reverse('users:register'))
 
         # logged in
         self.login()
