@@ -23,7 +23,7 @@
     {% endif %}
 
     <div class="content-non-card">
-        <h1>{{ project.title }} <span>by {{ project.owner }}</span></h1>
+        <h1>{{ project.title }} <span>by <a href="{% url 'users:profile' project.owner.id %}">{{ project.owner }}</a></span></h1>
         
         <div class="center-parent">
         <div class="project-detail-card">
@@ -111,7 +111,7 @@
                 <ul>
                     {% for pledger in pledgers %}
                         <li>
-                            {{ pledger }}
+                            <a href="{% url 'users:profile' pledger.id %}">{{ pledger }}</a>
                         </li>
                     {% endfor %}
                 </ul>
