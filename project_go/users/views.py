@@ -51,6 +51,25 @@ class LoginRequiredMixin(object):
         return redirect_to_login(request.get_full_path(), settings.LOGIN_URL)
 
 
+class ViewUserProfile(TemplateView):
+    template_name = 'users/profile.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ViewUserProfile, self).get_context_data(**kwargs)
+        
+        u_id = int(kwargs['user_id'])
+        
+        user = get_object_or_404(User, id=u_id)
+        member = get_object_or_404(Member, user=user)
+        
+        context['form'] = UserEditForm(instance=user)
+        context['userobj'] = user
+        context['userpledges'] = Project.objects.filter(
+            project_pledges__pledged_users__user_id=u_id)
+        
+        return context
+
+
 def Profile(request, user_id=None):
     """ If the user is viewing own profile then let them edit things
         Otherwise, show basic details of 'other' user

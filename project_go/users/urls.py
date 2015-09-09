@@ -2,6 +2,7 @@ from django.conf.urls import url
 from . import views
 from django.contrib.auth import views as auth_views
 from users.views import (
+    ViewUserProfile,
     CreateAddressView,
     EditAddressView,
     DeleteAddressView)
@@ -9,7 +10,7 @@ from users.views import (
 urlpatterns = [
     url(r'^$', views.Profile, name='index'),
     url(r'^profile/$', views.Profile, name='profile'),
-    url(r'^profile/(?P<user_id>\d+)/$', views.Profile, name='profile'),
+    url(r'^profile/(?P<user_id>\d+)/$', ViewUserProfile.as_view(), name='profile'),
     url(r'^profile/add-address/$', CreateAddressView.as_view(), name='add_address'),
     url(r'^profile/edit-address/$', CreateAddressView.as_view(), name='edit_address'),
     url(r'^profile/edit-address/(?P<address_id>\d+)/$', EditAddressView.as_view(), name='edit_address'),
